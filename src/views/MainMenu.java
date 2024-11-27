@@ -2,6 +2,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.List;
 
 public class MainMenu extends JFrame {
 
@@ -27,7 +29,6 @@ public class MainMenu extends JFrame {
         Font buttonFont = new Font("Verdana", Font.PLAIN, 18);
         newGameButton.setFont(buttonFont);
         continueGameButton.setFont(buttonFont);
-
 
         // Button panel
         JPanel buttonPanel = new JPanel();
@@ -63,7 +64,6 @@ public class MainMenu extends JFrame {
         playerSelectionFrame.setSize(400, 300);
         playerSelectionFrame.setLayout(new GridLayout(5, 1, 10, 10));
 
-
         JLabel instruction = new JLabel("Select number of players:", SwingConstants.CENTER);
         instruction.setFont(new Font("Times New Roman", Font.PLAIN, 30));
         instruction.setForeground(Color.WHITE);
@@ -75,17 +75,16 @@ public class MainMenu extends JFrame {
         JButton twoPlayersButton = new JButton("2 Players");
         JButton threePlayersButton = new JButton("3 Players");
         JButton fourPlayersButton = new JButton("4 Players");
-       
+
         Font buttonFont = new Font("Verdana", Font.PLAIN, 18);
         twoPlayersButton.setFont(buttonFont);
         threePlayersButton.setFont(buttonFont);
         fourPlayersButton.setFont(buttonFont);
 
-
         // Add action listeners
-        twoPlayersButton.addActionListener(e -> startGame(2));
-        threePlayersButton.addActionListener(e -> startGame(3));
-        fourPlayersButton.addActionListener(e -> startGame(4));
+        twoPlayersButton.addActionListener(e -> {showNameInputDialog(2); });
+        threePlayersButton.addActionListener(e -> {showNameInputDialog(3);});
+        fourPlayersButton.addActionListener(e -> {showNameInputDialog(4);});
 
         playerSelectionFrame.add(twoPlayersButton);
         playerSelectionFrame.add(threePlayersButton);
@@ -95,18 +94,52 @@ public class MainMenu extends JFrame {
         playerSelectionFrame.setVisible(true);
     }
 
-    // Placeholder for loading a saved game
-    private void loadSavedGame() {
-        JOptionPane.showMessageDialog(this, "Loading saved game...");
+    // Name input dialog
+    private void showNameInputDialog(int numPlayers) {
+       // JOptionPane.showMessageDialog(null, "Please enter names for " + numPlayers + " players.");
+
+        List<String> playerNames = new ArrayList<>();
+
+        for (int i = 1; i <= numPlayers; i++) {
+            String playerName = JOptionPane.showInputDialog(null, 
+                    "Enter name for Player " + i + ":", 
+                    "Player " + i + " Name", JOptionPane.QUESTION_MESSAGE);
+                  
+                    if (playerName == null) {
+                        break;
+                    }            
+
+            if (playerName != null && !playerName.trim().isEmpty()) {
+                playerNames.add(playerName.trim());
+            } else {
+                JOptionPane.showMessageDialog(null, "Name cannot be empty. Please enter a valid name for Player " + i + ".");
+                i--; 
+            }
+        }
+
+        if (!playerNames.isEmpty()) {
+            startGame(playerNames);
+        } else {
+            JOptionPane.showMessageDialog(null, "Exiting game setup.");
+        }
     }
 
-    // Placeholder for starting a new game
-    private void startGame(int numPlayers) {
-        JOptionPane.showMessageDialog(this, "Starting new game with " + numPlayers + " players.");
+    private void startGame(List<String> playerNames) {
+        int numPlayers = playerNames.size();
+        JOptionPane.showMessageDialog(null, "Starting new game with " + numPlayers + " players: " + playerNames);
+ 
+    }
 
+    // Placeholder for loading a saved game
+    private void loadSavedGame() {
+        JOptionPane.showMessageDialog(null, "Loading saved game...");
     }
 
     public static void main(String[] args) {
-        SwingUtilities.invokeLater(MainMenu::new);
+        SwingUtilities.invokeLater(() -> {
+            new MainMenu(); 
+        });
     }
 }
+
+

@@ -1,2 +1,2 @@
-# NOT-SORRY
+# SORRY-NOT-SORRY
 Sorry game

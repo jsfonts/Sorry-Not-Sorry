@@ -1,0 +1,28 @@
+import java.util.ArrayList;
+import java.awt.Color;
+
+public abstract class Player{
+    private String name;
+    private ArrayList<Pawn> pawns;
+    private Color color;
+
+    Player(String n, Color c){
+        name = n;
+        color = c;
+        System.out.println("Player has been made");
+    }
+
+    public int pawnsLeft(){
+        return pawns.size();
+    }
+
+    public Color getColor(){
+        return color;
+    }
+
+    public String getName(){
+        return name;
+    }
+
+    public abstract void move();
+}

@@ -98,14 +98,12 @@ public class MainMenu extends JFrame {
     // Placeholder for loading a saved game
     private void loadSavedGame() {
         JOptionPane.showMessageDialog(this, "Loading saved game...");
-        // Transition to actual game interface logic here
     }
 
     // Placeholder for starting a new game
     private void startGame(int numPlayers) {
         JOptionPane.showMessageDialog(this, "Starting new game with " + numPlayers + " players.");
-        // Transition to actual game interface logic here
-        // e.g., new GameInterface(numPlayers); 
+
     }
 
     public static void main(String[] args) {

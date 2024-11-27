@@ -1,3 +1,5 @@
+package models;
+
 public class Card{
     public enum CardType{
         ONE{},
@@ -17,8 +19,6 @@ public class Card{
 
     private CardType type;
 
-    private GameController controller;
-
     public Card(CardType ct){
         type = ct;
         isUsed = false;
@@ -33,5 +33,7 @@ public class Card{
         return type;
     }
 
-    private 
+    public String toString(){
+        return type.toString();
+    }
 }

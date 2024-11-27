@@ -1,4 +1,8 @@
+package controllers;
+
 import java.util.Deque;
+import models.Player;
+import models.Deck;
 
 public class GameController{
     private static GameController instance;

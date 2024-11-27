@@ -1,3 +1,5 @@
+package models;
+
 import java.awt.Color;
 
 public class Pawn{
@@ -8,7 +10,7 @@ public class Pawn{
         color = c;
     }
 
-    public getColor(){
+    public Color getColor(){
         return color;
     }
 }

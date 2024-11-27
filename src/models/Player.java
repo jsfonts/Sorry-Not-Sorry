@@ -1,5 +1,8 @@
+package models;
+
 import java.util.ArrayList;
 import java.awt.Color;
+import models.Pawn;
 
 public abstract class Player{
     private String name;

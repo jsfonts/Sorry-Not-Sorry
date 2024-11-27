@@ -1,3 +1,6 @@
+package models;
+
+import models.Player;
 import java.awt.Color;
 
 public class HumanPlayer extends Player{

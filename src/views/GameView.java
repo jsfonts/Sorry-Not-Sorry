@@ -4,6 +4,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionListener;
 import java.util.List;
+import models.Board;
 
 public class GameView extends JFrame {
     private JLabel gameLabel;
@@ -13,7 +14,7 @@ public class GameView extends JFrame {
     private JMenuItem quitMenuItem;
     private JMenuItem rulesMenuItem;
 
-    public GameView() {
+    public GameView(Board model) {
         setTitle("Game Board");
         setSize(800, 600);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

@@ -52,7 +52,7 @@ public class MainMenu extends JFrame {
         setVisible(true);
     }
 
-    private void showPlayerSelection() {
+    public void showPlayerSelection() {
         List<String> playerNames = new ArrayList<>();
         for (int i = 1; i <= 2; i++) { // Adjust for max players
             String playerName = JOptionPane.showInputDialog(this, "Enter name for Player " + i + ":");
@@ -63,6 +63,6 @@ public class MainMenu extends JFrame {
                 playerNames.add(playerName.trim());
             }
         }
-        controller.startNewGame(playerNames);
+        controller.start(playerNames);
     }
 }

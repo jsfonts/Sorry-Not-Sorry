@@ -6,6 +6,8 @@ import models.Player;
 import models.Deck;
 
 import javax.swing.*;
+
+import java.util.ArrayList;
 import java.util.Deque;
 import java.util.List;
 
@@ -51,7 +53,7 @@ public class GameController {
         JOptionPane.showMessageDialog(view, "Game Restarted!");
     }
 
-    private void startNewGame() {
+    public void startNewGame() {
         int result = JOptionPane.showConfirmDialog(view, "Are you sure you want to start a new game?",
                 "New Game", JOptionPane.YES_NO_OPTION);
         if (result == JOptionPane.YES_OPTION) {
@@ -59,6 +61,17 @@ public class GameController {
             new MainMenu(this).showPlayerSelection();
         }
     }
+
+    public void start(List<String> playerNames)
+    {
+        //opens up the game view 
+    }
+
+    public void loadSavedGame()
+    {
+
+    }
+
 
     private void togglePause() {
         model.togglePause();
@@ -124,7 +137,8 @@ public class GameController {
     }
 
     public static void main(String[] args) {
-        Board model = new Board();;
+        List<Player> players = new ArrayList<>();
+        Board model = new Board(players);
         GameView view = new GameView(model);
         GameController controller = GameController.getInstance(model, view);
 

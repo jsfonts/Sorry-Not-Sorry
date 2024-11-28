@@ -1,3 +1,5 @@
+package views;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -8,6 +10,7 @@ import java.util.List;
 public class MainMenu extends JFrame {
 
     public MainMenu() {
+
         setTitle("Sorry!");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(400, 300);
@@ -98,7 +101,7 @@ public class MainMenu extends JFrame {
     private void showNameInputDialog(int numPlayers) {
        // JOptionPane.showMessageDialog(null, "Please enter names for " + numPlayers + " players.");
 
-        List<String> playerNames = new ArrayList<>();
+        ArrayList<String> playerNames = new ArrayList<>();
 
         for (int i = 1; i <= numPlayers; i++) {
             String playerName = JOptionPane.showInputDialog(null, 
@@ -129,22 +132,15 @@ public class MainMenu extends JFrame {
         JOptionPane.showMessageDialog(null, "Starting new game with " + numPlayers + " players: " + playerNames);
         dispose();
 
-        GameBoard gameBoard = new GameBoard(playerNames); 
-        gameBoard.setVisible(true);
+        controller.start(playerNames);
+        //GameBoard gameBoard = new GameBoard(playerNames); 
+        //gameBoard.setVisible(true);
         }
  
-    
-
     // Placeholder for loading a saved game
     private void loadSavedGame() {
         JOptionPane.showMessageDialog(null, "Loading saved game...");
     }
-
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> {
-            new MainMenu(); 
-        });
-    }}
 
 
 

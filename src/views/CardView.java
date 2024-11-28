@@ -1,7 +1,7 @@
 package views
 import models.Deck;
 import models.Card;
-import javax.swing.*;
+import javax.swing.*;m
 import java.awt.*;
 
 public class CardView extends JPanel {
@@ -32,14 +32,7 @@ public class CardView extends JPanel {
         add(cardPanel, BorderLayout.CENTER);
     }
 
- 
     public void drawCard() {
-   
-        if (deck.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "No cards left in the deck. Reshuffling...");
-            deck.reshuffle();
-        }
-
         Card drawnCard = deck.drawCard();
 
         cardTitleLabel.setText("Card: " + drawnCard.toString());

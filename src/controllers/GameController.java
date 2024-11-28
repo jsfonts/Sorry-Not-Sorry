@@ -1,4 +1,5 @@
 package controllers;
+
 import models.Board;
 import views.GameView;
 import views.MainMenu;
@@ -18,12 +19,10 @@ public class GameController {
     private Deque<Player> players;
     private Deck deck;
 
-    // Private constructor to enforce Singleton pattern
     private GameController(Board model, GameView view) {
         this.model = model;
         this.view = view;
 
-        // Initialize the view with some default actions
         view.setGameLabel("Game Starting with Players: " + String.join(", ", model.getPlayerNames()));
         view.addRestartListener(e -> restartGame());
         view.addNewGameListener(e -> startNewGame());
@@ -32,7 +31,6 @@ public class GameController {
         view.addRulesListener(e -> showRules());
     }
 
-    // Singleton method to get the instance of GameController
     public static GameController getInstance(Board model, GameView view) {
         if (instance == null) {
             instance = new GameController(model, view);
@@ -62,9 +60,23 @@ public class GameController {
         }
     }
 
-    public void start(List<String> playerNames)
-    {
-        //opens up the game view 
+    public void start(List<String> playerNames) {
+        if (playerNames == null || playerNames.size() < 2) {
+            JOptionPane.showMessageDialog(null, "At least 2 players are required to start the game.");
+            return; 
+        }
+
+        List<Player> players = new ArrayList<>();
+        for (String name : playerNames) {
+            players.add(new Player(name));
+        }
+        deck = new Deck(); 
+        deck.reshuffle();
+
+        GameView gameView = new GameView(players);
+        gameView.setVisible(true);
+            
+        JOptionPane.showMessageDialog(null, "Game has started with " + playerNames.size() + " players.");
     }
 
     public void loadSavedGame()
@@ -89,7 +101,6 @@ public class GameController {
     }
 
     private void showRules() {
-        // Game rules as HTML
         String rules = "<html>" +
             "<h2>Objective:</h2>" +
             "<p>The goal of Sorry! is to be the first player to move all four of your pawns from \"Start\" to \"Home\".</p>" +

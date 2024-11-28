@@ -5,6 +5,8 @@ import views.GameView;
 import views.MainMenu;
 import models.Player;
 import models.Deck;
+import views.GameBoard;
+import java.awt.Color;
 
 import javax.swing.*;
 
@@ -16,8 +18,10 @@ public class GameController {
     private Board model;
     private GameView view;
     private static GameController instance;
-    private Deque<Player> players;
+    private ArrayDeque<Player> players;
     private Deck deck;
+    public static GameBoard gameboard;
+    private List<Color> colors = {Color.RED, Color.BLUE, Color.YELLOW, Color.GREEN};
 
     private GameController(Board model, GameView view) {
         this.model = model;

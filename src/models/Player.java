@@ -12,6 +12,12 @@ public abstract class Player{
     Player(String n, Color c){
         name = n;
         color = c;
+        
+        pawns = new ArrayList<Pawn>();
+        for(int i = 0; i < 4; i++){
+            pawns.add(new Pawn(c));
+        }
+
         System.out.println("Player has been made");
     }
 

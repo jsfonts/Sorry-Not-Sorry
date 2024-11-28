@@ -36,4 +36,7 @@ public class Board{
     
     }
 
+    
+
+    private ArrayList<>
 }

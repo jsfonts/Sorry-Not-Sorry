@@ -1,7 +1,7 @@
-package views
+package views;
 import models.Deck;
 import models.Card;
-import javax.swing.*;m
+import javax.swing.*;
 import java.awt.*;
 
 public class CardView extends JPanel {

@@ -1,5 +1,4 @@
 package views;
-
 import models.Deck;
 import models.Card;
 import javax.swing.*;
@@ -33,9 +32,7 @@ public class CardView extends JPanel {
         add(cardPanel, BorderLayout.CENTER);
     }
 
- 
     public void drawCard() {
-
         Card drawnCard = deck.drawCard();
 
         cardTitleLabel.setText("Card: " + drawnCard.toString());

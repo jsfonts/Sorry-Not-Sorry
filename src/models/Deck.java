@@ -30,7 +30,7 @@ public class Deck{
         return cards.get(cardsUsed++);
     }
 
-    private void reshuffle(){
+    public void reshuffle(){
         Collections.shuffle(cards);
         cardsUsed = 0;
     }

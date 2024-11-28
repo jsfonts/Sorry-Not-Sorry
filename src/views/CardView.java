@@ -1,4 +1,5 @@
-package views
+package views;
+
 import models.Deck;
 import models.Card;
 import javax.swing.*;
@@ -34,11 +35,6 @@ public class CardView extends JPanel {
 
  
     public void drawCard() {
-   
-        if (deck.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "No cards left in the deck. Reshuffling...");
-            deck.reshuffle();
-        }
 
         Card drawnCard = deck.drawCard();
 

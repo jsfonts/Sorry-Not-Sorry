@@ -29,6 +29,8 @@ views/GameBoard.class: views/MainMenu.class
 
 views/MainMenu.class: controllers/GameController.class
 
+views/CardView.class: models/Deck.class
+
 #Model Dependencies 
 
 models/%.class: src/models/%.java

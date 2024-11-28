@@ -59,7 +59,7 @@ public class MainMenu extends JFrame {
     }
 
     // Player selection screen
-    private void showPlayerSelection() {
+    public void showPlayerSelection() {
         JFrame playerSelectionFrame = new JFrame("Select Players");
         playerSelectionFrame.setSize(400, 300);
         playerSelectionFrame.setLayout(new GridLayout(5, 1, 10, 10));
@@ -127,8 +127,13 @@ public class MainMenu extends JFrame {
     private void startGame(List<String> playerNames) {
         int numPlayers = playerNames.size();
         JOptionPane.showMessageDialog(null, "Starting new game with " + numPlayers + " players: " + playerNames);
+        dispose();
+
+        GameBoard gameBoard = new GameBoard(playerNames); 
+        gameBoard.setVisible(true);
+        }
  
-    }
+    
 
     // Placeholder for loading a saved game
     private void loadSavedGame() {
@@ -139,7 +144,7 @@ public class MainMenu extends JFrame {
         SwingUtilities.invokeLater(() -> {
             new MainMenu(); 
         });
-    }
-}
+    }}
+
 
 

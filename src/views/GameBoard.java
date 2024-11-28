@@ -81,7 +81,7 @@ public class GameBoard extends JFrame {
         gameMenu.add(quitMenuItem);
 
         helpMenu.add(rules);
-
+        menuBar.add(Box.createHorizontalGlue());
         // Add menu to the menu bar
         menuBar.add(helpMenu);
         menuBar.add(gameMenu);

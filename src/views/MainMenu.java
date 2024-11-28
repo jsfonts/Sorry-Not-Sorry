@@ -54,11 +54,11 @@ public class MainMenu extends JFrame {
 
     public void showPlayerSelection() {
         List<String> playerNames = new ArrayList<>();
-        for (int i = 1; i <= 2; i++) { // Adjust for max players
+        for (int i = 1; i <= 2; i++) {
             String playerName = JOptionPane.showInputDialog(this, "Enter name for Player " + i + ":");
             if (playerName == null || playerName.trim().isEmpty()) {
                 JOptionPane.showMessageDialog(this, "Invalid name.");
-                i--; // Retry current player
+                i--; 
             } else {
                 playerNames.add(playerName.trim());
             }

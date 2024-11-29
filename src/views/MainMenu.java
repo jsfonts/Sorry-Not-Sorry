@@ -5,7 +5,6 @@ import controllers.GameController;
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
-import java.util.List;
 
 public class MainMenu extends JFrame {
     private GameController controller;
@@ -14,10 +13,11 @@ public class MainMenu extends JFrame {
         this.controller = controller;
         setTitle("Sorry!");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(400, 300);
         setLayout(new BorderLayout());
-        setVisible(true);
-        setLocationRelativeTo(null);
+        setVisible(true); 
+
+        Dimension screenSize = getToolkit().getScreenSize();
+        setSize((int)(screenSize.width/2.5), (int)(screenSize.height/2.5));
 
         // Title
         JLabel title = new JLabel("Sorry Not Sorry!", SwingConstants.CENTER);
@@ -126,7 +126,7 @@ public class MainMenu extends JFrame {
             }
         }
           // Start game with collected player names
-          controller.start(playerNames);
+        controller.start(playerNames);
 
     }
 }

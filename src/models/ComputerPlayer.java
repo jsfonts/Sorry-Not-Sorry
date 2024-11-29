@@ -3,10 +3,11 @@ package models;
 import models.Player;
 
 public class ComputerPlayer extends Player{
-    private static int cpCount;
 
+    private static int cpCount;
+    
     public ComputerPlayer(){
-        super(String.format("ComputerPlayer %d" , cpCount++));
+        super("ComputerPlayer " + cpCount++);
     }
 
     public void move(){

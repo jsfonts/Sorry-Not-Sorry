@@ -1,0 +1,5 @@
+javac -d bin -cp bin src/models/*.java src/controllers/*.java src/views/*.java
+
+echo "Now making main"
+
+javac -d bin -cp bin src/Main.java

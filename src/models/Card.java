@@ -29,7 +29,7 @@ public class Card{
         //this.play(); this is the function to overload for the CardTypes
     }
 
-    private CardType type(){
+    public CardType type(){
         return type;
     }
 

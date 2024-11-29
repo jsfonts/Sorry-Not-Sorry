@@ -52,11 +52,9 @@ public class MainMenu extends JFrame {
     }
 
     public void showPlayerSelection() {
-        // Clear existing components from the frame
         getContentPane().removeAll();
         repaint();
     
-        // Title
         JLabel title = new JLabel("How Many Players?", SwingConstants.CENTER);
         title.setFont(new Font("Times New Roman", Font.BOLD + Font.ITALIC, 45));
         title.setForeground(Color.WHITE);
@@ -64,8 +62,9 @@ public class MainMenu extends JFrame {
         title.setOpaque(true);
         title.setBackground(new Color(252, 173, 3));
         add(title, BorderLayout.NORTH);
-    
-        // Buttons for player selection
+
+
+        JButton onePla
         JButton twoPlayersButton = new JButton("2 Players");
         JButton threePlayersButton = new JButton("3 Players");
         JButton fourPlayersButton = new JButton("4 Players");
@@ -75,12 +74,10 @@ public class MainMenu extends JFrame {
         threePlayersButton.setFont(buttonFont);
         fourPlayersButton.setFont(buttonFont);
     
-        // Add action listeners
         twoPlayersButton.addActionListener(e -> showNameInputDialog(2));
         threePlayersButton.addActionListener(e -> showNameInputDialog(3));
         fourPlayersButton.addActionListener(e -> showNameInputDialog(4));
-    
-        // Panel for buttons
+
         JPanel buttonPanel = new JPanel(new GridLayout(3, 1, 10, 10));
         buttonPanel.setBorder(BorderFactory.createEmptyBorder(10, 50, 20, 50));
         buttonPanel.setBackground(new Color(252, 173, 3));
@@ -90,7 +87,6 @@ public class MainMenu extends JFrame {
     
         add(buttonPanel, BorderLayout.CENTER);
     
-        // Refresh frame to show updated content
         revalidate();
         repaint();
     }
@@ -125,7 +121,14 @@ public class MainMenu extends JFrame {
                 }
             }
         }
-          // Start game with collected player names
+
+        if (numPlayers < 4)
+        {
+
+            revalidate();
+            repaint();
+        }
+
           controller.start(playerNames);
 
     }

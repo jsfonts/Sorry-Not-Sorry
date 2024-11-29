@@ -1,4 +1,7 @@
+import javax.swing.JFrame;
+
 import controllers.GameController;
+import views.CardView;
 import views.GameView;
 import views.MainMenu;
 

@@ -7,6 +7,7 @@ import views.MainMenu;
 import models.Player;
 import models.HumanPlayer;
 import models.Deck;
+import models.ComputerPlayer;
 
 
 import javax.swing.*;
@@ -62,21 +63,27 @@ public class GameController {
         }
     }
 
-    public void start(ArrayList<String> humanPlayerNames) {
+    public void start(ArrayList<String> humanPlayerNames, int numComputerPlayers) {
         players = new ArrayDeque<Player>();
         deck = new Deck();
+
+        System.out.println(numComputerPlayers);
 
         for (String name : humanPlayerNames) {
             players.add(new HumanPlayer(name));
         }
+        
+        for (int i = 1; i <= numComputerPlayers; i++) {
+            players.add(new ComputerPlayer("Computer " + i));
+        }
 
-        view.setGameLabel("Game Starting with Players: " + String.join(", ", getPlayerNames()));
+        // need help here bc unsure
+        String playerList = String.join(", ", getPlayerNames());
+        view.setGameLabel("Game Starting with Players: " + playerList);
+
+       // view.setGameLabel("Game Starting with Players: ");
             
         JOptionPane.showMessageDialog(null, "Game has started with " + players.size() + " players.");
-
-        //adding computer players
-        while(players.size() < 4)
-            players.add(new ComputerPlayer());
 
         run();
     }

@@ -9,6 +9,9 @@ public class ComputerPlayer extends Player{
     public ComputerPlayer(){
         super("ComputerPlayer " + cpCount++);
     }
+    public ComputerPlayer(String name) {
+        super(name);
+    }
 
     public void move(){
         // logic

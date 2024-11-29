@@ -6,7 +6,7 @@ import views.MainMenu;
 import models.Player;
 import models.HumanPlayer;
 import models.Deck;
-import views.GameBoard;
+
 
 import javax.swing.*;
 
@@ -19,21 +19,21 @@ public class GameController {
     private static MainMenu mainMenu;
     private static GameController instance;
     private ArrayDeque<Player> players;
-    private Deck deck;
-    public static GameBoard gameboard;      //this is the board
-
+    private Deck deck;    //this is the board
+    
     public GameController() {
         view = new GameView(this);
-        //view.setGameLabel("Game Starting with Players: " + String.join(", ", board.getPlayerNames()));
+                //view.setGameLabel("Game Starting with Players: " + String.join(", ", board.getPlayerNames()));
         view.addRestartListener(e -> restartGame());
         view.addNewGameListener(e -> startNewGame());
         view.addPauseListener(e -> togglePause());
         view.addQuitListener(e -> quitGame());
         view.addRulesListener(e -> showRules());
+        view.setVisible(false);
     }
 
-    public void add(GameBoard b){
-        gameboard = b;
+    public void add(GameView b){
+        view = b;
     }
 
     public void add(MainMenu mm){
@@ -67,18 +67,13 @@ public class GameController {
     }
 
     public void start(ArrayList<String> playerNames) {
-        if (playerNames == null || playerNames.size() < 2) {
-            JOptionPane.showMessageDialog(null, "At least 2 players are required to start the game.");
-            return; 
-        }
-
         for (String name : playerNames) {
             players.add(new HumanPlayer(name));
         }
-        
         deck = new Deck(); 
             
         JOptionPane.showMessageDialog(null, "Game has started with " + playerNames.size() + " players.");
+        run();
     }
 
     public void loadSavedGame()

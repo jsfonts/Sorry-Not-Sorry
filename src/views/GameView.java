@@ -25,7 +25,7 @@ public class GameView extends JFrame {
         setLayout(new BorderLayout());
 
         gameLabel = new JLabel("", SwingConstants.CENTER);
-        gameLabel.setFont(new Font("Arial", Font.BOLD, 24));
+        gameLabel.setFont(new Font("Times New Roman", Font.BOLD, 24));
         add(gameLabel, BorderLayout.CENTER);
 
         JMenuBar menuBar = new JMenuBar();

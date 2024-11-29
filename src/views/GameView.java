@@ -5,7 +5,6 @@ import java.io.File;
 import controllers.GameController;
 import java.awt.*;
 import java.awt.event.ActionListener;
-import java.util.List;
 import models.Board;
 
 public class GameView extends JFrame {
@@ -16,13 +15,16 @@ public class GameView extends JFrame {
     private JMenuItem quitMenuItem;
     private JMenuItem rulesMenuItem;
     private GameController controller;
+    private Dimension computerScreenSize;
 
     public GameView(GameController controller) {
         this.controller = controller;
-        setTitle("Game Board");
-        setSize(800, 600);
+        setTitle("Sorry Not Sorry!");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(new BorderLayout());
+
+        computerScreenSize = getToolkit().getScreenSize();
+        setSize(computerScreenSize);    //Fullscreen!
 
         gameLabel = new JLabel("", SwingConstants.CENTER);
         gameLabel.setFont(new Font("Times New Roman", Font.BOLD, 24));
@@ -51,8 +53,7 @@ public class GameView extends JFrame {
         menuBar.add(gameMenu);
 
         setJMenuBar(menuBar);
-        setLocationRelativeTo(null);
-        setVisible(true);
+        setVisible(false);
     }
 
     public void setGameLabel(String text) {
@@ -83,7 +84,8 @@ public class GameView extends JFrame {
         JEditorPane editorPane = new JEditorPane();
 
         try{
-            File rulesHTML = new File("/resources/rules.html");
+            System.out.println("Current Working Directory: " + System.getProperty("user.dir"));
+            File rulesHTML = new File("../resources/rules.html");
             editorPane.setPage(rulesHTML.toURI().toURL());
         }catch(Exception e){
             System.out.println("\nCould not find the file or could not convert it to a URL. Exception thrown:\n" + e);
@@ -94,7 +96,7 @@ public class GameView extends JFrame {
 
         JScrollPane scrollPane = new JScrollPane(editorPane);
         scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
-        scrollPane.setPreferredSize(new Dimension(500, 400));
+        scrollPane.setSize(computerScreenSize.width/2, computerScreenSize.height/2);
 
         JOptionPane.showMessageDialog(this, scrollPane, "Sorry! Game Rules", JOptionPane.INFORMATION_MESSAGE);
     }

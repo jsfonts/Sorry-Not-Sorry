@@ -1,6 +1,7 @@
 package controllers;
 
 import models.Board;
+import models.ComputerPlayer;
 import views.GameView;
 import views.MainMenu;
 import models.Player;
@@ -15,25 +16,20 @@ import java.util.ArrayList;
 
 public class GameController {
     private Board board;                //model
-    private static GameView view;       //this is the rules page
+    private static GameView view;       
     private static MainMenu mainMenu;
     private static GameController instance;
     private ArrayDeque<Player> players;
     private Deck deck;    //this is the board
     
     public GameController() {
+        board = new Board();
         view = new GameView(this);
-                //view.setGameLabel("Game Starting with Players: " + String.join(", ", board.getPlayerNames()));
         view.addRestartListener(e -> restartGame());
         view.addNewGameListener(e -> startNewGame());
         view.addPauseListener(e -> togglePause());
         view.addQuitListener(e -> quitGame());
         view.addRulesListener(e -> showRules());
-        view.setVisible(false);
-    }
-
-    public void add(GameView b){
-        view = b;
     }
 
     public void add(MainMenu mm){
@@ -49,7 +45,7 @@ public class GameController {
             JOptionPane.showMessageDialog(null, "No game initialized. Please start a new game from the Main Menu.");
             return;
         }
-        view.setVisible(true);
+        showGameBoard();
     }
 
     private void restartGame() {
@@ -66,13 +62,22 @@ public class GameController {
         }
     }
 
-    public void start(ArrayList<String> playerNames) {
-        for (String name : playerNames) {
+    public void start(ArrayList<String> humanPlayerNames) {
+        players = new ArrayDeque<Player>();
+        deck = new Deck();
+
+        for (String name : humanPlayerNames) {
             players.add(new HumanPlayer(name));
         }
-        deck = new Deck(); 
+
+        view.setGameLabel("Game Starting with Players: " + String.join(", ", getPlayerNames()));
             
-        JOptionPane.showMessageDialog(null, "Game has started with " + playerNames.size() + " players.");
+        JOptionPane.showMessageDialog(null, "Game has started with " + players.size() + " players.");
+
+        //adding computer players
+        while(players.size() < 4)
+            players.add(new ComputerPlayer());
+
         run();
     }
 
@@ -84,6 +89,11 @@ public class GameController {
     public void showMainMenu(){
         view.setVisible(false);
         mainMenu.setVisible(true);
+    }
+
+    public void showGameBoard(){
+        view.setVisible(true);
+        mainMenu.setVisible(false); 
     }
 
     public void showPlayerSelection(){

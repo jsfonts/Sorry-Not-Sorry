@@ -9,24 +9,23 @@ public abstract class Player{
     private String name;
     private ArrayList<Pawn> pawns;
     private Color color;
-    private static ArrayList<Color> availableColors = new ArrayList<>(Arrays.asList(Color.RED, Color.BLUE, Color.YELLOW, Color.GREEN));
+    private static final ArrayList<Color> availableColors = new ArrayList<>(Arrays.asList(Color.RED, Color.BLUE, Color.YELLOW, Color.GREEN));
+    private static int nextColor = 0;
+
+    Player(){}
 
     Player(String n){
         name = n;
-
-        if(!availableColors.isEmpty()){
-            color = availableColors.get(0);
-            availableColors.remove(0);
-        }
-        else 
-            System.out.println("\n-----No more colors available to assign to players-----\n");
         
+        color = availableColors.get(nextColor++);
+        if(nextColor == 4) nextColor = 0;
+
         pawns = new ArrayList<Pawn>();
         for(int i = 0; i < 4; i++){
             pawns.add(new Pawn(color));
         }
 
-        System.out.println("Player has been made");
+        System.out.println("Player has been made & assigned " + color);
     }
 
     public int pawnsLeft(){

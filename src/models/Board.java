@@ -3,6 +3,7 @@ package models;
 import java.util.ArrayList;
 import java.awt.Color;
 import models.Tile;
+import models.Player;
 
 public class Board{
     private boolean isPaused = false;

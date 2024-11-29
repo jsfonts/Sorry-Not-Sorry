@@ -4,21 +4,29 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.util.List;
 import views.MainMenu;
+import controllers.GameController;
 
 public class GameBoard extends JFrame {
+    GameController controller;
     private JPanel gameBoardPanel;
     private boolean isPaused = false; 
     private List<String> playerNames;
 
-    public GameBoard(List<String> playerNames) {
-        this.playerNames = playerNames;
+    public GameBoard(GameController gc) {
+        controller = gc;
+        // Game board panel
+        gameBoardPanel = new JPanel();
+        playerNames = gc.getPlayerNames();
 
         setTitle("Game Board");
         setSize(800, 600);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(new BorderLayout());
+        //setLocationRelativeTo(null);
+        setVisible(false);
 
         String playerNamesDisplay = String.join(", ", playerNames);
         JLabel gameLabel = new JLabel("Game Starting with Players: " + playerNamesDisplay, SwingConstants.CENTER);
@@ -90,12 +98,7 @@ public class GameBoard extends JFrame {
         menuBar.add(gameMenu);
         setJMenuBar(menuBar);
 
-        // Game board panel
-        gameBoardPanel = new JPanel();
-
-        setLocationRelativeTo(null);
-        setVisible(true);
-    }
+    }   //end constructor
 
     private void restartGame() {
         JOptionPane.showMessageDialog(this, "Game Restarted!");
@@ -106,10 +109,9 @@ public class GameBoard extends JFrame {
         int result = JOptionPane.showConfirmDialog(this, "Are you sure you want to start a new game?", 
             "New Game", JOptionPane.YES_NO_OPTION);
         if (result == JOptionPane.YES_OPTION) {
-            dispose();
-        MainMenu mainMenu = new MainMenu(); 
-        mainMenu.showPlayerSelection(); 
-    }
+            //dispose();
+            controller.showMainMenu();
+        }
 }
 
     private void togglePause() {
@@ -125,8 +127,8 @@ public class GameBoard extends JFrame {
         int result = JOptionPane.showConfirmDialog(this, "Are you sure you want to quit?", 
             "Quit Game", JOptionPane.YES_NO_OPTION);
         if (result == JOptionPane.YES_OPTION) {
-            new MainMenu();
-            dispose();
+            controller.showMainMenu();
+            //dispose();
         }
     }
 
@@ -187,10 +189,4 @@ public class GameBoard extends JFrame {
     JOptionPane.showMessageDialog(null, scrollPane, "Sorry! Game Rules", JOptionPane.INFORMATION_MESSAGE);
     }
 
-
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> {
-            GameBoard gameBoard = new GameBoard(List.of("Player 1", "Player 2","Player 3","Player 4"));
-        });
-    }
 }

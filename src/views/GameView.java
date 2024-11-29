@@ -1,6 +1,8 @@
 package views;
 
 import javax.swing.*;
+import java.io.File;
+import controllers.GameController;
 import java.awt.*;
 import java.awt.event.ActionListener;
 import java.util.List;
@@ -13,8 +15,10 @@ public class GameView extends JFrame {
     private JMenuItem pauseMenuItem;
     private JMenuItem quitMenuItem;
     private JMenuItem rulesMenuItem;
+    private GameController controller;
 
-    public GameView(Board model) {
+    public GameView(GameController controller) {
+        this.controller = controller;
         setTitle("Game Board");
         setSize(800, 600);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -75,8 +79,17 @@ public class GameView extends JFrame {
         rulesMenuItem.addActionListener(listener);
     }
 
-    public void showRules(String rules) {
-        JEditorPane editorPane = new JEditorPane("text/html", rules);
+    public void showRules() {
+        JEditorPane editorPane = new JEditorPane();
+
+        try{
+            File rulesHTML = new File("/resources/rules.html");
+            editorPane.setPage(rulesHTML.toURI().toURL());
+        }catch(Exception e){
+            System.out.println("\nCould not find the file or could not convert it to a URL. Exception thrown:\n" + e);
+        }
+        
+        editorPane.setContentType("text/html");
         editorPane.setEditable(false);
 
         JScrollPane scrollPane = new JScrollPane(editorPane);

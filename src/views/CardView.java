@@ -42,7 +42,7 @@ public class CardView extends JPanel {
         revalidate();
         repaint();
     }
-
+/*
     public static void main(String[] args) {
         // Test the CardView independently (for demonstration purposes)
         JFrame testFrame = new JFrame("Card View");
@@ -51,4 +51,5 @@ public class CardView extends JPanel {
         testFrame.add(new CardView(deck));
         testFrame.setVisible(true);
     }
+*/
 }

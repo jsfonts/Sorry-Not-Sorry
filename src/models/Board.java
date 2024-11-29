@@ -1,39 +1,37 @@
 package models;
 
-import java.util.List;
+import java.util.ArrayList;
+import java.awt.Color;
+import models.Tile;
 
 public class Board{
     private boolean isPaused = false;
-    private List<String> playerNames;
+    private ArrayList<Player> players;
     private Tile greenStart;
     private Tile redStart;
     private Tile blueStart;
     private Tile yellowStart;
 
-    public class Tile{
-        enum BoardSpace{
-            HOME, EMPTY, ENDZONE, SLIDE_START, SLIDE_END;
-        }
-
-        private Tile* prev;
-        private Tile* next;
-
-    }
 
     public Board(){
         //initialize all the tiles
     }
 
-    public Board(List<String> playerNames) {
-        this.playerNames = playerNames;
+    public Board(ArrayList<Player> players) {
+        this.players = players;
     }
 
-    public List<String> getPlayerNames() {
-        return playerNames;
+    public ArrayList<String> getPlayerNames() {
+        ArrayList<String> names = new ArrayList<String>();
+
+        for(Player p : players)
+            names.add(p.getName());
+
+        return names;
     }
 
-    public void setPlayerNames(List<String> playerNames) {
-        this.playerNames = playerNames;
+    public void setPlayerNames(ArrayList<Player> players) {
+        this.players = players;
     }
 
     public boolean isPaused() {
@@ -56,7 +54,4 @@ public class Board{
     
     }
 
-    
-
-    private ArrayList<>
 }

@@ -5,7 +5,7 @@ CONTROLLERS_SRC = $(wildcard src/controllers/*.java)
 CONTROLLERS = $(CONTROLLERS_SRC:src/controllers/%.java = controllers/%.class)
 
 VIEWS_SRC = $(wildcard src/views/*.java)
-VIEWS = $(VIEWS_SRC:src/views/%.java=views/%.class)
+VIEWS = $(VIEWS_SRC:src/views/%.java = views/%.class)
 
 
 all: views controllers models
@@ -18,7 +18,7 @@ views: $(VIEWS)
 controllers/%.class:
 	javac -d bin -cp bin src/controllers/$*.java
 
-controllers/GameController.class : models/Player.class models/Deck.class views/GameBoard.class
+controllers/GameController.class: models/Player.class models/Deck.class views/GameBoard.class models/Board.java 
 
 #View Dependencies
 
@@ -27,7 +27,9 @@ views/%.class:
 
 views/GameBoard.class: views/MainMenu.class
 
-views/MainMenu.class: controllers/GameController.class
+views/MainMenu.class: 
+# Controller -> GameBoard -> MainMenu -> Coontroller
+# Controller has a gameboard and mainmenu
 
 views/CardView.class: models/Deck.class
 

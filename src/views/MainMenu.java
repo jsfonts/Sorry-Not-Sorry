@@ -4,7 +4,6 @@ import controllers.GameController;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,6 +16,8 @@ public class MainMenu extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(400, 300);
         setLayout(new BorderLayout());
+        setVisible(true);
+        setLocationRelativeTo(null);
 
         // Title
         JLabel title = new JLabel("Sorry Not Sorry!", SwingConstants.CENTER);
@@ -48,8 +49,6 @@ public class MainMenu extends JFrame {
         newGameButton.addActionListener(e -> showPlayerSelection());
         continueGameButton.addActionListener(e -> controller.loadSavedGame());
 
-        setLocationRelativeTo(null);
-        setVisible(true);
     }
 
     public void showPlayerSelection() {
@@ -63,6 +62,6 @@ public class MainMenu extends JFrame {
                 playerNames.add(playerName.trim());
             }
         }
-        controller.start(playerNames);
+        //controller.start(playerNames);
     }
 }

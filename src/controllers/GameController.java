@@ -59,7 +59,7 @@ public class GameController {
                 "New Game", JOptionPane.YES_NO_OPTION);
         if (result == JOptionPane.YES_OPTION) {
             view.dispose();
-            new MainMenu(this).showPlayerSelection();
+            mainMenu.showPlayerSelection();
         }
     }
 
@@ -128,6 +128,7 @@ public class GameController {
                 "Quit Game", JOptionPane.YES_NO_OPTION);
         if (result == JOptionPane.YES_OPTION) {
             //view.dispose();
+            mainMenu = new MainMenu(this);      //reset to main menu screen
             showMainMenu();
         }
     }

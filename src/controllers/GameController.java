@@ -136,14 +136,5 @@ public class GameController {
     private void showRules() {
         view.showRules();
     }
-/*
-    public static void main(String[] args) {
-        List<Player> players = new ArrayList<>();
-        Board model = new Board(players);
-        GameView view = new GameView(model);
-        GameController controller = GameController.getInstance(model, view);
 
-        SwingUtilities.invokeLater(() -> new MainMenu(controller));
-    }
-    */
 }

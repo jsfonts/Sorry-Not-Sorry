@@ -21,6 +21,7 @@ public class GameController {
     private static MainMenu mainMenu;
     private static GameController instance;
     private ArrayDeque<Player> players;
+    private ArrayList<Player> winners;
     private Deck deck;    //this is the board
     
     public GameController() {

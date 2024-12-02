@@ -26,7 +26,6 @@ public class Card{
 
     public void useCard(){
         isUsed = true;
-        //this.play(); this is the function to overload for the CardTypes
     }
 
     public CardType type(){
@@ -37,32 +36,33 @@ public class Card{
         return this.type.toString();
     }
 
-    public String getInstructions() {
+    public String getImage() {
         switch (type) {
             case ONE:
-                return "Move a pawn from Start or move a pawn one space forward.";
+                return "../resources/One.png";
             case TWO:
-                return "Move a pawn from Start or move a pawn two spaces forward. Draw Again";
+                return "../resources/Two.png";
             case THREE:
-                return "Move a pawn three spaces forward.";
+                return "../resources/Three.png";
             case FOUR:
-                return "Move a pawn four spaces backward.";
+                return "../resources/Four.png";
             case FIVE:
-                return "Move a pawn five spaces forward.";
+                return "../resources/Five.png";
             case SEVEN:
-                return "Move a pawn seven spaces forward, or split the seven spaces between two pawns (e.g., four for one pawn, three for another).";
+                return "../resources/Seven.png";
             case EIGHT:
-                return "Move a pawn eight spaces forward.";
+                return "../resources/Eight.png";
             case TEN:
-                return "Move a pawn ten spaces forward or one space backward. If a pawn cannot move 10 forward, it must move back one space.";
+                return "../resources/Ten.png";
             case ELEVEN:
-                return "Move eleven spaces forward, or switch the places of one of your pawns with an opponent’s pawn (not in Safety Zone).";
+                return "../resources/Eleven.png";
             case TWELVE:
-                return "Move a pawn twelve spaces forward.";
+                return "../resources/Twelve.png";
             case SORRY:
-                return "Move a pawn from Start to a square occupied by an opponent’s pawn, sending that pawn back to Start. (Can’t be used on a pawn in a Safety Zone or at Home base.)";
+                return "../resources/Sorry.png";
             default:
                 return "No instructions available.";
         }
     }
+
 }

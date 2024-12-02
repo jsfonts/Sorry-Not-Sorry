@@ -5,7 +5,7 @@ import javax.swing.*;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-
+import models.Card;
 import controllers.GameController;
 import java.awt.*;
 import java.awt.event.ActionListener;
@@ -13,6 +13,7 @@ import models.Board;
 
 public class GameView extends JFrame {
     private GameBoardPanel gameBoardPanel;
+    private JPanel overlayPanel;
     private JMenuItem restartMenuItem;
     private JMenuItem newGameMenuItem;
     private JMenuItem SaveMenuItem;
@@ -71,8 +72,30 @@ public class GameView extends JFrame {
 
         setJMenuBar(menuBar);
         setVisible(false);
+      
+        //this was supposed to see the cards but it removed the game board underneath it.
+       /* overlayPanel = new JPanel(null); // Use null layout for absolute positioning
+        overlayPanel.setOpaque(false);   // Make it transparent
+        overlayPanel.setSize(getSize());
+        overlayPanel.setVisible(fal);  // Hidden initially
+        
+        add(overlayPanel, 0); */
     }
-    
+    /*  public void showCard(Card card) {
+        overlayPanel.removeAll(); // Clear previous card view
+
+        CardView cardView = new CardView(card);
+        cardView.setBounds(getWidth() / 2 - 125, getHeight() / 2 - 175, 300, 400);
+        overlayPanel.add(cardView);
+
+        overlayPanel.setVisible(true);
+        repaint();
+    }
+
+    public void hideCard() {
+        overlayPanel.setVisible(false);
+    }
+    */
     public void addRestartListener(ActionListener listener) {
         restartMenuItem.addActionListener(listener);
     }
@@ -143,11 +166,11 @@ public class GameView extends JFrame {
 
                 g.drawImage(gameBoardImage, x, y, newImgWidth, newImgHeight, this);
     
-                int squareSize = Math.min(newImgWidth / 2, newImgHeight / 2);
+                /*int squareSize = Math.min(newImgWidth / 2, newImgHeight / 2);
                 int squareX = x + (newImgWidth - squareSize) / 2;
                 int squareY = y + (newImgHeight - squareSize) / 2;
     
-                logicalSquare = new Rectangle(squareX, squareY, squareSize, squareSize);
+                logicalSquare = new Rectangle(squareX, squareY, squareSize, squareSize);*/
             }
         }
     }

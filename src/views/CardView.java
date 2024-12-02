@@ -1,80 +1,52 @@
 package views;
-import models.Deck;
-import models.Card.CardType;
-import models.Card;
+
 import javax.swing.*;
-import java.awt.event.*;
 import java.awt.*;
+import java.awt.geom.RoundRectangle2D;
+import java.io.File;
+import java.io.IOException;
+import javax.imageio.ImageIO;
+import models.Card;
 
 public class CardView extends JPanel {
-    private Deck deck;         
-    private JLabel cardTitleLabel; 
-    private JTextArea instructionsArea;
-    private JPanel cardPanel; 
-    private int rectWidth = 200;
-    private int rectHeight = 100;
-    private boolean clicked = false;
-    
-    public CardView() {
+    private Card card;
 
-        addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-
-                if (isInsideRect(e.getX(), e.getY())) {
-                    clicked = !clicked;  
-                    repaint();  
-                }
-            }
-        });
-    }
-
-    private boolean isInsideRect(int x, int y) {
-        return x >= 50 && x <= 50 + rectWidth && y >= 50 && y <= 50 + rectHeight;
+    public CardView(Card card) {
+        this.card = card;
+        setOpaque(true); 
+        setPreferredSize(new Dimension(300, 400)); 
     }
 
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
 
-        if (clicked) {
-            g.setColor(new Color(0, 0, 0, 100));
-            g.fillRect(0, 0, getWidth(), getHeight());
+        Graphics2D g2d = (Graphics2D) g;
+        g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+
+        int x = 50;
+        int y = 50;
+        int width = 200;
+        int height = 300;
+        int arcWidth = 30;
+        int arcHeight = 30;
+
+        g2d.setColor(Color.WHITE); 
+        g2d.fillRoundRect(x, y, width, height, arcWidth, arcHeight);
+        g2d.setColor(Color.BLACK);
+        g2d.drawRoundRect(x, y, width, height, arcWidth, arcHeight);
+
+        if (card != null) {
+            try {
+                Image img = ImageIO.read(new File(card.getImage()));
+                Shape clip = new RoundRectangle2D.Float(x, y, width, height, arcWidth, arcHeight);
+                g2d.setClip(clip);
+                g2d.drawImage(img, x, y, width, height, this);
+            } catch (IOException e) {
+                e.printStackTrace();
+                g2d.setColor(Color.RED);
+                g2d.drawString("Image not found", x + width / 4, y + height / 2);
+            }
         }
-
-        g.setColor(Color.BLUE);
-        g.fillRoundRect(50, 50, rectWidth, rectHeight, 20, 20);
-
-        g.setColor(Color.WHITE);
-        FontMetrics metrics = g.getFontMetrics();
-        String text = "Click Me!";
-        int textWidth = metrics.stringWidth(text);
-        int textHeight = metrics.getHeight();
-        g.drawString(text, 50 + (rectWidth - textWidth) / 2, 50 + (rectHeight + textHeight) / 2);
-
-        if (clicked) {
-            rectWidth = 250;
-            rectHeight = 150;
-        } else {
-            rectWidth = 200;
-            rectHeight = 100;
-        }
-    }
-
-    public static void main(String[] args) {
-        JFrame frame = new JFrame("Card View");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(400, 400);
-        frame.add(new CardView());
-        frame.setVisible(true);
     }
 }
-
-   /*  public static void main(String[] args) {
-        // Test the CardView independently (for demonstration purposes)
-        JFrame testFrame = new JFrame("Card View");
-        testFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        testFrame.setSize(300, 200);
-        testFrame.add(new CardView());
-        testFrame.setVisible(true);
-    } */

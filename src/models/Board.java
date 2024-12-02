@@ -2,6 +2,9 @@ package models;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+
+import controllers.GameController;
+
 import java.awt.Color;
 import models.Tile;
 import models.Player;
@@ -12,6 +15,7 @@ public class Board{
     private ArrayList<Player> players;
     private HashMap<Color, Tile> startingTiles;
     private final Color [] colors = {Color.YELLOW, Color.GREEN, Color.RED, Color.BLUE};
+    private GameController controller; 
 
     public Board(){
         startingTiles = new HashMap<Color, Tile>();
@@ -52,7 +56,6 @@ public class Board{
         Tile destination = piece.getLocation();
         Color pC = piece.getColor();
 
-
         if(spaces < 0){             //move backwards
             for(int i = spaces; i < 0; i++)
                 destination = destination.prev();
@@ -85,6 +88,12 @@ public class Board{
         if(valid){
             piece.setLocation(destination);
         }
+
+        if(destination.getType() == Tile.TType.HOME){
+           //remove pawn from player's inventory
+
+        }
+        //check if all their pawns are gone
 
         return valid;
     }

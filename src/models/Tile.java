@@ -14,7 +14,7 @@ public class Tile{
         public static int count = 0;
 
         enum TType{
-            START, HOME, NORMAL, ENDZONE, SLIDE_START, SLIDE_END;
+            START, HOME, NORMAL, ENDZONE, ENDZONE_FIRST, SLIDE_START, SLIDE_END;
         }
 
         enum Location{
@@ -50,6 +50,10 @@ public class Tile{
             return prev;
         }
 
+        public Tile fork(){
+            return fork;
+        }
+
         public Color getColor(){
             return color;
         }
@@ -67,7 +71,7 @@ public class Tile{
             pawn = null;
         }
 
-        public TType type(){
+        public TType getType(){
             return type;
         }
 
@@ -79,7 +83,7 @@ public class Tile{
             Tile current = prev;
             System.out.println("Making HOME stretch for " + c);
 
-            current.fork = new Tile(TType.ENDZONE, current, null, c);
+            current.fork = new Tile(TType.ENDZONE_FIRST, current, null, c);
             current = current.fork;
             //make the endzone
             for(int i = 0; i < 4; i++){

@@ -28,7 +28,7 @@ public class GameController {
         view = new GameView(this);
         view.addRestartListener(e -> restartGame());
         view.addNewGameListener(e -> startNewGame());
-        view.addPauseListener(e -> togglePause());
+        view.addSaveGameListener(e -> saveGame());
         view.addQuitListener(e -> quitGame());
         view.addRulesListener(e -> showRules());
     }
@@ -54,12 +54,19 @@ public class GameController {
         JOptionPane.showMessageDialog(view, "Game Restarted!");
     }
 
+    public void saveGame()
+    {
+
+    }
+    //not working for some reason?
     public void startNewGame() {
         int result = JOptionPane.showConfirmDialog(view, "Are you sure you want to start a new game?",
                 "New Game", JOptionPane.YES_NO_OPTION);
         if (result == JOptionPane.YES_OPTION) {
             view.dispose();
+            mainMenu = new MainMenu(this); 
             mainMenu.showPlayerSelection();
+
         }
     }
 
@@ -78,8 +85,8 @@ public class GameController {
         }
 
         // need help here bc unsure
-        String playerList = String.join(", ", getPlayerNames());
-        view.setGameLabel("Game Starting with Players: " + playerList);
+       /* String playerList = String.join(", ", getPlayerNames());
+        view.setGameLabel("Game Starting with Players: " + playerList); */
 
        // view.setGameLabel("Game Starting with Players: ");
             
@@ -115,12 +122,6 @@ public class GameController {
         }
         
         return names;
-    }
-
-    private void togglePause() {
-        board.togglePause();
-        String message = board.isPaused() ? "Game Paused!" : "Game Resumed!";
-        JOptionPane.showMessageDialog(view, message);
     }
 
     private void quitGame() {

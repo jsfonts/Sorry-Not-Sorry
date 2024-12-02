@@ -1,21 +1,27 @@
 package views;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+
 import controllers.GameController;
 import java.awt.*;
 import java.awt.event.ActionListener;
 import models.Board;
 
 public class GameView extends JFrame {
-    private JLabel gameLabel;
+    private GameBoardPanel gameBoardPanel;
     private JMenuItem restartMenuItem;
     private JMenuItem newGameMenuItem;
-    private JMenuItem pauseMenuItem;
+    private JMenuItem SaveMenuItem;
     private JMenuItem quitMenuItem;
     private JMenuItem rulesMenuItem;
     private GameController controller;
     private Dimension computerScreenSize;
+
+    private Image gameBoardImage;
 
     public GameView(GameController controller) {
         this.controller = controller;
@@ -24,19 +30,30 @@ public class GameView extends JFrame {
         setLayout(new BorderLayout());
 
         computerScreenSize = getToolkit().getScreenSize();
-        setSize(computerScreenSize);    //Fullscreen!
+        setSize(computerScreenSize);
 
-        gameLabel = new JLabel("", SwingConstants.CENTER);
-        gameLabel.setFont(new Font("Times New Roman", Font.BOLD, 24));
-        add(gameLabel, BorderLayout.CENTER);
+        File imgFile = new File("../resources/Sorry_board.svg.png");
+        if (imgFile.exists()) {
+            try {
+                gameBoardImage = ImageIO.read(imgFile); 
+                gameBoardPanel = new GameBoardPanel(gameBoardImage); 
+                gameBoardPanel.setBackground(new Color(202, 220, 224));
+                add(gameBoardPanel, BorderLayout.CENTER);
+            } catch (IOException e) {
+                System.err.println("Failed to load game board image: " + e.getMessage());
+            }
+        } else {
+            System.err.println("Image file not found at path: " + imgFile.getAbsolutePath());
+        }
 
         JMenuBar menuBar = new JMenuBar();
+        menuBar.setLayout(new FlowLayout(FlowLayout.RIGHT));
         JMenu gameMenu = new JMenu("Game");
         JMenu helpMenu = new JMenu("?");
 
         restartMenuItem = new JMenuItem("Restart");
         newGameMenuItem = new JMenuItem("New Game");
-        pauseMenuItem = new JMenuItem("Pause");
+        SaveMenuItem = new JMenuItem("Save Game");
         quitMenuItem = new JMenuItem("Quit");
         rulesMenuItem = new JMenuItem("Rules");
 
@@ -44,7 +61,7 @@ public class GameView extends JFrame {
         gameMenu.addSeparator();
         gameMenu.add(newGameMenuItem);
         gameMenu.addSeparator();
-        gameMenu.add(pauseMenuItem);
+        gameMenu.add(SaveMenuItem);
         gameMenu.addSeparator();
         gameMenu.add(quitMenuItem);
 
@@ -55,11 +72,7 @@ public class GameView extends JFrame {
         setJMenuBar(menuBar);
         setVisible(false);
     }
-
-    public void setGameLabel(String text) {
-        gameLabel.setText(text);
-    }
-
+    
     public void addRestartListener(ActionListener listener) {
         restartMenuItem.addActionListener(listener);
     }
@@ -68,8 +81,8 @@ public class GameView extends JFrame {
         newGameMenuItem.addActionListener(listener);
     }
 
-    public void addPauseListener(ActionListener listener) {
-        pauseMenuItem.addActionListener(listener);
+    public void addSaveGameListener(ActionListener listener) {
+        SaveMenuItem.addActionListener(listener);
     }
 
     public void addQuitListener(ActionListener listener) {
@@ -100,4 +113,42 @@ public class GameView extends JFrame {
 
         JOptionPane.showMessageDialog(this, scrollPane, "Sorry! Game Rules", JOptionPane.INFORMATION_MESSAGE);
     }
-}
+
+    private static class GameBoardPanel extends JPanel {
+        private Image gameBoardImage;
+        private Rectangle logicalSquare;
+    
+        public GameBoardPanel(Image image) {
+            this.gameBoardImage = image;
+        }
+    
+        @Override
+        protected void paintComponent(Graphics g) {
+            super.paintComponent(g);
+    
+            if (gameBoardImage != null) {
+                int panelWidth = getWidth();
+                int panelHeight = getHeight();
+    
+                int imgWidth = gameBoardImage.getWidth(this);
+                int imgHeight = gameBoardImage.getHeight(this);
+
+                double scale = Math.min((double) panelWidth / imgWidth, (double) panelHeight / imgHeight);
+
+                int newImgWidth = (int) (imgWidth * scale);
+                int newImgHeight = (int) (imgHeight * scale);
+
+                int x = (panelWidth - newImgWidth) / 2;
+                int y = (panelHeight - newImgHeight) / 2;
+
+                g.drawImage(gameBoardImage, x, y, newImgWidth, newImgHeight, this);
+    
+                int squareSize = Math.min(newImgWidth / 2, newImgHeight / 2);
+                int squareX = x + (newImgWidth - squareSize) / 2;
+                int squareY = y + (newImgHeight - squareSize) / 2;
+    
+                logicalSquare = new Rectangle(squareX, squareY, squareSize, squareSize);
+            }
+        }
+    }
+}    

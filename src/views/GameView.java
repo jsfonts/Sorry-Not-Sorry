@@ -5,24 +5,29 @@ import javax.swing.*;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.security.Key;
+import java.awt.event.*;
 import models.Card;
+import models.Player;
 import controllers.GameController;
 import java.awt.*;
-import java.awt.event.ActionListener;
+import java.awt.geom.*;
 import models.Board;
+import java.awt.image.BufferedImage;
+import models.HumanPlayer;
+import models.ComputerPlayer;
 
 public class GameView extends JFrame {
     private GameBoardPanel gameBoardPanel;
-    private JPanel overlayPanel;
     private JMenuItem restartMenuItem;
     private JMenuItem newGameMenuItem;
     private JMenuItem SaveMenuItem;
     private JMenuItem quitMenuItem;
     private JMenuItem rulesMenuItem;
-    private GameController controller;
+    private static GameController controller;
     private Dimension computerScreenSize;
-
     private Image gameBoardImage;
+    private JLabel PlayerTurnText;
 
     public GameView(GameController controller) {
         this.controller = controller;
@@ -116,6 +121,19 @@ public class GameView extends JFrame {
         rulesMenuItem.addActionListener(listener);
     }
 
+    public void updateCurrentPlayer(Player cp){
+        String s;
+
+        if(cp instanceof HumanPlayer)
+            s = cp.getName() + "'s turn. Click on the cards to draw a card.";
+        else
+            s = cp.getName() + "'s turn";
+
+        PlayerTurnText.setText(s);
+
+        repaint();
+    }
+
     public void showRules() {
         JEditorPane editorPane = new JEditorPane();
 
@@ -139,10 +157,52 @@ public class GameView extends JFrame {
 
     private static class GameBoardPanel extends JPanel {
         private Image gameBoardImage;
-        private Rectangle logicalSquare;
+        private Image overlayImage;
+        private Image cardImage;
+        private double scale;
+        private RoundRectangle2D roundedRectCard;
+        private boolean showCard = false; // Track if card should be displayed
     
-        public GameBoardPanel(Image image) {
-            this.gameBoardImage = image;
+        public GameBoardPanel(Image gameBoardImage) {
+            this.gameBoardImage = gameBoardImage;
+            loadOverlayImage("../resources/CardBack.png");
+    
+            addMouseListener(new MouseAdapter() {
+                @Override
+                public void mousePressed(MouseEvent e) {
+                    if (isClickInsideCard(e.getPoint())) {
+                        drawCard();
+                    }
+                }
+            });
+        }
+    
+        private void loadOverlayImage(String path) {
+            try {
+                File overlayImgFile = new File(path);
+                if (overlayImgFile.exists()) {
+                    overlayImage = ImageIO.read(overlayImgFile);
+                }
+            } catch (IOException e) {
+                System.err.println("Failed to load overlay image: " + e.getMessage());
+            }
+        }
+    
+        private boolean isClickInsideCard(Point clickPoint) {
+            return roundedRectCard != null && roundedRectCard.contains(clickPoint);
+        }
+    
+        private void drawCard() {
+            try {
+                File cardFile = new File("../resources/One.png");
+                if (cardFile.exists()) {
+                    cardImage = ImageIO.read(cardFile);
+                }
+            } catch (IOException e) {
+                System.err.println("Failed to load card image: " + e.getMessage());
+            }
+            showCard = true; // Trigger card display
+            repaint();
         }
     
         @Override
@@ -152,26 +212,68 @@ public class GameView extends JFrame {
             if (gameBoardImage != null) {
                 int panelWidth = getWidth();
                 int panelHeight = getHeight();
-    
                 int imgWidth = gameBoardImage.getWidth(this);
                 int imgHeight = gameBoardImage.getHeight(this);
-
-                double scale = Math.min((double) panelWidth / imgWidth, (double) panelHeight / imgHeight);
-
+    
+                scale = Math.min((double) panelWidth / imgWidth, (double) panelHeight / imgHeight);
+    
                 int newImgWidth = (int) (imgWidth * scale);
                 int newImgHeight = (int) (imgHeight * scale);
-
                 int x = (panelWidth - newImgWidth) / 2;
                 int y = (panelHeight - newImgHeight) / 2;
-
+    
                 g.drawImage(gameBoardImage, x, y, newImgWidth, newImgHeight, this);
     
-                /*int squareSize = Math.min(newImgWidth / 2, newImgHeight / 2);
-                int squareX = x + (newImgWidth - squareSize) / 2;
-                int squareY = y + (newImgHeight - squareSize) / 2;
+                if (overlayImage != null) {
+                    drawOverlay((Graphics2D) g);
+                }
     
-                logicalSquare = new Rectangle(squareX, squareY, squareSize, squareSize);*/
+                if (showCard && cardImage != null) {
+                    drawCardImage((Graphics2D) g);
+                }
             }
         }
+    
+        private void drawOverlay(Graphics2D g2d) {
+            BufferedImage overlayBufferedImage = convertToBufferedImage(overlayImage);
+    
+            int overlayWidth = overlayBufferedImage.getWidth();
+            int overlayHeight = overlayBufferedImage.getHeight();
+            int newOverlayWidth = (int) (overlayWidth * scale * 2);
+            int newOverlayHeight = (int) (overlayHeight * scale * 2);
+            double xcoord = (getWidth() - newOverlayWidth) / 2.0;
+            double ycoord = (getHeight() - newOverlayHeight) / 2.0;
+    
+            roundedRectCard = new RoundRectangle2D.Double(xcoord, ycoord, newOverlayWidth, newOverlayHeight, 30, 30);
+            g2d.setClip(roundedRectCard);
+            g2d.drawImage(overlayBufferedImage, (int) xcoord, (int) ycoord, newOverlayWidth, newOverlayHeight, null);
+            //g2d.setClip(null);
+        }
+    
+        private void drawCardImage(Graphics2D g2d) {
+            BufferedImage cardBufferedImage = convertToBufferedImage(cardImage);
+    
+            int cardWidth = cardBufferedImage.getWidth();
+            int cardHeight = cardBufferedImage.getHeight();
+            int newCardWidth = (int) (cardWidth * scale * 2);
+            int newCardHeight = (int) (cardHeight * scale * 2);
+            double xcoord = (getWidth() - newCardWidth) / 2.0 + (getWidth() * 0.35);
+            double ycoord = (getHeight() - newCardHeight) / 2.0;
+            RoundRectangle2D roundedCard = new RoundRectangle2D.Double(xcoord, ycoord, newCardWidth, newCardHeight, 30, 30);
+            g2d.setClip(roundedCard);
+            g2d.drawImage(cardBufferedImage, (int) xcoord, (int) ycoord, newCardWidth, newCardHeight, null);
+        }
+    
+        public BufferedImage convertToBufferedImage(Image image) {
+            if (image instanceof BufferedImage) {
+                return (BufferedImage) image;
+            }
+    
+            BufferedImage bufferedImage = new BufferedImage(image.getWidth(null), image.getHeight(null), BufferedImage.TYPE_INT_ARGB);
+            Graphics2D g2d = bufferedImage.createGraphics();
+            g2d.drawImage(image, 0, 0, null);
+            g2d.dispose();
+            return bufferedImage;
+        }
     }
-}
+}  

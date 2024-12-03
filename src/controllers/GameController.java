@@ -8,6 +8,7 @@ import models.Player;
 import models.HumanPlayer;
 import models.Deck;
 import models.ComputerPlayer;
+import models.Card;
 
 
 import javax.swing.*;
@@ -21,8 +22,10 @@ public class GameController {
     private static MainMenu mainMenu;
     private static GameController instance;
     private ArrayDeque<Player> players;
-    private ArrayList<Player> winners;
+    private Player winner;
     private Deck deck;    //this is the board
+    private Card selectedCard;
+    private boolean cardSelected;
     
     public GameController() {
         board = new Board();
@@ -48,6 +51,32 @@ public class GameController {
             return;
         }
         showGameBoard();
+
+        Player nextPlayer;
+        while(winner == null)
+        {
+            nextPlayer = players.removeFirst();
+            players.addLast(nextPlayer);
+            doTurn(nextPlayer);
+        }
+    }
+
+    private void doTurn(Player player){
+        view.updateCurrentPlayer(player);
+
+        //make sure they have selected a card
+
+        //reset selected card
+        selectedCard = null;
+        cardSelected = false;
+    }
+
+    public void cardSelected( ){
+        cardSelected = true;
+    }
+
+    public void updateWinners(Player winner){
+        this.winner = winner;
     }
 
     private void restartGame() {
@@ -74,6 +103,8 @@ public class GameController {
     public void start(ArrayList<String> humanPlayerNames, int numComputerPlayers) {
         players = new ArrayDeque<Player>();
         deck = new Deck();
+        winner = null;
+        selectedCard = null;
 
         System.out.println(numComputerPlayers);
 

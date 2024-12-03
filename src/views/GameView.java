@@ -1,6 +1,7 @@
 package views;
 
 import models.Player;
+import models.Tile;
 import models.Pawn;
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -29,8 +30,12 @@ public class GameView extends JFrame {
     private Image gameBoardImage;
 
     private static int PAWN_SIZE;
-    private static int OFFSET;
-    private int [][] grid; 
+    private static int BORDER;
+    private static int PAWN_OFFSET; 
+    private int newImgHeight;
+    private int newImgWidth;
+    private int x;  //board image corner location
+    private int y;
 
     public GameView(GameController controller) {
         this.controller = controller;
@@ -147,9 +152,8 @@ public class GameView extends JFrame {
         JOptionPane.showMessageDialog(this, scrollPane, "Sorry! Game Rules", JOptionPane.INFORMATION_MESSAGE);
     }
 
-    private static class GameBoardPanel extends JPanel {
+    private class GameBoardPanel extends JPanel {
         private Image gameBoardImage;
-        private Rectangle logicalSquare;
     
         public GameBoardPanel(Image image) {
             this.gameBoardImage = image;
@@ -159,30 +163,39 @@ public class GameView extends JFrame {
         protected void paintComponent(Graphics g) {
             super.paintComponent(g);
     
-            if (gameBoardImage != null) {
-                int panelWidth = getWidth();
-                int panelHeight = getHeight();
-    
-                int imgWidth = gameBoardImage.getWidth(this);
-                int imgHeight = gameBoardImage.getHeight(this);
+        if (gameBoardImage == null)
+            return;
+            int panelWidth = getWidth();
+            int panelHeight = getHeight();
 
-                double scale = Math.min((double) panelWidth / imgWidth, (double) panelHeight / imgHeight);
+            int imgWidth = gameBoardImage.getWidth(this);
+            int imgHeight = gameBoardImage.getHeight(this);
 
-                int newImgWidth = (int) (imgWidth * scale);
-                int newImgHeight = (int) (imgHeight * scale);
+            double scale = Math.min((double) panelWidth / imgWidth, (double) panelHeight / imgHeight);
 
-                int x = (panelWidth - newImgWidth) / 2;
-                int y = (panelHeight - newImgHeight) / 2;
+            newImgWidth = (int) (imgWidth * scale);
+            newImgHeight = (int) (imgHeight * scale);
 
-                g.drawImage(gameBoardImage, x, y, newImgWidth, newImgHeight, this);
-    
-                PAWN_SIZE = newImgHeight / 20;
-                OFFSET = newImgHeight / 20;
-                /*int squareSize = Math.min(newImgWidth / 2, newImgHeight / 2);
-                int squareX = x + (newImgWidth - squareSize) / 2;
-                int squareY = y + (newImgHeight - squareSize) / 2;
-    
-                logicalSquare = new Rectangle(squareX, squareY, squareSize, squareSize);*/
+            x = (panelWidth - newImgWidth) / 2;
+            y = (panelHeight - newImgHeight) / 2;
+
+            g.drawImage(gameBoardImage, x, y, newImgWidth, newImgHeight, this);
+
+            PAWN_SIZE = newImgHeight / 23;
+
+            for(Pawn pawn : controller.getPawns()){
+                int pawnH = (int)(pawn.getCoords()[0] * newImgHeight / 16.0);
+                int pawnW = (int)(pawn.getCoords()[1] * newImgWidth / 16.0);
+                pawnH += y;
+                pawnW += x;
+
+                g.setColor(pawn.getColor());
+                g.fillOval(pawnW - PAWN_SIZE/2, pawnH - PAWN_SIZE/2, PAWN_SIZE, PAWN_SIZE);
+                
+                Graphics2D g2d = (Graphics2D)g;
+                g2d.setColor(Color.BLACK);
+                g2d.setStroke(new BasicStroke(PAWN_SIZE/12));
+                g2d.drawOval(pawnW - PAWN_SIZE/2, pawnH - PAWN_SIZE/2, PAWN_SIZE, PAWN_SIZE);
             }
         }
     }   //end GameBoardPanel
@@ -194,6 +207,7 @@ public class GameView extends JFrame {
             int clickX = e.getX();
             int clickY = e.getY();
             Pawn selectedPawn;
+
             ArrayList<Pawn> pawns = new ArrayList<Pawn>();
             for(Player p : players){
                 for(Pawn pa : p.getPawns())
@@ -203,19 +217,28 @@ public class GameView extends JFrame {
             for(Pawn p : pawns){
                 if(containsPoint(p, clickX, clickY)){
                     selectedPawn = p;
+                    System.out.println("\nPawn was selected\n\n");
                     break;
                 }
             }
             
-            controller.setSelectedPawn(selectedPawn);
+            //controller.setSelectedPawn(selectedPawn);
         }
 
         private boolean containsPoint(Pawn p, int clickX, int clickY){
-            boolean contains = true;
+            boolean contains = false;
     
             int [] coords = p.getCoords();
-            if(clickX < coords[0] || clickY < coords[1] || clickX > coords[0] + clickX || clickY > coords[1] + clickY)
-                contains = false;
+            int pawnY = (int)(coords[0] * newImgHeight / 16.0) + y;
+            int pawnX = (int)(coords[1] * newImgWidth / 16.0) + x;
+
+            System.out.println("Scaled pawn position: (" + pawnX + ", " + pawnY + ")");
+System.out.println("Click position: (" + clickX + ", " + clickY + ")");
+System.out.println("Pawn size: " + PAWN_SIZE);
+System.out.println();
+
+            if(clickX >= pawnX - PAWN_SIZE/2 && clickX <=  pawnX + PAWN_SIZE/2 && clickY >= pawnY - PAWN_SIZE/2 && clickY <= pawnY + PAWN_SIZE/2)
+                contains = true;
 
             return contains;
         }

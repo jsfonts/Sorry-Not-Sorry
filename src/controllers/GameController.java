@@ -129,6 +129,16 @@ public class GameController {
         return names;
     }
 
+    public ArrayList<Pawn> getPawns(){
+        ArrayList<Pawn> pawns = new ArrayList<Pawn>();
+        
+        for(Player p : players){
+            pawns.addAll(p.getPawns());
+        }
+        
+        return pawns;
+    }
+
     private void quitGame() {
         int result = JOptionPane.showConfirmDialog(view, "Are you sure you want to quit?",
                 "Quit Game", JOptionPane.YES_NO_OPTION);

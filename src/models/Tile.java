@@ -29,6 +29,7 @@ public class Tile{
             color = c;
             fork = null;
             count++;
+            coords = new int[2];
         }
 
         Tile(TType t, Tile prev, Tile next){
@@ -60,8 +61,8 @@ public class Tile{
         }
 
         public void setCoords(int height, int width){
-            coords[0] = x;
-            coords[1] = y;
+            coords[0] = height;
+            coords[1] = width;
 
         }
 
@@ -114,7 +115,7 @@ public class Tile{
             if(height == 13){    //green
                 current.fork = new Tile(TType.ENDZONE_FIRST, current, null, c);
                 current = current.fork;
-                current.setCoords(13, 1);
+                current.setCoords(13, 2);
                 //make the endzone
                 for(int i = 2; i <= 5; i++){
                     current.next = new Tile(TType.ENDZONE, current, null, c);
@@ -130,7 +131,7 @@ public class Tile{
             if(height == 0){    //red
                 current.fork = new Tile(TType.ENDZONE_FIRST, current, null, c);
                 current = current.fork;
-                current.setCoords(1, 2);
+                current.setCoords(2, 2);
                 //make the endzone
                 for(int i = 2; i <= 5; i++){
                     current.next = new Tile(TType.ENDZONE, current, null, c);
@@ -146,17 +147,17 @@ public class Tile{
             if(height == 2){    //blue
                 current.fork = new Tile(TType.ENDZONE_FIRST, current, null, c);
                 current = current.fork;
-                current.setCoords(2, 14);
+                current.setCoords(5, 14);
                 //make the endzone
                 for(int i = 13; i >= 10; i--){
                     current.next = new Tile(TType.ENDZONE, current, null, c);
                     current = current.next;
-                    current.setCoords(2, i);
+                    current.setCoords(3, i);
                 }
                 
                 //add the HOME tile
                 current.next = new Tile(TType.HOME, current, null, c);
-                current.setCoords(2, 9);
+                current.setCoords(3, 9);
             }
         }
     }

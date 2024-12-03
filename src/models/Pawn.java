@@ -14,15 +14,16 @@ public class Pawn{
 
     //START tile offsets
     private static final HashMap<Color, int[][]> startList = new HashMap<Color, int[][]>(){{
-        put(Color.RED, new int[][]{{2,5}, {3,5}, {3,6}, {2,6}});
+        put(Color.RED, new int[][]{{1,4}, {2,4}, {2,5}, {1,5}});
         put(Color.YELLOW, new int[][]{{14,11}, {14,10}, {13, 11}, {13,10}});
         put(Color.BLUE, new int[][]{{5,14}, {4,14}, {5,13}, {4,13}});
-        put(Color.GREEN, new int[][]{{11,2}, {11, 3}, {10,2}, {10,3}});
+        put(Color.GREEN, new int[][]{{11,1}, {11, 2}, {10,1}, {10,2}});
     }};
 
     public Pawn(Color c){
         color = c;
         location = Board.startingTile(color);
+        
         if(color == Color.GREEN)
             startCoords = startList.get(color)[greens++];
         if(color == Color.BLUE)
@@ -44,7 +45,7 @@ public class Pawn{
     public int [] getCoords(){
         if(location.getType() == Tile.TType.START)
             return startCoords;
-            
+
         return location.getCoords();
     }
 

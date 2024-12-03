@@ -96,7 +96,7 @@ public class Tile{
             int height = prev.coords[0];
             System.out.println("Making HOME stretch for " + c);
 
-            if(height == 15){   //yellow 
+            if(c == Color.YELLOW){   //yellow 
                 current.fork = new Tile(TType.ENDZONE_FIRST, current, null, c);
                 current = current.fork;
                 current.setCoords(14, 13);
@@ -112,7 +112,7 @@ public class Tile{
                 current.setCoords(9, 13);
             }
 
-            if(height == 13){    //green
+            if(c == Color.GREEN){    //green
                 current.fork = new Tile(TType.ENDZONE_FIRST, current, null, c);
                 current = current.fork;
                 current.setCoords(13, 2);

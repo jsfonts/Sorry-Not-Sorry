@@ -115,13 +115,13 @@ public class Board{
 
     private void setup(){
         Tile greenStart = new Tile(Tile.TType.START, null, null, Color.GREEN);
-        greenStart.setCoords(11,2);
+        greenStart.setCoords(11,1);
         Tile yellowStart = new Tile(Tile.TType.START, null, null, Color.YELLOW);
         yellowStart.setCoords(14, 11);
         Tile redStart = new Tile(Tile.TType.START, null, null, Color.RED);
-        redStart.setCoords(2, 5);
+        redStart.setCoords(1, 4);
         Tile blueStart = new Tile(Tile.TType.START, null, null, Color.BLUE);
-        blueStart.setCoords(5, 14);
+        blueStart.setCoords(4, 14);
 
         startingTiles.put(Color.YELLOW, yellowStart);
         startingTiles.put(Color.GREEN, greenStart);
@@ -130,20 +130,20 @@ public class Board{
 
         //SOUTH SIDE/////////////
         //slide in front of yellow start
-        Tile original = new Tile(Tile.TType.SLIDE_START, null, null);
+        Tile original = new Tile(Tile.TType.SLIDE_START, null, null, Color.YELLOW);
         Tile current = original;
         current.setCoords(15, 14);
 
-        current.setNext(new Tile(Tile.TType.NORMAL, current, null));
+        current.setNext(new Tile(Tile.TType.NORMAL, current, null, Color.YELLOW));
         current = current.next();
         current.setCoords(15, 13);
         
         Tile.makefork(current, Color.YELLOW);
         
-        current.setNext(new Tile(Tile.TType.NORMAL, current, null));
+        current.setNext(new Tile(Tile.TType.NORMAL, current, null, Color.YELLOW));
         current = current.next();
         current.setCoords(15, 12);
-        current.setNext(new Tile(Tile.TType.SLIDE_END, current, null));
+        current.setNext(new Tile(Tile.TType.SLIDE_END, current, null, Color.YELLOW));
         current = current.next();
         current.setCoords(15, 11);
         startingTiles.get(Color.YELLOW).setNext(current);
@@ -163,19 +163,19 @@ public class Board{
         current.setCoords(15, 7);
 
         //yellow slide
-        current.setNext(new Tile(Tile.TType.SLIDE_START, current, null));
+        current.setNext(new Tile(Tile.TType.SLIDE_START, current, null, Color.YELLOW));
         current = current.next();
         current.setCoords(15,6);
-        current.setNext(new Tile(Tile.TType.NORMAL, current, null));
+        current.setNext(new Tile(Tile.TType.NORMAL, current, null, Color.YELLOW));
         current = current.next();
         current.setCoords(15, 5);
-        current.setNext(new Tile(Tile.TType.NORMAL, current, null));
+        current.setNext(new Tile(Tile.TType.NORMAL, current, null, Color.YELLOW));
         current = current.next();
         current.setCoords(15, 4);
-        current.setNext(new Tile(Tile.TType.NORMAL, current, null));
+        current.setNext(new Tile(Tile.TType.NORMAL, current, null, Color.YELLOW));
         current = current.next();
         current.setCoords(15, 3);
-        current.setNext(new Tile(Tile.TType.SLIDE_END, current, null));
+        current.setNext(new Tile(Tile.TType.SLIDE_END, current, null, Color.YELLOW));
         current = current.next();
         current.setCoords(15,2);
 
@@ -188,134 +188,134 @@ public class Board{
 
         //WEST SIDE////////////////
 
-        current.setNext(new Tile(Tile.TType.SLIDE_START, current, null));
+        current.setNext(new Tile(Tile.TType.SLIDE_START, current, null, Color.GREEN));
         current = current.next();
-        current.setCoords(14, 1);
+        current.setCoords(14, 0);
 
         current.setNext(new Tile(Tile.TType.NORMAL, current, null));
         current = current.next();
-        current.setCoords(13,1);
+        current.setCoords(13,0);
         
         Tile.makefork(current, Color.GREEN);
         
-        current.setNext(new Tile(Tile.TType.NORMAL, current, null));
+        current.setNext(new Tile(Tile.TType.NORMAL, current, null, Color.GREEN));
         current = current.next();
-        current.setCoords(12, 1);
-        current.setNext(new Tile(Tile.TType.SLIDE_END, current, null));
+        current.setCoords(12, 0);
+        current.setNext(new Tile(Tile.TType.SLIDE_END, current, null, Color.GREEN));
         current = current.next();
-        current.setCoords(11, 1);
+        current.setCoords(11, 0);
         startingTiles.get(Color.GREEN).setNext(current);
 
         //4 normal tiles
         current.setNext(new Tile(Tile.TType.NORMAL, current, null));
         current = current.next();
-        current.setCoords(10, 1);
+        current.setCoords(10, 0);
         current.setNext(new Tile(Tile.TType.NORMAL, current, null));
         current = current.next();
-        current.setCoords(9, 1);
+        current.setCoords(9, 0);
         current.setNext(new Tile(Tile.TType.NORMAL, current, null));
         current = current.next();
-        current.setCoords(8, 1);
+        current.setCoords(8, 0);
         current.setNext(new Tile(Tile.TType.NORMAL, current, null));
         current = current.next();
-        current.setCoords(7, 1);
+        current.setCoords(7, 0);
 
         //GREEN slide
-        current.setNext(new Tile(Tile.TType.SLIDE_START, current, null));
+        current.setNext(new Tile(Tile.TType.SLIDE_START, current, null, Color.GREEN));
         current = current.next();
-        current.setCoords(6,1);
-        current.setNext(new Tile(Tile.TType.NORMAL, current, null));
+        current.setCoords(6,0);
+        current.setNext(new Tile(Tile.TType.NORMAL, current, null, Color.GREEN));
         current = current.next();
-        current.setCoords(5, 1);
-        current.setNext(new Tile(Tile.TType.NORMAL, current, null));
+        current.setCoords(5, 0);
+        current.setNext(new Tile(Tile.TType.NORMAL, current, null, Color.GREEN));
         current = current.next();
-        current.setCoords(4, 1);
-        current.setNext(new Tile(Tile.TType.NORMAL, current, null));
+        current.setCoords(4, 0);
+        current.setNext(new Tile(Tile.TType.NORMAL, current, null, Color.GREEN));
         current = current.next();
-        current.setCoords(3, 1);
-        current.setNext(new Tile(Tile.TType.SLIDE_END, current, null));
-        current.setCoords(2,1);
+        current.setCoords(3, 0);
+        current.setNext(new Tile(Tile.TType.SLIDE_END, current, null, Color.GREEN));
+        current.setCoords(2,0);
 
         current.setNext(new Tile(Tile.TType.NORMAL, current, null));
         current = current.next();
-        current.setCoords(1,1);
+        current.setCoords(1,0);
         current.setNext(new Tile(Tile.TType.NORMAL, current, null));
         current = current.next();
-        current.setCoords(0,1);
+        current.setCoords(0,0);
 
         //NORTH SIDE/////////////
 
-        current.setNext(new Tile(Tile.TType.SLIDE_START, current, null));
+        current.setNext(new Tile(Tile.TType.SLIDE_START, current, null, Color.RED));
         current = current.next();
-        current.setCoords(1, 1);
+        current.setCoords(0, 1);
 
-        current.setNext(new Tile(Tile.TType.NORMAL, current, null));
+        current.setNext(new Tile(Tile.TType.NORMAL, current, null, Color.RED));
         current = current.next();
-        current.setCoords(1,2);
+        current.setCoords(0,2);
         
         Tile.makefork(current, Color.RED);
         
-        current.setNext(new Tile(Tile.TType.NORMAL, current, null));
+        current.setNext(new Tile(Tile.TType.NORMAL, current, null, Color.RED));
         current = current.next();
-        current.setCoords(1, 3);
-        current.setNext(new Tile(Tile.TType.SLIDE_END, current, null));
+        current.setCoords(0, 3);
+        current.setNext(new Tile(Tile.TType.SLIDE_END, current, null, Color.RED));
         current = current.next();
-        current.setCoords(1, 4);
+        current.setCoords(0, 4);
         startingTiles.get(Color.RED).setNext(current);
 
         //4 normal tiles
         current.setNext(new Tile(Tile.TType.NORMAL, current, null));
         current = current.next();
-        current.setCoords(1, 5);
+        current.setCoords(0, 5);
         current.setNext(new Tile(Tile.TType.NORMAL, current, null));
         current = current.next();
-        current.setCoords(1, 6);
+        current.setCoords(0, 6);
         current.setNext(new Tile(Tile.TType.NORMAL, current, null));
         current = current.next();
-        current.setCoords(1, 7);
+        current.setCoords(0, 7);
         current.setNext(new Tile(Tile.TType.NORMAL, current, null));
         current = current.next();
-        current.setCoords(1, 8);
+        current.setCoords(0, 8);
 
         //RED slide
-        current.setNext(new Tile(Tile.TType.SLIDE_START, current, null));
+        current.setNext(new Tile(Tile.TType.SLIDE_START, current, null, Color.RED));
         current = current.next();
-        current.setCoords(1,9);
-        current.setNext(new Tile(Tile.TType.NORMAL, current, null));
+        current.setCoords(0,9);
+        current.setNext(new Tile(Tile.TType.NORMAL, current, null, Color.RED));
         current = current.next();
-        current.setCoords(1, 10);
-        current.setNext(new Tile(Tile.TType.NORMAL, current, null));
+        current.setCoords(0, 10);
+        current.setNext(new Tile(Tile.TType.NORMAL, current, null, Color.RED));
         current = current.next();
-        current.setCoords(1, 11);
-        current.setNext(new Tile(Tile.TType.NORMAL, current, null));
+        current.setCoords(0, 11);
+        current.setNext(new Tile(Tile.TType.NORMAL, current, null, Color.RED));
         current = current.next();
-        current.setCoords(1, 12);
-        current.setNext(new Tile(Tile.TType.SLIDE_END, current, null));
-        current.setCoords(1,13);
+        current.setCoords(0, 12);
+        current.setNext(new Tile(Tile.TType.SLIDE_END, current, null, Color.RED));
+        current.setCoords(0,13);
 
         current.setNext(new Tile(Tile.TType.NORMAL, current, null));
         current = current.next();
-        current.setCoords(1,14);
+        current.setCoords(0,14);
         current.setNext(new Tile(Tile.TType.NORMAL, current, null));
         current = current.next();
-        current.setCoords(1,15);
+        current.setCoords(0,15);
 
         //EAST SIDE//////////////
 
-        current.setNext(new Tile(Tile.TType.SLIDE_START, current, null));
+        current.setNext(new Tile(Tile.TType.SLIDE_START, current, null, Color.BLUE));
         current = current.next();
         current.setCoords(1, 15);
 
-        current.setNext(new Tile(Tile.TType.NORMAL, current, null));
+        current.setNext(new Tile(Tile.TType.NORMAL, current, null, Color.BLUE));
         current = current.next();
         current.setCoords(2,15);
         
         Tile.makefork(current, Color.BLUE);
         
-        current.setNext(new Tile(Tile.TType.NORMAL, current, null));
+        current.setNext(new Tile(Tile.TType.NORMAL, current, null, Color.BLUE));
         current = current.next();
         current.setCoords(3, 15);
-        current.setNext(new Tile(Tile.TType.SLIDE_END, current, null));
+        current.setNext(new Tile(Tile.TType.SLIDE_END, current, null, Color.BLUE));
         current = current.next();
         current.setCoords(4, 15);
         startingTiles.get(Color.BLUE).setNext(current);
@@ -334,20 +334,20 @@ public class Board{
         current = current.next();
         current.setCoords(8, 15);
 
-        //RED slide
-        current.setNext(new Tile(Tile.TType.SLIDE_START, current, null));
+        //BLUE slide
+        current.setNext(new Tile(Tile.TType.SLIDE_START, current, null, Color.BLUE));
         current = current.next();
         current.setCoords(9,15);
-        current.setNext(new Tile(Tile.TType.NORMAL, current, null));
+        current.setNext(new Tile(Tile.TType.NORMAL, current, null, Color.BLUE));
         current = current.next();
         current.setCoords(10, 15);
-        current.setNext(new Tile(Tile.TType.NORMAL, current, null));
+        current.setNext(new Tile(Tile.TType.NORMAL, current, null, Color.BLUE));
         current = current.next();
         current.setCoords(11, 15);
-        current.setNext(new Tile(Tile.TType.NORMAL, current, null));
+        current.setNext(new Tile(Tile.TType.NORMAL, current, null, Color.BLUE));
         current = current.next();
         current.setCoords(12, 15);
-        current.setNext(new Tile(Tile.TType.SLIDE_END, current, null));
+        current.setNext(new Tile(Tile.TType.SLIDE_END, current, null, Color.BLUE));
         current.setCoords(13,15);
 
         current.setNext(new Tile(Tile.TType.NORMAL, current, null));
@@ -361,63 +361,6 @@ public class Board{
         current.setNext(original);
         System.out.println("There have been " + Tile.count + " tiles made.");
 
-        /*
-        for(int i = 0; i < 4; i++){     //for each side (and color)
-            current = makefirstSlide(current, startingTiles.get(colors[i]));
-            
-            //startingTiles.get(i).setNext(current);   //this is what the start connects to
-            
-            for(int j = 0; j < 4; j++){
-                current.setNext(new Tile(Tile.TType.NORMAL, current, null));
-                current = current.next();
-            }
-
-            current.setNext(new Tile(Tile.TType.SLIDE_START, current, null));
-            current = makeSecondSlide(current);
-
-            for(int j = 0; j < 2; j++){
-                current.setNext(new Tile(Tile.TType.NORMAL, current, null));
-                current = current.next();
-            }
-
-            if(i < 3){      //for the first 3 sides
-                current.setNext(new Tile(Tile.TType.SLIDE_START, current, null));
-                current = current.next();
-            }
-            else            
-                current.setNext(original);      //connect it back on the last pass
-        }
- */
-    }
-
-    private Tile makefirstSlide(Tile begin, Tile START){    //this is the one that passes through the endzone and start
-        Tile current = begin;
-        current.setNext(new Tile(Tile.TType.NORMAL, current, null));
-        current = current.next();
-        
-        Tile.makefork(current, START.getColor());
-        
-        current.setNext(new Tile(Tile.TType.NORMAL, current, null));
-        current = current.next();
-        current.setNext(new Tile(Tile.TType.SLIDE_END, current, null));
-        current = current.next();
-        START.setNext(current);
-
-        return current;
-    }
-
-    private Tile makeSecondSlide(Tile begin){  //returns slide_end tile
-        Tile current = begin;
-        
-        for(int i = 0; i < 3; i++){
-            current.setNext(new Tile(Tile.TType.NORMAL, current, null));
-            current = current.next();
-        }
-
-        current.setNext(new Tile(Tile.TType.SLIDE_END, current, null));
-        current = current.next();
-
-        return current;   
     }
 
     private boolean isEndZoneEntrance(Tile fork, Pawn piece){

@@ -110,18 +110,53 @@ public class Board{
 
     private void setup(){
         Tile greenStart = new Tile(Tile.TType.START, null, null, Color.GREEN);
+        greenStart.setCoords(11,1);
         Tile yellowStart = new Tile(Tile.TType.START, null, null, Color.YELLOW);
+        yellowStart.setCoords(14, 11);
         Tile redStart = new Tile(Tile.TType.START, null, null, Color.RED);
+        redStart.setCoords(1, 4);
         Tile blueStart = new Tile(Tile.TType.START, null, null, Color.BLUE);
+        blueStart.setCoords(4, 14);
 
         startingTiles.put(Color.YELLOW, yellowStart);
         startingTiles.put(Color.GREEN, greenStart);
         startingTiles.put(Color.RED, redStart);
         startingTiles.put(Color.BLUE, blueStart);
 
+        //slide in front of yellow start
         Tile original = new Tile(Tile.TType.SLIDE_START, null, null);
         Tile current = original;
+        current.setCoords(15, 14);
 
+        current.setNext(new Tile(Tile.TType.NORMAL, current, null));
+        current = current.next();
+        current.setCoords(15, 13);
+        
+        Tile.makefork(current, Color.YELLOW);
+        
+        current.setNext(new Tile(Tile.TType.NORMAL, current, null));
+        current = current.next();
+        current.setCoords(15, 12);
+        current.setNext(new Tile(Tile.TType.SLIDE_END, current, null));
+        current = current.next();
+        current.setCoords(15, 11);
+        yellowStart.setNext(current);
+
+        //4 normal tiles
+        current.setNext(new Tile(Tile.TType.NORMAL, current, null));
+        current = current.next();
+        current.setCoords();
+        current.setNext(new Tile(Tile.TType.NORMAL, current, null));
+        current = current.next();
+        current.setCoords();
+        current.setNext(new Tile(Tile.TType.NORMAL, current, null));
+        current = current.next();
+        current.setCoords();
+        current.setNext(new Tile(Tile.TType.NORMAL, current, null));
+        current = current.next();
+        current.setCoords();
+
+        /*
         for(int i = 0; i < 4; i++){     //for each side (and color)
             current = makefirstSlide(current, startingTiles.get(colors[i]));
             
@@ -148,7 +183,7 @@ public class Board{
                 current.setNext(original);      //connect it back on the last pass
         }
         System.out.println("There have been " + Tile.count + " tiles made.");
-
+ */
     }
 
     private Tile makefirstSlide(Tile begin, Tile START){    //this is the one that passes through the endzone and start

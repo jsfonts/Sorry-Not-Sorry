@@ -1,13 +1,8 @@
 package controllers;
 
-import models.Board;
-import models.ComputerPlayer;
 import views.GameView;
 import views.MainMenu;
-import models.Player;
-import models.HumanPlayer;
-import models.Deck;
-import models.ComputerPlayer;
+import models.*;
 
 
 import javax.swing.*;
@@ -23,6 +18,7 @@ public class GameController {
     private ArrayDeque<Player> players;
     private ArrayList<Player> winners;
     private Deck deck;    //this is the board
+    private Pawn selectedPawn;
     
     public GameController() {
         board = new Board();
@@ -113,6 +109,14 @@ public class GameController {
 
     public void showPlayerSelection(){
         mainMenu.showPlayerSelection();
+    }
+
+    public ArrayDeque<Player> getPlayers(){
+        return players;
+    }
+
+    public void setSelectedPawn(Pawn p){
+        selectedPawn = p;
     }
 
     public ArrayList<String> getPlayerNames(){

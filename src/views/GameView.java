@@ -1,5 +1,7 @@
 package views;
 
+import models.Player;
+import models.Pawn;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.io.File;
@@ -9,7 +11,9 @@ import models.Card;
 import controllers.GameController;
 import java.awt.*;
 import java.awt.event.ActionListener;
-import models.Board;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.util.ArrayList;
 
 public class GameView extends JFrame {
     private GameBoardPanel gameBoardPanel;
@@ -23,6 +27,10 @@ public class GameView extends JFrame {
     private Dimension computerScreenSize;
 
     private Image gameBoardImage;
+
+    private static int PAWN_SIZE;
+    private static int OFFSET;
+    private int [][] grid; 
 
     public GameView(GameController controller) {
         this.controller = controller;
@@ -72,6 +80,8 @@ public class GameView extends JFrame {
 
         setJMenuBar(menuBar);
         setVisible(false);
+
+        addMouseListener(new ClickHandler());
       
         //this was supposed to see the cards but it removed the game board underneath it.
        /* overlayPanel = new JPanel(null); // Use null layout for absolute positioning
@@ -166,6 +176,8 @@ public class GameView extends JFrame {
 
                 g.drawImage(gameBoardImage, x, y, newImgWidth, newImgHeight, this);
     
+                PAWN_SIZE = newImgHeight / 20;
+                OFFSET = newImgHeight / 20;
                 /*int squareSize = Math.min(newImgWidth / 2, newImgHeight / 2);
                 int squareX = x + (newImgWidth - squareSize) / 2;
                 int squareY = y + (newImgHeight - squareSize) / 2;
@@ -173,5 +185,40 @@ public class GameView extends JFrame {
                 logicalSquare = new Rectangle(squareX, squareY, squareSize, squareSize);*/
             }
         }
+    }   //end GameBoardPanel
+
+    private class ClickHandler extends MouseAdapter{
+        @Override
+        public void mouseClicked(MouseEvent e){
+            ArrayList<Player> players = new ArrayList<Player>(controller.getPlayers());
+            int clickX = e.getX();
+            int clickY = e.getY();
+            Pawn selectedPawn;
+            ArrayList<Pawn> pawns = new ArrayList<Pawn>();
+            for(Player p : players){
+                for(Pawn pa : p.getPawns())
+                    pawns.add(pa);
+            }
+
+            for(Pawn p : pawns){
+                if(containsPoint(p, clickX, clickY)){
+                    selectedPawn = p;
+                    break;
+                }
+            }
+            
+            controller.setSelectedPawn(selectedPawn);
+        }
+
+        private boolean containsPoint(Pawn p, int clickX, int clickY){
+            boolean contains = true;
+    
+            int [] coords = p.getCoords();
+            if(clickX < coords[0] || clickY < coords[1] || clickX > coords[0] + clickX || clickY > coords[1] + clickY)
+                contains = false;
+
+            return contains;
+        }
+
     }
 }

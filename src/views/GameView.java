@@ -210,7 +210,7 @@ public class GameView extends JFrame {
 
         private boolean containsPoint(Pawn p, int clickX, int clickY){
             boolean contains = false;
-            int pawnY = (int)(grid_y + p.getCoords()[0] * cellH + cellH*3/2);
+            int pawnY = (int)(grid_y + p.getCoords()[0] * cellH);
             int pawnX = (int)(grid_x + p.getCoords()[1] * cellW);
 
             //System.out.println("Scaled pawn position: (" + pawnX + ", " + pawnY + ")");

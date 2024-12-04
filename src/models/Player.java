@@ -66,13 +66,15 @@ public abstract class Player{
         Tile original = selectedPawn.getTile();
         Card.CardType type = selectedCard.getType();
 
+        //all players pawns are in start and they dont draw a one or two
+
         for(Pawn p : getPawns()){
             if(type == Card.CardType.ONE){
-      //          if()
+              //  if()
                 
             }
             else if(type == Card.CardType.TWO){
-      //          if()
+               // if()
             }
             else if(type == Card.CardType.THREE){
 

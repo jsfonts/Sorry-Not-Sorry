@@ -65,16 +65,14 @@ public abstract class Player{
         boolean valid = true;
         Tile original;
         Card.CardType type = selectedCard.getType();
-
+/*
         //all players pawns are in start and they dont draw a one or two
 
         for(Pawn p : getPawns()){
             original = p.getTile();
-
             if(type == Card.CardType.ONE){
+              //  if()
                 if(controller.movePawn(p, 1)){}
-
-                
             }
             else if(type == Card.CardType.TWO){
                // if()
@@ -94,6 +92,7 @@ public abstract class Player{
         if(valid)
             System.out.println("in hasValidMoves function   ");
 
+            */
         return valid;
     }
 }

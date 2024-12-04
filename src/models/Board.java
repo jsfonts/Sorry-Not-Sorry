@@ -106,6 +106,7 @@ public class Board{
         //otherwise, update  on and do moving animation
         if(valid){
             piece.setLocation(destination, distance);
+            //destination.setPawnAt(piece);
         }
 
         if(destination.getType() == Tile.TType.HOME){

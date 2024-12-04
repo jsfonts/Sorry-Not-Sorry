@@ -60,5 +60,29 @@ public abstract class Player{
     }
 
     public abstract void move(Card c);
-    
+
+    public boolean hasValidMoves(Pawn selectedPawn, Card selectedCard){
+        boolean valid = true;
+        Tile original = selectedPawn.getTile();
+        Card.CardType type = selectedCard.getType();
+
+        for(Pawn p : getPawns()){
+            if(type == Card.CardType.ONE){
+      //          if()
+                
+            }
+            else if(type == Card.CardType.TWO){
+      //          if()
+            }
+            else if(type == Card.CardType.THREE){
+
+            }
+            else if(type == Card.CardType.FOUR){}
+                
+            //if pawn can move there
+        }
+            
+
+        return valid;
+    }
 }

@@ -87,128 +87,134 @@ public class GameController {
         
         //if the space they are clicking on is not their pawn tell them to click on their own pawn else 
 
-        if (selectedCard.getType() == Card.CardType.ONE)
-        {
-            // if the pawn is not one of their own call: ErrorMessage(player);
-            // if the pawn selected is in the Start move it out of start if its not move the pawn one space
-        }
-        else if (selectedCard.getType() == Card.CardType.TWO)
-        {
-            //if the pawn selected is in start move it once out of start else move it two spaces
-        }
-        else if (selectedCard.getType() == Card.CardType.THREE)
-        {
-            //move three forward
-        }
-        else if(selectedCard.getType() == Card.CardType.FOUR)
-        {
-            //move four backward
-        }
-        else if(selectedCard.getType() == Card.CardType.FIVE)
-        {
-            //move 5 spaces forward 
-        }
-        else if(selectedCard.getType() == Card.CardType.SEVEN)
-        {
-            //first they click on their pawn
-            String [] options = new String [7];
-            for (int i = 0; i < 7; i++) {
-                options[i] = String.valueOf(i + 1);
-            }
-        
-            int selectedOption = JOptionPane.showOptionDialog(
-                null,
-                "How many spaces would you like to move this pawn?",
-                "7 card pawn selection",
-                JOptionPane.DEFAULT_OPTION,
-                JOptionPane.QUESTION_MESSAGE,
-                null,
-                options,
-                options[0]
-            );
-            //selected option is 0 indexed
-            if (selectedOption != 6)
+       // if ()
+            if (selectedCard.getType() == Card.CardType.ONE)
             {
-                // allow them to click another pawn and then move that pawn the remainder of the spaces
-                int remainder = 7 - selectedOption;
-                System.out.println(remainder);
+                // if the pawn is not one of their own call: ErrorMessage(player);
+                // if the pawn selected is in the Start move it out of start if its not move the pawn one space
             }
-            else
+            else if (selectedCard.getType() == Card.CardType.TWO)
             {
-                //move the pawn 7 spaces and go to the next player
+                //if the pawn selected is in start move it once out of start else move it two spaces
             }
-
-        }
-        else if(selectedCard.getType() == Card.CardType.EIGHT)
-        {
-            // move the selected pawn 8 forward
-        }
-        else if(selectedCard.getType() == Card.CardType.TEN)
-        {
-            //first they click on one of their own pawns
-            String [] options = new String [2];
-            options[0] = String.valueOf(1);
-            options[1] = String.valueOf(10);
-
-            int selectedOption = JOptionPane.showOptionDialog(
-                null,
-                "Would you like to move the Pawn 1 space or 10 spaces?",
-                "10 card pawn selection",
-                JOptionPane.DEFAULT_OPTION,
-                JOptionPane.QUESTION_MESSAGE,
-                null,
-                options,
-                options[0]
-            );
+            else if (selectedCard.getType() == Card.CardType.THREE)
+            {
+                //move three forward
+            }
+            else if(selectedCard.getType() == Card.CardType.FOUR)
+            {
+                //move four backward
+            }
+            else if(selectedCard.getType() == Card.CardType.FIVE)
+            {
+                //move 5 spaces forward 
+            }
+            else if(selectedCard.getType() == Card.CardType.SEVEN)
+            {
+                //first they click on their pawn
+                String [] options = new String [7];
+                for (int i = 0; i < 7; i++) {
+                    options[i] = String.valueOf(i + 1);
+                }
             
-            if (selectedOption == 0)
-            {
-                //move 1 space
+                int selectedOption = JOptionPane.showOptionDialog(
+                    null,
+                    "How many spaces would you like to move this pawn?",
+                    "7 card pawn selection",
+                    JOptionPane.DEFAULT_OPTION,
+                    JOptionPane.QUESTION_MESSAGE,
+                    null,
+                    options,
+                    options[0]
+                );
+                //selected option is 0 indexed
+                if (selectedOption != 6)
+                {
+                    // allow them to click another pawn and then move that pawn the remainder of the spaces
+                    int remainder = 7 - selectedOption;
+                    System.out.println(remainder);
+                }
+                else
+                {
+                    //move the pawn 7 spaces and go to the next player
+                }
+
             }
-            else if (selectedOption == 1)
+            else if(selectedCard.getType() == Card.CardType.EIGHT)
             {
-                //move 10 spaces. if not able to move 10 spaces default to one 
+                // move the selected pawn 8 forward
             }
-        }
-        else if(selectedCard.getType() == Card.CardType.ELEVEN)
-        {
-            //wait for a click
-            String [] options = new String [2];
-            options[0] = String.valueOf(11);
-            options[1] = "Switch";
-
-            int selectedOption = JOptionPane.showOptionDialog(
-                null,
-                "Would you like to switch with another players pawn or move your pawn 11 spaces?",
-                "11 card pawn selection",
-                JOptionPane.DEFAULT_OPTION,
-                JOptionPane.QUESTION_MESSAGE,
-                null,
-                options,
-                options[0]
-            );
-
-            if (selectedOption == 0)
+            else if(selectedCard.getType() == Card.CardType.TEN)
             {
-                //move 11 spaces
-            } 
-            else if (selectedOption == 1)
-            {
-                //switch logic allow them to click on the opponents pawn they want to switch with or vice versa
+                //first they click on one of their own pawns
+                String [] options = new String [2];
+                options[0] = String.valueOf(1);
+                options[1] = String.valueOf(10);
+
+                int selectedOption = JOptionPane.showOptionDialog(
+                    null,
+                    "Would you like to move the Pawn 1 space or 10 spaces?",
+                    "10 card pawn selection",
+                    JOptionPane.DEFAULT_OPTION,
+                    JOptionPane.QUESTION_MESSAGE,
+                    null,
+                    options,
+                    options[0]
+                );
+                
+                if (selectedOption == 0)
+                {
+                    //move 1 space
+                }
+                else if (selectedOption == 1)
+                {
+                    //move 10 spaces. if not able to move 10 spaces default to one 
+                }
             }
-            
-        }
-        else if(selectedCard.getType() == Card.CardType.TWELVE)
-        {
-            // move 12 spaces forward
-        }
-        else if(selectedCard.getType() == Card.CardType.SORRY)
-        {
-            //switch the pawn with an opponents
-        }
+            else if(selectedCard.getType() == Card.CardType.TWELVE)
+            {
+                // move 12 spaces forward
+            }
 
+      //  else 
+       // {
+            if(selectedCard.getType() == Card.CardType.ELEVEN)
+            {
+                //wait for a click
+              //  if //(pawn is their own )
+               // {
+                String [] options = new String [2];
+                options[0] = String.valueOf(11);
+                options[1] = "Switch";
 
-        //make sure they have selected a card
+                int selectedOption = JOptionPane.showOptionDialog(
+                    null,
+                    "Would you like to switch with another players pawn or move your pawn 11 spaces?",
+                    "11 card pawn selection",
+                    JOptionPane.DEFAULT_OPTION,
+                    JOptionPane.QUESTION_MESSAGE,
+                    null,
+                    options,
+                    options[0]
+                );
+
+                if (selectedOption == 0)
+                {
+                    //move 11 spaces
+                } 
+                else if (selectedOption == 1)
+                {
+                    //switch logic allow them to click on the opponents pawn they want to switch with or vice versa
+                }
+                }
+                //else if //(pawn clicked is someone else)
+
+            else if(selectedCard.getType() == Card.CardType.SORRY)
+            {
+                //switch the pawn with an opponents
+            }
+        //}
+            //make sure they have selected a card
 
         //reset selected card
         selectedCard = null;

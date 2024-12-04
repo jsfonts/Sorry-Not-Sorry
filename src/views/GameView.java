@@ -27,7 +27,7 @@ public class GameView extends JFrame {
     private JMenuItem SaveMenuItem;
     private JMenuItem quitMenuItem;
     private JMenuItem rulesMenuItem;
-    private static GameController controller;
+    private GameController controller;
     private Dimension computerScreenSize;
     private Image gameBoardImage;
     private JLabel PlayerTurnText;
@@ -139,146 +139,150 @@ public class GameView extends JFrame {
         repaint();
     }
 
+    public void updateCard(Card c){
+        gameBoardPanel.updateNewCard(c);
+    }
+        
     public void showRules() {
         JEditorPane editorPane = new JEditorPane();
-
-        try{
-            System.out.println("Current Working Directory: " + System.getProperty("user.dir"));
-            File rulesHTML = new File("../resources/rules.html");
-            editorPane.setPage(rulesHTML.toURI().toURL());
-        }catch(Exception e){
-            System.out.println("\nCould not find the file or could not convert it to a URL. Exception thrown:\n" + e);
+            try{
+                System.out.println("Current Working Directory: " + System.getProperty("user.dir"));
+                File rulesHTML = new File("../resources/rules.html");
+                editorPane.setPage(rulesHTML.toURI().toURL());
+            }catch(Exception e){
+                System.out.println("\nCould not find the file or could not convert it to a URL. Exception thrown:\n" + e);
+            }
+            
+            editorPane.setContentType("text/html");
+            editorPane.setEditable(false);
+    
+            JScrollPane scrollPane = new JScrollPane(editorPane);
+            scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
+            scrollPane.setSize(computerScreenSize.width/2, computerScreenSize.height/2);
+    
+            JOptionPane.showMessageDialog(this, scrollPane, "Sorry! Game Rules", JOptionPane.INFORMATION_MESSAGE);
         }
-        
-        editorPane.setContentType("text/html");
-        editorPane.setEditable(false);
 
-        JScrollPane scrollPane = new JScrollPane(editorPane);
-        scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
-        scrollPane.setSize(computerScreenSize.width/2, computerScreenSize.height/2);
+private class GameBoardPanel extends JPanel {
+    private Image gameBoardImage;
+    private Image overlayImage;
+    private Image cardImage;
+    private double scale;
+    private RoundRectangle2D roundedRectCard;
+    private boolean showCard = false; // Track if card should be displayed
 
-        JOptionPane.showMessageDialog(this, scrollPane, "Sorry! Game Rules", JOptionPane.INFORMATION_MESSAGE);
+    public GameBoardPanel(Image gameBoardImage) {
+        this.gameBoardImage = gameBoardImage;
+        loadOverlayImage("../resources/CardBack.png");
+
+        addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) {
+                if (isClickInsideCard(e.getPoint())) {
+                    controller.drawCard();
+                }
+            }
+        });
+    }
+    
+    private void loadOverlayImage(String path) {
+        try {
+            File overlayImgFile = new File(path);
+            if (overlayImgFile.exists()) {
+                overlayImage = ImageIO.read(overlayImgFile);
+            }
+        } catch (IOException e) {
+            System.err.println("Failed to load overlay image: " + e.getMessage());
+        }
     }
 
-    private class GameBoardPanel extends JPanel {
-        private Image gameBoardImage;
-        private Image overlayImage;
-        private Image cardImage;
-        private double scale;
-        private RoundRectangle2D roundedRectCard;
-        private boolean showCard = false; // Track if card should be displayed
-    
-        public GameBoardPanel(Image gameBoardImage) {
-            this.gameBoardImage = gameBoardImage;
-            loadOverlayImage("../resources/CardBack.png");
-    
-            addMouseListener(new MouseAdapter() {
-                @Override
-                public void mousePressed(MouseEvent e) {
-                    if (isClickInsideCard(e.getPoint())) {
-                        drawCard();
-                    }
-                }
-            });
-        }
-    
-        private void loadOverlayImage(String path) {
-            try {
-                File overlayImgFile = new File(path);
-                if (overlayImgFile.exists()) {
-                    overlayImage = ImageIO.read(overlayImgFile);
-                }
-            } catch (IOException e) {
-                System.err.println("Failed to load overlay image: " + e.getMessage());
+    private boolean isClickInsideCard(Point clickPoint) {
+        return roundedRectCard != null && roundedRectCard.contains(clickPoint);
+    }
+
+    public void updateNewCard(Card card) {
+        String path = card.getImage();
+        try {
+            File cardFile = new File(path);
+            if (cardFile.exists()) {
+                cardImage = ImageIO.read(cardFile);
             }
+        } catch (IOException e) {
+            System.err.println("Failed to load card image: " + e.getMessage());
         }
-    
-        private boolean isClickInsideCard(Point clickPoint) {
-            return roundedRectCard != null && roundedRectCard.contains(clickPoint);
-        }
-    
-        private void drawCard() {
-            try {
-                File cardFile = new File("../resources/One.png");
-                if (cardFile.exists()) {
-                    cardImage = ImageIO.read(cardFile);
-                }
-            } catch (IOException e) {
-                System.err.println("Failed to load card image: " + e.getMessage());
+        showCard = true; // Trigger card display
+        repaint();
+    }
+
+    @Override
+    protected void paintComponent(Graphics g) {
+        super.paintComponent(g);
+
+        if (gameBoardImage != null) {
+            int panelWidth = getWidth();
+            int panelHeight = getHeight();
+            int imgWidth = gameBoardImage.getWidth(this);
+            int imgHeight = gameBoardImage.getHeight(this);
+
+            scale = Math.min((double) panelWidth / imgWidth, (double) panelHeight / imgHeight);
+
+            int newImgWidth = (int) (imgWidth * scale);
+            int newImgHeight = (int) (imgHeight * scale);
+            int x = (panelWidth - newImgWidth) / 2;
+            int y = (panelHeight - newImgHeight) / 2;
+
+            g.drawImage(gameBoardImage, x, y, newImgWidth, newImgHeight, this);
+
+            if (overlayImage != null) {
+                drawOverlay((Graphics2D) g);
             }
-            showCard = true; // Trigger card display
-            repaint();
-        }
-    
-        @Override
-        protected void paintComponent(Graphics g) {
-            super.paintComponent(g);
-    
-            if (gameBoardImage != null) {
-                int panelWidth = getWidth();
-                int panelHeight = getHeight();
-                int imgWidth = gameBoardImage.getWidth(this);
-                int imgHeight = gameBoardImage.getHeight(this);
-    
-                scale = Math.min((double) panelWidth / imgWidth, (double) panelHeight / imgHeight);
-    
-                int newImgWidth = (int) (imgWidth * scale);
-                int newImgHeight = (int) (imgHeight * scale);
-                int x = (panelWidth - newImgWidth) / 2;
-                int y = (panelHeight - newImgHeight) / 2;
-    
-                g.drawImage(gameBoardImage, x, y, newImgWidth, newImgHeight, this);
-    
-                if (overlayImage != null) {
-                    drawOverlay((Graphics2D) g);
-                }
-    
-                if (showCard && cardImage != null) {
-                    drawCardImage((Graphics2D) g);
-                }
+
+            if (showCard && cardImage != null) {
+                drawCardImage((Graphics2D) g);
             }
-        }
-    
-        private void drawOverlay(Graphics2D g2d) {
-            BufferedImage overlayBufferedImage = convertToBufferedImage(overlayImage);
-    
-            int overlayWidth = overlayBufferedImage.getWidth();
-            int overlayHeight = overlayBufferedImage.getHeight();
-            int newOverlayWidth = (int) (overlayWidth * scale * 2);
-            int newOverlayHeight = (int) (overlayHeight * scale * 2);
-            double xcoord = (getWidth() - newOverlayWidth) / 2.0;
-            double ycoord = (getHeight() - newOverlayHeight) / 2.0;
-    
-            roundedRectCard = new RoundRectangle2D.Double(xcoord, ycoord, newOverlayWidth, newOverlayHeight, 30, 30);
-            g2d.setClip(roundedRectCard);
-            g2d.drawImage(overlayBufferedImage, (int) xcoord, (int) ycoord, newOverlayWidth, newOverlayHeight, null);
-            //g2d.setClip(null);
-        }
-    
-        private void drawCardImage(Graphics2D g2d) {
-            BufferedImage cardBufferedImage = convertToBufferedImage(cardImage);
-    
-            int cardWidth = cardBufferedImage.getWidth();
-            int cardHeight = cardBufferedImage.getHeight();
-            int newCardWidth = (int) (cardWidth * scale * 2);
-            int newCardHeight = (int) (cardHeight * scale * 2);
-            double xcoord = (getWidth() - newCardWidth) / 2.0 + (getWidth() * 0.35);
-            double ycoord = (getHeight() - newCardHeight) / 2.0;
-            RoundRectangle2D roundedCard = new RoundRectangle2D.Double(xcoord, ycoord, newCardWidth, newCardHeight, 30, 30);
-            g2d.setClip(roundedCard);
-            g2d.drawImage(cardBufferedImage, (int) xcoord, (int) ycoord, newCardWidth, newCardHeight, null);
-        }
-    
-        public BufferedImage convertToBufferedImage(Image image) {
-            if (image instanceof BufferedImage) {
-                return (BufferedImage) image;
-            }
-    
-            BufferedImage bufferedImage = new BufferedImage(image.getWidth(null), image.getHeight(null), BufferedImage.TYPE_INT_ARGB);
-            Graphics2D g2d = bufferedImage.createGraphics();
-            g2d.drawImage(image, 0, 0, null);
-            g2d.dispose();
-            return bufferedImage;
         }
     }
+
+    private void drawOverlay(Graphics2D g2d) {
+        BufferedImage overlayBufferedImage = convertToBufferedImage(overlayImage);
+
+        int overlayWidth = overlayBufferedImage.getWidth();
+        int overlayHeight = overlayBufferedImage.getHeight();
+        int newOverlayWidth = (int) (overlayWidth * scale * 2);
+        int newOverlayHeight = (int) (overlayHeight * scale * 2);
+        double xcoord = (getWidth() - newOverlayWidth) / 2.0;
+        double ycoord = (getHeight() - newOverlayHeight) / 2.0;
+
+        roundedRectCard = new RoundRectangle2D.Double(xcoord, ycoord, newOverlayWidth, newOverlayHeight, 30, 30);
+        g2d.setClip(roundedRectCard);
+        g2d.drawImage(overlayBufferedImage, (int) xcoord, (int) ycoord, newOverlayWidth, newOverlayHeight, null);
+        //g2d.setClip(null);
+    }
+
+    private void drawCardImage(Graphics2D g2d) {
+        BufferedImage cardBufferedImage = convertToBufferedImage(cardImage);
+
+        int cardWidth = cardBufferedImage.getWidth();
+        int cardHeight = cardBufferedImage.getHeight();
+        int newCardWidth = (int) (cardWidth * scale * 2);
+        int newCardHeight = (int) (cardHeight * scale * 2);
+        double xcoord = (getWidth() - newCardWidth) / 2.0 + (getWidth() * 0.35);
+        double ycoord = (getHeight() - newCardHeight) / 2.0;
+        RoundRectangle2D roundedCard = new RoundRectangle2D.Double(xcoord, ycoord, newCardWidth, newCardHeight, 30, 30);
+        g2d.setClip(roundedCard);
+        g2d.drawImage(cardBufferedImage, (int) xcoord, (int) ycoord, newCardWidth, newCardHeight, null);
+    }
+
+    public BufferedImage convertToBufferedImage(Image image) {
+        if (image instanceof BufferedImage) {
+            return (BufferedImage) image;
+        }
+
+        BufferedImage bufferedImage = new BufferedImage(image.getWidth(null), image.getHeight(null), BufferedImage.TYPE_INT_ARGB);
+        Graphics2D g2d = bufferedImage.createGraphics();
+        g2d.drawImage(image, 0, 0, null);
+        g2d.dispose();
+        return bufferedImage;
+    }
+}
 }  

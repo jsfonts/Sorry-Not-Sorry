@@ -42,9 +42,9 @@ public abstract class Player{
         if(color == Color.BLUE)
             return "Blue";
         if(color == Color.GREEN)
-            return "Red";
+            return "Green";
         else 
-            return "Red";
+            return "Yellow";
     }
 
     public String getName(){

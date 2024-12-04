@@ -4,6 +4,7 @@ import views.GameView;
 import views.MainMenu;
 import models.*;
 import javax.swing.*;
+import java.awt.Color;
 
 import java.util.ArrayDeque;
 import java.util.ArrayList;
@@ -19,15 +20,15 @@ public class GameController {
     private Card selectedCard;
     private boolean cardAlreadyDrawn;
     private Pawn selectedPawn;
+    private Player player;
     
     public GameController() {
         board = new Board();
-        view = new GameView(this);
-        view.addRestartListener(e -> restartGame());
+        /*view.addRestartListener(e -> restartGame());
         view.addNewGameListener(e -> startNewGame());
         view.addSaveGameListener(e -> saveGame());
         view.addQuitListener(e -> quitGame());
-        view.addRulesListener(e -> showRules());
+        view.addRulesListener(e -> showRules());*/
     }
 
     public void add(MainMenu mm){
@@ -43,18 +44,18 @@ public class GameController {
             JOptionPane.showMessageDialog(null, "No game initialized. Please start a new game from the Main Menu.");
             return;
         }
+        
         showGameBoard();
 
-        Player nextPlayer;
-        while(winner == null)
-        {
-            nextPlayer = players.removeFirst();
-            players.addLast(nextPlayer);
-            doTurn(nextPlayer);
-        }
+        nextPlayer();
     }
 
-    private void doTurn(Player player){
+    private void nextPlayer(){
+        player = players.removeFirst();
+        players.addLast(player);
+    }
+
+    private void doTurn(){
         cardAlreadyDrawn = false;
         //view.updateCurrentPlayer(player);
 
@@ -65,7 +66,7 @@ public class GameController {
         {
             String message = player.getName() + "'s turn. Click on the cards to draw a card. You are the color " + player.getColorString();
             JLabel label = new JLabel(message);
-            label.setForeground(player.getColor());
+            label.setForeground(player.getColor() == Color.YELLOW ? new Color(150, 120, 12) : player.getColor());
             JOptionPane.showMessageDialog(null, label, null, JOptionPane.INFORMATION_MESSAGE);
         }
         else
@@ -243,7 +244,6 @@ public class GameController {
             view.dispose();
             mainMenu = new MainMenu(this); 
             mainMenu.showPlayerSelection();
-
         }
     }
 
@@ -285,6 +285,13 @@ public class GameController {
     }
 
     public void showGameBoard(){
+        view = new GameView(this); 
+        view.addRestartListener(e -> restartGame());
+        view.addNewGameListener(e -> startNewGame());
+        view.addSaveGameListener(e -> saveGame());
+        view.addQuitListener(e -> quitGame());
+        view.addRulesListener(e -> showRules());
+
         view.setVisible(true);
         mainMenu.setVisible(false); 
     }

@@ -86,14 +86,18 @@ public class GameController {
                 label.setForeground(Color.WHITE);
             JOptionPane.showMessageDialog(null, label, null, JOptionPane.INFORMATION_MESSAGE);
             drawCard();
-            player.move(selectedCard);
-            turnDone = true;  
-            if(turnDone){ 
-                selectedCard = null;
-                cardAlreadyDrawn = false;
-                view.newTurnCard();
-                nextPlayer();
-            } 
+            Timer timer = new Timer(2000, e -> { 
+                player.move(selectedCard);
+                turnDone = true;  
+                if (turnDone) { 
+                    selectedCard = null;
+                    cardAlreadyDrawn = false;
+                    view.newTurnCard();
+                    nextPlayer();
+                }
+            });
+            timer.setRepeats(false);
+            timer.start();
         }
     }
     public void doTurn(Pawn p){

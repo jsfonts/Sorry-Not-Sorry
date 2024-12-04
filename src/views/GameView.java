@@ -30,6 +30,7 @@ public class GameView extends JFrame {
 
     private Image gameBoardImage;
 
+    //for renderingthe board
     private static int PAWN_SIZE;
     private static int BORDER;
     private static int PAWN_OFFSET; 
@@ -37,6 +38,8 @@ public class GameView extends JFrame {
     private int gridW;
     private int grid_x;  //board image corner location
     private int grid_y;
+    private int cellW;
+    private int cellH;
 
     public GameView(GameController controller) {
         this.controller = controller;
@@ -164,67 +167,49 @@ public class GameView extends JFrame {
         protected void paintComponent(Graphics g) {
             super.paintComponent(g);
     
-        if (gameBoardImage == null)
-            return;
-        
-        int panelWidth = getWidth();
-        int panelHeight = getHeight();
-
-        int imgWidth = gameBoardImage.getWidth(this);
-        int imgHeight = gameBoardImage.getHeight(this);
-
-        double scale = Math.min((double) panelWidth / imgWidth, (double) panelHeight / imgHeight);
-
-        int newImgWidth = (int) (imgWidth * scale);
-        int newImgHeight = (int) (imgHeight * scale);
-
-        int x = (panelWidth - newImgWidth) / 2;
-        int y = (panelHeight - newImgHeight) / 2;
-
-        g.drawImage(gameBoardImage, x, y, newImgWidth, newImgHeight, this);
-
-        PAWN_SIZE = newImgHeight / 23;
-
-        gridH = (int)(newImgHeight*.893);
-        gridW = (int)(newImgWidth*.893);
-        grid_x = (int)(x+(newImgWidth*0.0535));
-        grid_y = (int)(y+newImgWidth*0.0535);
-        int cellH = (int)(gridH / 16.0);
-        int cellW = (int)(gridW / 16.0);
-
-        Graphics2D g2d = (Graphics2D)g;
-        g2d.drawRect(grid_x, grid_y, gridW, gridH);
-
-        for(Pawn pawn : controller.getPawns()){
-            int pawnX = (int)(grid_x + pawn.getCoords()[1] * cellW + cellW/2);
-            int pawnY = (int)(grid_y + pawn.getCoords()[0] * cellH + cellH/2);
-
-            g.setColor(pawn.getColor());
-            g.fillOval(pawnX - PAWN_SIZE/2, pawnY - PAWN_SIZE/2, PAWN_SIZE, PAWN_SIZE);
+            if (gameBoardImage == null)
+                return;
             
-            //Graphics2D g2d = (Graphics2D)g;
-            g2d.setColor(Color.BLACK);
-            g2d.setStroke(new BasicStroke(PAWN_SIZE/12));
-            g2d.drawOval(pawnX - PAWN_SIZE/2, pawnY - PAWN_SIZE/2, PAWN_SIZE, PAWN_SIZE);
-        }
+            int panelWidth = getWidth();
+            int panelHeight = getHeight();
 
-            /*
+            int imgWidth = gameBoardImage.getWidth(this);
+            int imgHeight = gameBoardImage.getHeight(this);
+
+            double scale = Math.min((double) panelWidth / imgWidth, (double) panelHeight / imgHeight);
+
+            int newImgWidth = (int) (imgWidth * scale);
+            int newImgHeight = (int) (imgHeight * scale);
+
+            int x = (panelWidth - newImgWidth) / 2;
+            int y = (panelHeight - newImgHeight) / 2;
+
+            g.drawImage(gameBoardImage, x, y, newImgWidth, newImgHeight, this);
+
+            PAWN_SIZE = newImgHeight / 23;
+
+            gridH = (int)(newImgHeight*.893);
+            gridW = (int)(newImgWidth*.893);
+            grid_x = (int)(x+(newImgWidth*0.0535));
+            grid_y = (int)(y+newImgWidth*0.0535);
+            cellH = (int)(gridH / 16.0);
+            cellW = (int)(gridW / 16.0);
+
+            Graphics2D g2d = (Graphics2D)g;
+            g2d.drawRect(grid_x, grid_y, gridW, gridH);
+
             for(Pawn pawn : controller.getPawns()){
-                int pawnH = (int)(pawn.getCoords()[0] * newImgHeight / 16.0);
-                int pawnW = (int)(pawn.getCoords()[1] * newImgWidth / 16.0);
-                pawnH += y;
-                pawnW += x;
+                int pawnX = (int)(grid_x + pawn.getCoords()[1] * cellW + cellW/2);
+                int pawnY = (int)(grid_y + pawn.getCoords()[0] * cellH + cellH/2);
 
                 g.setColor(pawn.getColor());
-                g.fillOval(pawnW - PAWN_SIZE/2, pawnH - PAWN_SIZE/2, PAWN_SIZE, PAWN_SIZE);
+                g.fillOval(pawnX - PAWN_SIZE/2, pawnY - PAWN_SIZE/2, PAWN_SIZE, PAWN_SIZE);
                 
                 //Graphics2D g2d = (Graphics2D)g;
                 g2d.setColor(Color.BLACK);
                 g2d.setStroke(new BasicStroke(PAWN_SIZE/12));
-                g2d.drawOval(pawnW - PAWN_SIZE/2, pawnH - PAWN_SIZE/2, PAWN_SIZE, PAWN_SIZE);
-                 
+                g2d.drawOval(pawnX - PAWN_SIZE/2, pawnY - PAWN_SIZE/2, PAWN_SIZE, PAWN_SIZE);
             }
-                 */
         }
     }   //end GameBoardPanel
 
@@ -250,16 +235,15 @@ public class GameView extends JFrame {
         private boolean containsPoint(Pawn p, int clickX, int clickY){
             boolean contains = false;
     
-            int [] coords = p.getCoords();
-            int pawnY = (int)((1.0*coords[0]+1) * gridW);
-            int pawnX = (int)(1.0*coords[1] * gridH);
+            int pawnY = (int)(grid_y + p.getCoords()[0] * cellH + cellH*3/2);
+            int pawnX = (int)(grid_x + p.getCoords()[1] * cellW);
 
             System.out.println("Scaled pawn position: (" + pawnX + ", " + pawnY + ")");
             System.out.println("Click position: (" + clickX + ", " + clickY + ")");
             System.out.println("Pawn size: " + PAWN_SIZE);
             System.out.println();
             
-            if(clickX >= pawnX - PAWN_SIZE/2 && clickX <=  pawnX + PAWN_SIZE/2 && clickY >= pawnY - PAWN_SIZE/2 && clickY <= pawnY + PAWN_SIZE/2){
+            if(clickX >= pawnX && clickX <=  pawnX + PAWN_SIZE && clickY >= pawnY && clickY <= pawnY + PAWN_SIZE){
                 contains = true;
                 System.out.println("\nThis pawn was clicked\n");
             }

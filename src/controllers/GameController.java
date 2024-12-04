@@ -58,6 +58,7 @@ public class GameController {
         players.addLast(player);
         turnDone = false;
         cardAlreadyDrawn = false;
+        turnMessage();
 
         //if the space they are clicking on is not their pawn tell them to click on their own pawn else 
     }
@@ -77,6 +78,15 @@ public class GameController {
             JLabel label = new JLabel(message);
             label.setForeground(player.getColor());
             JOptionPane.showMessageDialog(null, label, null, JOptionPane.INFORMATION_MESSAGE);
+            drawCard();
+            player.move(selectedCard);
+            turnDone = true;  
+         /*    if(turnDone){ 
+                selectedCard = null;
+                cardAlreadyDrawn = false;
+                view.newTurnCard();
+                nextPlayer();
+            } */
         }
     }
     public void doTurn(Pawn p){

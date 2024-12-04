@@ -79,6 +79,7 @@ public class GameController {
 
         if (selectedCard.getType() == Card.CardType.ONE)
         {
+            // if the pawn is not one of their own call: ErrorMessage(player);
             // if the pawn selected is in the Start move it out of start if its not move the pawn one space
         }
         else if (selectedCard.getType() == Card.CardType.TWO)
@@ -202,6 +203,11 @@ public class GameController {
         //reset selected card
         selectedCard = null;
         cardAlreadyDrawn = false;
+    }
+
+    public void ErrorMessage(Player player){
+        String message = "Please click on one of your own pawns. Your color is " + player.getColorString();;
+        JOptionPane.showMessageDialog(null, message, null, JOptionPane.INFORMATION_MESSAGE);
     }
 
     public void drawCard(){

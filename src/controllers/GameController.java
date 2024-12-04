@@ -56,15 +56,12 @@ public class GameController {
         player = players.removeFirst();
         players.addLast(player);
         turnDone = false;
+        cardAlreadyDrawn = false;
     }
 
     public void doTurn(Pawn p){
         selectedPawn = p;
-        //cardAlreadyDrawn= false; 
         //view.updateCurrentPlayer(player);
-
-        //if(selectedCard != null)
-        //    player.move(selectedCard);
         
         if(player instanceof HumanPlayer)
         {
@@ -91,8 +88,10 @@ public class GameController {
                     board.movePawn(selectedPawn, 1);
                     turnDone = true;
                 }
-                else
+                else{
                     invalidMoveMessage();
+                    System.out.println("Cant move with one card bc something is there");
+                }
 
         }
         else if (selectedCard.getType() == Card.CardType.TWO)
@@ -123,7 +122,7 @@ public class GameController {
                 turnDone = true;
             }
             else 
-                ErrorMessage(player);
+                invalidMoveMessage();
             //move three forward
         }
         else if(selectedCard.getType() == Card.CardType.FOUR)
@@ -261,7 +260,7 @@ public class GameController {
     }
 
     public void invalidMoveMessage(){
-        String message = "That pawn cannot be moved with the " + selectedCard.toString() + " Card";;
+        String message = "That pawn cannot be moved with the " + selectedCard.toString() + " Card. Select a valid pawn.";;
         JOptionPane.showMessageDialog(null, message, "Invalid Move", JOptionPane.INFORMATION_MESSAGE);
     }
 

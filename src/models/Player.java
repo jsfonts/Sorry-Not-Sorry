@@ -60,4 +60,5 @@ public abstract class Player{
     }
 
     public abstract void move(Card c);
+    
 }

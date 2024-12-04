@@ -69,14 +69,26 @@ public class GameController {
         {
             String message = player.getName() + "'s turn. Click on the cards to draw a card. You are the color " + player.getColorString();
             JLabel label = new JLabel(message);
-            label.setForeground(player.getColor() == Color.YELLOW ? new Color(150, 120, 12) : player.getColor());
+            label.setOpaque(true);
+            label.setBackground(player.getColor());
+            if (player.getColor() != Color.YELLOW) {
+                label.setForeground(Color.WHITE);
+            } else {
+                label.setForeground(Color.BLACK);
+            }
             JOptionPane.showMessageDialog(null, label, null, JOptionPane.INFORMATION_MESSAGE);
         }
         else
         {
             String message = player.getName() + "'s turn. They are the color "+ player.getColorString();
             JLabel label = new JLabel(message);
-            label.setForeground(player.getColor());
+            label.setOpaque(true);
+            label.setBackground(player.getColor());
+            if (player.getColor() != Color.YELLOW) {
+                label.setForeground(Color.WHITE);
+            } else {
+                label.setForeground(Color.BLACK);
+            }
             JOptionPane.showMessageDialog(null, label, null, JOptionPane.INFORMATION_MESSAGE);
             drawCard();
             Timer timer = new Timer(2000, e -> { 

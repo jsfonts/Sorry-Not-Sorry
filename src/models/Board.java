@@ -57,6 +57,8 @@ public class Board{
     }
 
     public boolean movePawn(Pawn piece, int spaces){     //returns false if its an invalid move
+
+        System.out.println("Pawn has been move attempted");
         boolean valid = true;
         Tile destination = piece.getTile();
         Color pC = piece.getColor();
@@ -65,18 +67,24 @@ public class Board{
             for(int i = spaces; i < 0; i++)
                 destination = destination.prev();
         }
-        else{                       //move forwards
-            for(int i = spaces; i > 0; i--){
+        else{         
+            int i = spaces;              //move forwards
+            for(;i > 0; i--){
                 if(isEndZoneEntrance(destination.fork(), piece))
                     destination = destination.fork();
-                else 
+                else if(destination.getType() == Tile.TType.SLIDE_START){
+                    destination = endOfSlide(destination);
+                }
+                else
                     destination = destination.next();
-                //account for slides
+            
+            }
+
+            if(destination.getType() == Tile.TType.HOME && i > 0){
+                //travel to HOME must be exact
+                return false;
             }
         }
-
-        if(destination.next().getType() == Tile.TType.SLIDE_START)   //if you landed on a slide
-            destination = endOfSlide(destination);
 
         if(destination.pawnAt() != null){    //if another pawn is already there 
             Pawn pawnFound = destination.pawnAt();
@@ -111,6 +119,20 @@ public class Board{
             return false;
 
         return true;
+    }
+
+    public boolean isValidMove(Pawn piece, int spaces){
+        boolean valid = true;
+
+        Tile original = piece.getTile();
+
+        valid = movePawn(piece, spaces);
+
+        if(!valid)
+            System.out.println("It was an invalid move");
+        piece.setLocation(original);
+
+        return valid;
     }
 
     private void setup(){
@@ -364,6 +386,9 @@ public class Board{
     }
 
     private boolean isEndZoneEntrance(Tile fork, Pawn piece){
+        if(fork == null)
+            return false;
+        
         boolean valid = false;
 
         //if the fork is the Pawn's color and its the endzone's entrance
@@ -377,8 +402,11 @@ public class Board{
         if(current.getType() != Tile.TType.SLIDE_START)
             return current;
         
-        while(current.getType() != Tile.TType.SLIDE_END)
+        while(current.getType() != Tile.TType.SLIDE_END){
             current = current.next();
+            if(current.pawnAt() != null)
+                current.pawnAt().setLocation(startingTiles.get(current.pawnAt().getColor()));
+        }
 
         return current;
     }

@@ -14,11 +14,11 @@ public class Tile{
         private int [] coords;
         public static int count = 0;
 
-        enum TType{
+        public enum TType{
             START, HOME, NORMAL, ENDZONE, ENDZONE_FIRST, SLIDE_START, SLIDE_END;
         }
 
-        enum Location{
+        public enum Location{
             SOUTH, NORTH, EAST, WEST, CORNER;
         }
 

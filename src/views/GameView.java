@@ -163,6 +163,12 @@ public class GameView extends JFrame {
             JOptionPane.showMessageDialog(this, scrollPane, "Sorry! Game Rules", JOptionPane.INFORMATION_MESSAGE);
         }
 
+    @Override
+    public void paint(Graphics g){
+        super.paint(g);
+        gameBoardPanel.repaint();
+    }
+
 private class GameBoardPanel extends JPanel {
     private Image gameBoardImage;
     private Image overlayImage;
@@ -193,11 +199,10 @@ private class GameBoardPanel extends JPanel {
                 boolean pawnSelected = false;
 
                 for(Pawn p : controller.getPawns()){
-                    if(containsPoint(p, clickX, clickY)){
+                    if(pawnContainsPoint(p, clickX, clickY)){
                         selectedPawn = p;
-                        controller.doTurn();
+                        controller.doTurn(selectedPawn);
                         pawnSelected = true;
-                        
                         break;
                     }
                 }
@@ -213,7 +218,7 @@ private class GameBoardPanel extends JPanel {
 
 
     
-    private boolean containsPoint(Pawn p, int clickX, int clickY){
+    private boolean pawnContainsPoint(Pawn p, int clickX, int clickY){
         boolean contains = false;
         int pawnY = (int)(grid_y + p.getCoords()[0] * cellH);
         int pawnX = (int)(grid_x + p.getCoords()[1] * cellW);

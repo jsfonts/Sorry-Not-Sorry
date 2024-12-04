@@ -21,6 +21,8 @@ public class Deck{
         cards.add(cardsUsed++, new Card(Card.CardType.ONE));
 
         reshuffle();
+        cards.addFirst(new Card(Card.CardType.TWO));
+        cards.addFirst(new Card(Card.CardType.ONE));
     }
 
     public Card drawCard(){

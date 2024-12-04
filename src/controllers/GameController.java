@@ -21,6 +21,8 @@ public class GameController {
     private boolean cardAlreadyDrawn;
     private Pawn selectedPawn;
     private Player player;
+    private boolean turnDone;
+    private boolean secondTurn; //mainly for drawing twos
     
     public GameController() {
         board = new Board();
@@ -53,7 +55,14 @@ public class GameController {
     private void nextPlayer(){
         player = players.removeFirst();
         players.addLast(player);
-        view.newTurnCard();
+        turnDone = false;
+        cardAlreadyDrawn = false;
+    }
+
+    public void doTurn(Pawn p){
+        selectedPawn = p;
+        //view.updateCurrentPlayer(player);
+        
         if(player instanceof HumanPlayer)
         {
             String message = player.getName() + "'s turn. Click on the cards to draw a card. You are the color " + player.getColorString();
@@ -76,69 +85,96 @@ public class GameController {
                 label.setForeground(Color.WHITE);
             JOptionPane.showMessageDialog(null, label, null, JOptionPane.INFORMATION_MESSAGE);
         }
-    }
-
-    public void doTurn(){
-        cardAlreadyDrawn = false;
-        //view.updateCurrentPlayer(player);
-
-       /* if(selectedCard != null)
-            player.move(selectedCard); */
-        
         //if the space they are clicking on is not their pawn tell them to click on their own pawn else 
 
-       // if ()
-            if (selectedCard.getType() == Card.CardType.ONE)
+        if (selectedCard.getType() == Card.CardType.ONE)
+        {
+            // if the pawn is not one of their own call: ErrorMessage();
+            // if the pawn selected is in the Start move it out of start if its not move the pawn one space
+                System.out.println("Card type is one");
+                if(board.isValidMove(selectedPawn, 1)){
+                    board.movePawn(selectedPawn, 1);
+                    turnDone = true;
+                }
+                else{
+                    invalidMoveMessage();
+                    System.out.println("Cant move with one card bc something is there");
+                }
+
+        }
+        else if (selectedCard.getType() == Card.CardType.TWO)
+        {
+            //if the pawn selected is in start move it once out of start else move it two spaces
+            if(selectedPawn.getTile().getType() == Tile.TType.START && board.isValidMove(selectedPawn, 1)){
+                board.movePawn(selectedPawn, 1);
+                secondTurn = true;
+            }
+            else if(selectedPawn.getTile().getType() != Tile.TType.START && board.isValidMove(selectedPawn, 2)){
+                board.movePawn(selectedPawn, 2);
+                secondTurn = true;
+            }
+            else 
+                invalidMoveMessage();
+
+            //draw one more time
+            if(secondTurn){
+                turnDone = true;
+                secondTurn = false;
+            }
+
+        }
+        else if (selectedCard.getType() == Card.CardType.THREE)
+        {
+            if(selectedPawn.getTile().getType() != Tile.TType.START && board.isValidMove(selectedPawn, 3)){
+                board.movePawn(selectedPawn, 3);
+                turnDone = true;
+            }
+            else 
+                invalidMoveMessage();
+            //move three forward
+        }
+        else if(selectedCard.getType() == Card.CardType.FOUR)
+        {
+            if(selectedPawn.getTile().getType() != Tile.TType.START && board.isValidMove(selectedPawn, -4)){
+                board.movePawn(selectedPawn, -4);
+                turnDone = true;
+            }
+            else
+                ErrorMessage();
+        }
+        else if(selectedCard.getType() == Card.CardType.FIVE)
+        {
+            //move 5 spaces forward 
+            if(selectedPawn.getTile().getType() != Tile.TType.START && board.isValidMove(selectedPawn, 5)){
+                board.movePawn(selectedPawn, 5);
+                turnDone = true;
+            }
+            else
+                ErrorMessage();
+        }
+        else if(selectedCard.getType() == Card.CardType.SEVEN)
+        {
+            //first they click on their pawn
+            String [] options = new String [7];
+            for (int i = 0; i < 7; i++) {
+                options[i] = String.valueOf(i + 1);
+            }
+        
+            int selectedOption = JOptionPane.showOptionDialog(
+                null,
+                "How many spaces would you like to move this pawn?",
+                "7 card pawn selection",
+                JOptionPane.DEFAULT_OPTION,
+                JOptionPane.QUESTION_MESSAGE,
+                null,
+                options,
+                options[0]
+            );
+            //selected option is 0 indexed
+            if (selectedOption != 6)
             {
                 // if the pawn is not one of their own call: ErrorMessage(player);
                 // if the pawn selected is in the Start move it out of start if its not move the pawn one space
-            }
-            else if (selectedCard.getType() == Card.CardType.TWO)
-            {
-                //if the pawn selected is in start move it once out of start else move it two spaces
-            }
-            else if (selectedCard.getType() == Card.CardType.THREE)
-            {
-                //move three forward
-            }
-            else if(selectedCard.getType() == Card.CardType.FOUR)
-            {
-                //move four backward
-            }
-            else if(selectedCard.getType() == Card.CardType.FIVE)
-            {
-                //move 5 spaces forward 
-            }
-            else if(selectedCard.getType() == Card.CardType.SEVEN)
-            {
-                //first they click on their pawn
-                String [] options = new String [7];
-                for (int i = 0; i < 7; i++) {
-                    options[i] = String.valueOf(i + 1);
-                }
-            
-                int selectedOption = JOptionPane.showOptionDialog(
-                    null,
-                    "How many spaces would you like to move this pawn?",
-                    "7 card pawn selection",
-                    JOptionPane.DEFAULT_OPTION,
-                    JOptionPane.QUESTION_MESSAGE,
-                    null,
-                    options,
-                    options[0]
-                );
-                //selected option is 0 indexed
-                if (selectedOption != 6)
-                {
-                    // allow them to click another pawn and then move that pawn the remainder of the spaces
-                    int remainder = 7 - selectedOption;
-                    System.out.println(remainder);
-                }
-                else
-                {
-                    //move the pawn 7 spaces and go to the next player
-                }
-
             }
             else if(selectedCard.getType() == Card.CardType.EIGHT)
             {
@@ -216,15 +252,23 @@ public class GameController {
         //}
             //make sure they have selected a card
 
-        //reset selected card
-        selectedCard = null;
-        cardAlreadyDrawn = false;
-        nextPlayer();
+        if(turnDone){       //if valid move was selected
+            //reset selected card
+            selectedCard = null;
+            cardAlreadyDrawn = false;
+            view.repaint();
+            nextPlayer();
+        }
     }
 
     public void ErrorMessage(){
-        String message = "Please click on the pawns you would like to move. Your color is " + player.getColorString();;
-        JOptionPane.showMessageDialog(null, message, null, JOptionPane.ERROR_MESSAGE);
+        String message = "Please click on one of your own pawns. Your color is " + player.getColorString();;
+        JOptionPane.showMessageDialog(null, message, null, JOptionPane.INFORMATION_MESSAGE);
+    }
+
+    public void invalidMoveMessage(){
+        String message = "That pawn cannot be moved with the " + selectedCard.toString() + " Card. Select a valid pawn.";;
+        JOptionPane.showMessageDialog(null, message, "Invalid Move", JOptionPane.INFORMATION_MESSAGE);
     }
 
     public void drawCard(){
@@ -232,8 +276,36 @@ public class GameController {
             cardAlreadyDrawn = true;
             selectedCard = deck.drawCard();
             view.updateCard(selectedCard);
+
+           // if(!hasValidMoves()) 
+            //    turnDone = true;
         }
     }
+/*
+    private boolean hasValidMoves(){
+        boolean valid = false;
+        Tile original = selectedPawn.getTile();
+        Card.CardType type = selectedCard.getType();
+        for(Pawn p : player.getPawns()){
+            if(type == Card.CardType.ONE){
+                if()
+                //if it can move by actually moving it
+                //reset the move
+            }
+            else if(type == Card.CardType.TWO){
+                if()
+            }
+            else if(type == Card.CardType.THREE){
+
+            }
+            else if(type == Card.CardType.FOUR)
+                
+            //if pawn can move there
+        }
+            
+
+        return valid;
+    } */
 
     public void cardSelected( ){
 
@@ -274,11 +346,11 @@ public class GameController {
         System.out.println(numComputerPlayers);
 
         for (String name : humanPlayerNames) {
-            players.add(new HumanPlayer(name));
+            players.add(new HumanPlayer(name, this));
         }
         
         for (int i = 1; i <= numComputerPlayers; i++) {
-            players.add(new ComputerPlayer("Computer " + i));
+            players.add(new ComputerPlayer(this));
         }
 
         // need help here bc unsure

@@ -81,12 +81,12 @@ public class GameController {
             drawCard();
             player.move(selectedCard);
             turnDone = true;  
-         /*    if(turnDone){ 
+            if(turnDone){ 
                 selectedCard = null;
                 cardAlreadyDrawn = false;
                 view.newTurnCard();
                 nextPlayer();
-            } */
+            } 
         }
     }
     public void doTurn(Pawn p){
@@ -98,7 +98,11 @@ public class GameController {
         }
         //view.updateCurrentPlayer(player);
     
-        if (selectedPawn.getColor() != player.getColor() && (selectedCard.getType() != Card.CardType.ELEVEN || selectedCard.getType() != Card.CardType.SORRY))
+        if(player instanceof ComputerPlayer)
+        {
+            return;
+        }
+        else if (selectedPawn.getColor() != player.getColor() && (selectedCard.getType() != Card.CardType.ELEVEN || selectedCard.getType() != Card.CardType.SORRY))
         {
             ErrorMessageColor();
             System.out.println("Wrong color pawn");

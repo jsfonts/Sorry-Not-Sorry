@@ -30,8 +30,7 @@ public class GameView extends JFrame {
     private GameController controller;
     private Dimension computerScreenSize;
     private Image gameBoardImage;
-    private JLabel PlayerTurnText;
-
+    
     //for renderingthe board
     private int PAWN_SIZE;
     private int gridH;
@@ -134,18 +133,6 @@ public class GameView extends JFrame {
         rulesMenuItem.addActionListener(listener);
     }
 
-    public void updateCurrentPlayer(Player cp){
-        String s;
-
-        if(cp instanceof HumanPlayer)
-            s = cp.getName() + "'s turn. Click on the cards to draw a card.";
-        else
-            s = cp.getName() + "'s turn";
-
-        PlayerTurnText.setText(s);
-
-        repaint();
-    }
 
     public void updateCard(Card c){
         gameBoardPanel.updateNewCard(c);
@@ -182,7 +169,6 @@ private class GameBoardPanel extends JPanel {
     public GameBoardPanel(Image gameBoardImage) {
         this.gameBoardImage = gameBoardImage;
         loadOverlayImage("../resources/CardBack.png");
-
         addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {

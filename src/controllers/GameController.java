@@ -3,8 +3,6 @@ package controllers;
 import views.GameView;
 import views.MainMenu;
 import models.*;
-
-
 import javax.swing.*;
 
 import java.util.ArrayDeque;
@@ -58,10 +56,25 @@ public class GameController {
 
     private void doTurn(Player player){
         cardAlreadyDrawn = false;
-        view.updateCurrentPlayer(player);
+        //view.updateCurrentPlayer(player);
 
         if(selectedCard != null)
             player.move();
+        
+        if(player instanceof HumanPlayer)
+        {
+            String message = player.getName() + "'s turn. Click on the cards to draw a card.";
+            JLabel label = new JLabel(message);
+            label.setForeground(player.getColor());
+            JOptionPane.showMessageDialog(null, label, null, JOptionPane.INFORMATION_MESSAGE);
+        }
+        else
+        {
+            String message = player.getName() + "'s turn.";
+            JLabel label = new JLabel(message);
+            label.setForeground(player.getColor());
+            JOptionPane.showMessageDialog(null, label, null, JOptionPane.INFORMATION_MESSAGE);
+        }
 
         //make sure they have selected a card
 

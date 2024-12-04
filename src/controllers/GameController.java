@@ -59,11 +59,18 @@ public class GameController {
     private void doTurn(Player player){
         view.updateCurrentPlayer(player);
 
+
+
         //make sure they have selected a card
 
         //reset selected card
         selectedCard = null;
         cardSelected = false;
+    }
+
+    public void drawCard(){
+        selectedCard = deck.drawCard();
+        view.updateCard(selectedCard);
     }
 
     public void cardSelected( ){

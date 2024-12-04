@@ -4,7 +4,7 @@ import views.GameView;
 import views.MainMenu;
 import models.*;
 import javax.swing.*;
-import java.awt.*;
+import java.awt.Color;
 
 import java.util.ArrayDeque;
 import java.util.ArrayList;
@@ -23,6 +23,7 @@ public class GameController {
     private Player player;
     private boolean turnDone;
     private boolean secondTurn; //mainly for drawing twos
+    private boolean invalidMoveSelected;
     
     public GameController() {
         board = new Board();
@@ -46,7 +47,7 @@ public class GameController {
             JOptionPane.showMessageDialog(null, "No game initialized. Please start a new game from the Main Menu.");
             return;
         }
-
+        
         showGameBoard();
 
         nextPlayer();
@@ -57,39 +58,37 @@ public class GameController {
         players.addLast(player);
         turnDone = false;
         cardAlreadyDrawn = false;
-    }
 
-    public void doTurn(Pawn p){
-        selectedPawn = p;
-        //view.updateCurrentPlayer(player);
-        
+        if(!player.hasValidMoves(selectedPawn, selectedCard))
+            nextPlayer();
+
         if(player instanceof HumanPlayer)
         {
             String message = player.getName() + "'s turn. Click on the cards to draw a card. You are the color " + player.getColorString();
             JLabel label = new JLabel(message);
-            label.setFont(new Font("Times New Roman",Font.PLAIN, 20));
-            label.setBackground(player.getColor());
-            label.setOpaque(true);
-            if (player.getColor() != Color.YELLOW)
-            label.setForeground(Color.WHITE);   
+            label.setForeground(player.getColor() == Color.YELLOW ? new Color(150, 120, 12) : player.getColor());
             JOptionPane.showMessageDialog(null, label, null, JOptionPane.INFORMATION_MESSAGE);
         }
         else
         {
             String message = player.getName() + "'s turn. They are the color "+ player.getColorString();
             JLabel label = new JLabel(message);
-            label.setFont(new Font("Times New Roman",Font.PLAIN, 20));
-            label.setBackground(player.getColor());
-            label.setOpaque(true);
-            if (player.getColor() != Color.YELLOW)
-                label.setForeground(Color.WHITE);
+            label.setForeground(player.getColor());
             JOptionPane.showMessageDialog(null, label, null, JOptionPane.INFORMATION_MESSAGE);
         }
-        //if the space they are clicking on is not their pawn tell them to click on their own pawn else 
+    }
+
+    public void doTurn(Pawn p){
+        selectedPawn = p;
+        invalidMoveSelected = false;
+
+        if(cardAlreadyDrawn == false){
+            return;
+        }
 
         if (selectedCard.getType() == Card.CardType.ONE)
         {
-            // if the pawn is not one of their own call: ErrorMessage();
+            // if the pawn is not one of their own call: ErrorMessage(player);
             // if the pawn selected is in the Start move it out of start if its not move the pawn one space
                 System.out.println("Card type is one");
                 if(board.isValidMove(selectedPawn, 1)){
@@ -113,8 +112,9 @@ public class GameController {
                 board.movePawn(selectedPawn, 2);
                 secondTurn = true;
             }
-            else 
-                invalidMoveMessage();
+            else {
+                invalidMoveSelected = true;
+            }
 
             //draw one more time
             if(secondTurn){
@@ -129,9 +129,9 @@ public class GameController {
                 board.movePawn(selectedPawn, 3);
                 turnDone = true;
             }
-            else 
-                invalidMoveMessage();
-            //move three forward
+            else{
+                invalidMoveSelected = true;
+            }
         }
         else if(selectedCard.getType() == Card.CardType.FOUR)
         {
@@ -139,8 +139,9 @@ public class GameController {
                 board.movePawn(selectedPawn, -4);
                 turnDone = true;
             }
-            else
-                ErrorMessage();
+            else{
+                invalidMoveSelected = true;
+            }
         }
         else if(selectedCard.getType() == Card.CardType.FIVE)
         {
@@ -149,14 +150,15 @@ public class GameController {
                 board.movePawn(selectedPawn, 5);
                 turnDone = true;
             }
-            else
-                ErrorMessage();
+            else{
+                invalidMoveSelected = true;
+            }
         }
         else if(selectedCard.getType() == Card.CardType.SEVEN)
         {
             //first they click on their pawn
             String [] options = new String [7];
-            for (int i = 0; i < 7; i++) {
+            for (int i = 1; i <= 7; i++) {
                 options[i] = String.valueOf(i + 1);
             }
         
@@ -168,10 +170,10 @@ public class GameController {
                 JOptionPane.QUESTION_MESSAGE,
                 null,
                 options,
-                options[0]
+                options[1]
             );
-            //selected option is 0 indexed
-            if (selectedOption != 6)
+
+            if (selectedOption != 7)
             {
                 // allow them to click another pawn and then move that pawn the remainder of the spaces
                 int remainder = 7 - selectedOption;
@@ -191,8 +193,8 @@ public class GameController {
         {
             //first they click on one of their own pawns
             String [] options = new String [2];
-            options[0] = String.valueOf(1);
-            options[1] = String.valueOf(10);
+            options[1] = String.valueOf(1);
+            options[2] = String.valueOf(10);
 
             int selectedOption = JOptionPane.showOptionDialog(
                 null,
@@ -202,14 +204,14 @@ public class GameController {
                 JOptionPane.QUESTION_MESSAGE,
                 null,
                 options,
-                options[0]
+                options[1]
             );
             
-            if (selectedOption == 0)
+            if (selectedOption == 1)
             {
                 //move 1 space
             }
-            else if (selectedOption == 1)
+            else if (selectedOption == 2)
             {
                 //move 10 spaces. if not able to move 10 spaces default to one 
             }
@@ -218,8 +220,8 @@ public class GameController {
         {
             //wait for a click
             String [] options = new String [2];
-            options[0] = String.valueOf(11);
-            options[1] = "Switch";
+            options[1] = String.valueOf(11);
+            options[2] = "Switch";
 
             int selectedOption = JOptionPane.showOptionDialog(
                 null,
@@ -229,14 +231,14 @@ public class GameController {
                 JOptionPane.QUESTION_MESSAGE,
                 null,
                 options,
-                options[0]
+                options[1]
             );
 
-            if (selectedOption == 0)
+            if (selectedOption == 1)
             {
                 //move 11 spaces
             } 
-            else if (selectedOption == 1)
+            else if (selectedOption == 2)
             {
                 //switch logic allow them to click on the opponents pawn they want to switch with or vice versa
             }
@@ -251,19 +253,18 @@ public class GameController {
             //switch the pawn with an opponents
         }
 
-
         //make sure they have selected a card
 
         if(turnDone){       //if valid move was selected
             //reset selected card
             selectedCard = null;
             cardAlreadyDrawn = false;
-            view.repaint();
+            view.newTurnCard();
             nextPlayer();
         }
     }
 
-    public void ErrorMessage(){
+    public void ErrorMessage(Player player){
         String message = "Please click on one of your own pawns. Your color is " + player.getColorString();;
         JOptionPane.showMessageDialog(null, message, null, JOptionPane.INFORMATION_MESSAGE);
     }
@@ -279,35 +280,10 @@ public class GameController {
             selectedCard = deck.drawCard();
             view.updateCard(selectedCard);
 
-           // if(!hasValidMoves()) 
-            //    turnDone = true;
+        if(!hasValidMoves()) 
+            turnDone = true;
         }
     }
-/*
-    private boolean hasValidMoves(){
-        boolean valid = false;
-        Tile original = selectedPawn.getTile();
-        Card.CardType type = selectedCard.getType();
-        for(Pawn p : player.getPawns()){
-            if(type == Card.CardType.ONE){
-                if()
-                //if it can move by actually moving it
-                //reset the move
-            }
-            else if(type == Card.CardType.TWO){
-                if()
-            }
-            else if(type == Card.CardType.THREE){
-
-            }
-            else if(type == Card.CardType.FOUR)
-                
-            //if pawn can move there
-        }
-            
-
-        return valid;
-    } */
 
     public void cardSelected( ){
 
@@ -335,8 +311,6 @@ public class GameController {
             mainMenu = new MainMenu(this); 
             mainMenu.showPlayerSelection();
         }
-        Pawn.reset();
-        cardAlreadyDrawn = false;
     }
 
     public void start(ArrayList<String> humanPlayerNames, int numComputerPlayers) {
@@ -377,7 +351,6 @@ public class GameController {
     }
 
     public void showGameBoard(){
-        board = new Board();
         view = new GameView(this); 
         view.addRestartListener(e -> restartGame());
         view.addNewGameListener(e -> startNewGame());
@@ -429,8 +402,6 @@ public class GameController {
             mainMenu = new MainMenu(this);      //reset to main menu screen
             showMainMenu();
         }
-        Pawn.reset();
-        cardAlreadyDrawn = false;
     }
 
     private void showRules() {

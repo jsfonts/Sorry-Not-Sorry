@@ -40,5 +40,9 @@ public abstract class Player{
         return name;
     }
 
+    public ArrayList<Pawn> getPawns(){
+        return pawns;
+    }
+
     public abstract void move();
 }

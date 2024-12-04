@@ -1,5 +1,8 @@
 package views;
 
+import models.Player;
+import models.Tile;
+import models.Pawn;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.io.File;
@@ -77,6 +80,8 @@ public class GameView extends JFrame {
 
         setJMenuBar(menuBar);
         setVisible(false);
+
+        addMouseListener(new ClickHandler());
       
         //this was supposed to see the cards but it removed the game board underneath it.
        /* overlayPanel = new JPanel(null); // Use null layout for absolute positioning
@@ -155,7 +160,7 @@ public class GameView extends JFrame {
         JOptionPane.showMessageDialog(this, scrollPane, "Sorry! Game Rules", JOptionPane.INFORMATION_MESSAGE);
     }
 
-    private static class GameBoardPanel extends JPanel {
+    private class GameBoardPanel extends JPanel {
         private Image gameBoardImage;
         private Image overlayImage;
         private Image cardImage;

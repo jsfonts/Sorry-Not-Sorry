@@ -7,7 +7,7 @@ import java.util.Arrays;
 
 public abstract class Player{
     private String name;
-    private ArrayList<Pawn> pawns;
+    protected ArrayList<Pawn> pawns;
     private Color color;
     private static final ArrayList<Color> availableColors = new ArrayList<>(Arrays.asList(Color.RED, Color.BLUE, Color.YELLOW, Color.GREEN));
     private static int nextColor = 0;
@@ -36,6 +36,17 @@ public abstract class Player{
         return color;
     }
 
+    public String getColorString(){
+        if(color == Color.RED)
+            return "Red";
+        if(color == Color.BLUE)
+            return "Blue";
+        if(color == Color.GREEN)
+            return "Red";
+        else 
+            return "Red";
+    }
+
     public String getName(){
         return name;
     }
@@ -44,5 +55,5 @@ public abstract class Player{
         return pawns;
     }
 
-    public abstract void move();
+    public abstract void move(Card c);
 }

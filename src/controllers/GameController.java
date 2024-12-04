@@ -61,7 +61,7 @@ public class GameController {
         view.updateCurrentPlayer(player);
 
         if(selectedCard != null)
-            player.move();
+            player.move(selectedCard);
 
         //make sure they have selected a card
 

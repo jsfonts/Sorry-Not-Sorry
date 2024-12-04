@@ -2,17 +2,7 @@ package models;
 
 public class Card{
     public enum CardType{
-        ONE{},
-        TWO{},
-        THREE{},
-        FOUR{},
-        FIVE{},
-        SEVEN{},
-        EIGHT{},
-        TEN{},
-        ELEVEN{},
-        TWELVE{},
-        SORRY{};
+        ONE, TWO, THREE, FOUR, FIVE, SEVEN, EIGHT, TEN, ELEVEN, TWELVE, SORRY;
     }
 
     boolean isUsed;
@@ -28,7 +18,7 @@ public class Card{
         isUsed = true;
     }
 
-    public CardType type(){
+    public CardType getType(){
         return type;
     }
 
@@ -64,5 +54,4 @@ public class Card{
                 return "No instructions available.";
         }
     }
-
 }

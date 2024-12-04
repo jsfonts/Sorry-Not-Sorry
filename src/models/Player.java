@@ -62,7 +62,7 @@ public abstract class Player{
     public abstract void move(Card c);
 
     public boolean hasValidMoves(Pawn selectedPawn, Card selectedCard){
-        boolean valid = false;
+        boolean valid = true;
         Tile original = selectedPawn.getTile();
         Card.CardType type = selectedCard.getType();
 

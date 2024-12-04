@@ -101,6 +101,7 @@ public class GameController {
         if (selectedPawn.getColor() != player.getColor() && (selectedCard.getType() != Card.CardType.ELEVEN || selectedCard.getType() != Card.CardType.SORRY))
         {
             ErrorMessageColor();
+            System.out.println("Wrong color pawn");
         }
         else if (selectedCard.getType() == Card.CardType.ONE)
         {
@@ -303,6 +304,7 @@ public class GameController {
 
         if(!player.hasValidMoves(selectedPawn, selectedCard)) 
             turnDone = true;
+            System.out.println("Player has no valid moves");
         }
     }
 

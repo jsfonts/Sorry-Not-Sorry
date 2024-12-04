@@ -4,7 +4,7 @@ import views.GameView;
 import views.MainMenu;
 import models.*;
 import javax.swing.*;
-import java.awt.Color;
+import java.awt.*;
 
 import java.util.ArrayDeque;
 import java.util.ArrayList;
@@ -53,30 +53,38 @@ public class GameController {
     private void nextPlayer(){
         player = players.removeFirst();
         players.addLast(player);
-    }
-
-    public void doTurn(){
-        cardAlreadyDrawn = false;
-        //view.updateCurrentPlayer(player);
-
-        if(selectedCard != null)
-            player.move(selectedCard);
-        System.out.println(selectedCard);
-        
+        view.newTurnCard();
         if(player instanceof HumanPlayer)
         {
             String message = player.getName() + "'s turn. Click on the cards to draw a card. You are the color " + player.getColorString();
             JLabel label = new JLabel(message);
-            label.setForeground(player.getColor() == Color.YELLOW ? new Color(150, 120, 12) : player.getColor());
+            label.setFont(new Font("Times New Roman",Font.PLAIN, 20));
+            label.setBackground(player.getColor());
+            label.setOpaque(true);
+            if (player.getColor() != Color.YELLOW)
+            label.setForeground(Color.WHITE);   
             JOptionPane.showMessageDialog(null, label, null, JOptionPane.INFORMATION_MESSAGE);
         }
         else
         {
             String message = player.getName() + "'s turn. They are the color "+ player.getColorString();
             JLabel label = new JLabel(message);
-            label.setForeground(player.getColor());
+            label.setFont(new Font("Times New Roman",Font.PLAIN, 20));
+            label.setBackground(player.getColor());
+            label.setOpaque(true);
+            if (player.getColor() != Color.YELLOW)
+                label.setForeground(Color.WHITE);
             JOptionPane.showMessageDialog(null, label, null, JOptionPane.INFORMATION_MESSAGE);
         }
+    }
+
+    public void doTurn(){
+        cardAlreadyDrawn = false;
+        //view.updateCurrentPlayer(player);
+
+       /* if(selectedCard != null)
+            player.move(selectedCard); */
+        
         //if the space they are clicking on is not their pawn tell them to click on their own pawn else 
 
         if (selectedCard.getType() == Card.CardType.ONE)
@@ -205,11 +213,12 @@ public class GameController {
         //reset selected card
         selectedCard = null;
         cardAlreadyDrawn = false;
+        nextPlayer();
     }
 
     public void ErrorMessage(Player player){
         String message = "Please click on one of your own pawns. Your color is " + player.getColorString();;
-        JOptionPane.showMessageDialog(null, message, null, JOptionPane.INFORMATION_MESSAGE);
+        JOptionPane.showMessageDialog(null, message, null, JOptionPane.ERROR_MESSAGE);
     }
 
     public void drawCard(){

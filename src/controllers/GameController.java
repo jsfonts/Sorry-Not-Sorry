@@ -57,12 +57,12 @@ public class GameController {
         players.addLast(player);
         turnDone = false;
         cardAlreadyDrawn = false;
+
+        //if the space they are clicking on is not their pawn tell them to click on their own pawn else 
     }
 
-    public void doTurn(Pawn p){
-        selectedPawn = p;
-        //view.updateCurrentPlayer(player);
-        
+    public void turnMessage()
+    {
         if(player instanceof HumanPlayer)
         {
             String message = player.getName() + "'s turn. Click on the cards to draw a card. You are the color " + player.getColorString();
@@ -85,9 +85,16 @@ public class GameController {
                 label.setForeground(Color.WHITE);
             JOptionPane.showMessageDialog(null, label, null, JOptionPane.INFORMATION_MESSAGE);
         }
-        //if the space they are clicking on is not their pawn tell them to click on their own pawn else 
-
-        if (selectedCard.getType() == Card.CardType.ONE)
+    }
+    public void doTurn(Pawn p){
+        selectedPawn = p;
+        //view.updateCurrentPlayer(player);
+    
+        if (selectedPawn.getColor() != player.getColor() && (selectedCard.getType() != Card.CardType.ELEVEN || selectedCard.getType() != Card.CardType.SORRY))
+        {
+            ErrorMessageColor();
+        }
+        else if (selectedCard.getType() == Card.CardType.ONE)
         {
             // if the pawn is not one of their own call: ErrorMessage();
             // if the pawn selected is in the Start move it out of start if its not move the pawn one space
@@ -258,13 +265,18 @@ public class GameController {
             //reset selected card
             selectedCard = null;
             cardAlreadyDrawn = false;
-            view.repaint();
+            view.newTurnCard();
             nextPlayer();
         }
     }
 
+    public void ErrorMessageColor(){
+        String message = "Please click on one of your OWN pawns. Your color is " + player.getColorString();;
+        JOptionPane.showMessageDialog(null, message, null, JOptionPane.INFORMATION_MESSAGE);
+    }
+
     public void ErrorMessage(){
-        String message = "Please click on one of your own pawns. Your color is " + player.getColorString();;
+        String message = "Please click on the pawn you would like to move. Your color is " + player.getColorString();;
         JOptionPane.showMessageDialog(null, message, null, JOptionPane.INFORMATION_MESSAGE);
     }
 

@@ -6,6 +6,7 @@ import models.Pawn;
 public class Tile{
 
         private TType type;
+        private TType firstFew; //to help ComputerPlayer
         private Tile prev;
         private Tile next;
         private Tile fork;       //fork at the endzone
@@ -15,15 +16,12 @@ public class Tile{
         public static int count = 0;
 
         public enum TType{
-            START, HOME, NORMAL, ENDZONE, ENDZONE_FIRST, SLIDE_START, SLIDE_END;
-        }
-
-        public enum Location{
-            SOUTH, NORTH, EAST, WEST, CORNER;
+            START, HOME, NORMAL, ENDZONE, ENDZONE_FIRST, SLIDE_START, SLIDE_END, FIRST, SECOND, THIRD;
         }
 
         Tile(TType t, Tile prev, Tile next, Color c){
             type = t;
+            firstFew = TType.NORMAL;
             this.prev = prev;
             this.next = next;
             color = c;
@@ -34,6 +32,10 @@ public class Tile{
 
         Tile(TType t, Tile prev, Tile next){
             this(t, prev, next, Color.WHITE);
+        }
+
+        public void setSecondType(TType t){
+            firstFew = t;
         }
 
         public boolean empty(){
@@ -85,6 +87,12 @@ public class Tile{
 
         public TType getType(){
             return type;
+        }
+
+        public boolean isFirstThree(Color c){           //for ComputerPlayer
+            if(firstFew != TType.NORMAL && c == color)
+                return true;
+            return false;
         }
 
         public void setNext(Tile t){

@@ -127,11 +127,9 @@ public class GameController {
             //if the pawn selected is in start move it once out of start else move it two spaces
             if(selectedPawn.getTile().getType() == Tile.TType.START && board.isValidMove(selectedPawn, 1)){
                 board.movePawn(selectedPawn, 1);
-                secondTurn = true;
             }
             else if(selectedPawn.getTile().getType() != Tile.TType.START && board.isValidMove(selectedPawn, 2)){
                 board.movePawn(selectedPawn, 2);
-                secondTurn = true;
             }
             else {
                 invalidMoveSelected = true;
@@ -140,8 +138,9 @@ public class GameController {
             //draw one more time
             if(secondTurn){
                 turnDone = true;
-                secondTurn = false;
             }
+            else
+                secondTurn = true;
 
         }
         else if (selectedCard.getType() == Card.CardType.THREE)
@@ -280,8 +279,14 @@ public class GameController {
             //reset selected card
             selectedCard = null;
             cardAlreadyDrawn = false;
+            secondTurn = false;
             view.newTurnCard();
             nextPlayer();
+        }
+        else if(secondTurn == true){
+            selectedCard = null;
+            cardAlreadyDrawn = false;
+            view.newTurnCard();
         }
     }
 

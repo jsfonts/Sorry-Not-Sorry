@@ -32,7 +32,7 @@ public class MainMenu extends JFrame {
         JButton newGameButton = new JButton("Start New Game");
         JButton continueGameButton = new JButton("Continue Saved Game");
 
-        Font buttonFont = new Font("Verdana", Font.PLAIN, 18);
+        Font buttonFont = new Font("Verdana", Font.PLAIN, 36);
         newGameButton.setFont(buttonFont);
         continueGameButton.setFont(buttonFont);
 
@@ -69,7 +69,7 @@ public class MainMenu extends JFrame {
         JButton threePlayersButton = new JButton("3 Human Players");
         JButton fourPlayersButton = new JButton("4 Human Players");
     
-        Font buttonFont = new Font("Verdana", Font.PLAIN, 18);
+        Font buttonFont = new Font("Verdana", Font.PLAIN, 36);
         onePlayerButton.setFont(buttonFont);
         twoPlayersButton.setFont(buttonFont);
         threePlayersButton.setFont(buttonFont);
@@ -145,7 +145,7 @@ public class MainMenu extends JFrame {
         
                 JRadioButton yesButton = new JRadioButton("Yes");
                 JRadioButton noButton = new JRadioButton("No");
-                Font buttonFont = new Font("Verdana", Font.PLAIN, 18);
+                Font buttonFont = new Font("Verdana", Font.PLAIN, 36);
                 yesButton.setFont(buttonFont);
                 noButton.setFont(buttonFont);
         

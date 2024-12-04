@@ -138,6 +138,11 @@ public class GameView extends JFrame {
         gameBoardPanel.updateNewCard(c);
     }
         
+    public void newTurnCard()
+    {
+        gameBoardPanel.showCard = false;
+        gameBoardPanel.repaint();
+    }
     public void showRules() {
         JEditorPane editorPane = new JEditorPane();
             try{
@@ -170,7 +175,8 @@ private class GameBoardPanel extends JPanel {
     private Image cardImage;
     private double scale;
     private RoundRectangle2D roundedRectCard;
-    private boolean showCard = false; // Track if card should be displayed
+    public boolean showCard = false; // Track if card should be displayed 
+    public boolean isHumanPlayer = false; //track if its a human players turn
 
     public GameBoardPanel(Image gameBoardImage) {
         this.gameBoardImage = gameBoardImage;
@@ -190,18 +196,27 @@ private class GameBoardPanel extends JPanel {
                 int clickX = e.getX();
                 int clickY = e.getY();
                 Pawn selectedPawn;
-    
+                boolean pawnSelected = false;
+
                 for(Pawn p : controller.getPawns()){
                     if(pawnContainsPoint(p, clickX, clickY)){
                         selectedPawn = p;
                         controller.doTurn(selectedPawn);
-                        
+                        pawnSelected = true;
                         break;
                     }
                 }
+                if (!pawnSelected) {
+                    if (showCard && !isClickInsideCard(e.getPoint())) {
+                        controller.ErrorMessage();
+                }
             }
-        });
-    }
+        }
+                
+    });
+}
+
+
     
     private boolean pawnContainsPoint(Pawn p, int clickX, int clickY){
         boolean contains = false;

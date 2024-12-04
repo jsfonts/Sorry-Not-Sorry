@@ -109,12 +109,7 @@ public class MainMenu extends JFrame {
     
                 if (playerName == null) {  
                     return;
-                }
-    
-                if (!playerName.trim().isEmpty()) {
-                    playerNames.add(playerName.trim());
-                    break; 
-                } else {
+                } else if (playerName.trim().isEmpty()){
                     JOptionPane.showMessageDialog(
                         null, 
                         "Invalid name. Please try again.", 
@@ -122,8 +117,20 @@ public class MainMenu extends JFrame {
                         JOptionPane.WARNING_MESSAGE
                     );
                 }
+                else if (playerNames.contains(playerName)) {
+                JOptionPane.showMessageDialog(
+                    null, 
+                    "Name already taken. Please choose a different name.", 
+                    "Error", 
+                    JOptionPane.ERROR_MESSAGE
+                );
+            }
+            else {
+                playerNames.add(playerName);
+                break; 
             }
         }
+    }
             if (numPlayers < 4) {
                 getContentPane().removeAll();
                 repaint();

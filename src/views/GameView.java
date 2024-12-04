@@ -32,12 +32,22 @@ public class GameView extends JFrame {
     private Image gameBoardImage;
     private JLabel PlayerTurnText;
 
+    //for renderingthe board
+    private int PAWN_SIZE;
+    private int gridH;
+    private int gridW;
+    private int grid_x;  //board image corner location
+    private int grid_y;
+    private int cellW;
+    private int cellH;
+
     public GameView(GameController controller) {
         this.controller = controller;
         setTitle("Sorry Not Sorry!");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(new BorderLayout());
-
+        //PlayerTurnText = new JLabel();
+        
         computerScreenSize = getToolkit().getScreenSize();
         setSize(computerScreenSize);
 
@@ -183,8 +193,43 @@ private class GameBoardPanel extends JPanel {
                 }
             }
         });
+        
+        addMouseListener(new MouseAdapter(){
+            @Override
+            public void mouseClicked(MouseEvent e){
+                int clickX = e.getX();
+                int clickY = e.getY();
+                Pawn selectedPawn;
+    
+                for(Pawn p : controller.getPawns()){
+                    if(containsPoint(p, clickX, clickY)){
+                        selectedPawn = p;
+                        
+                        break;
+                    }
+                }
+            }
+        });
     }
     
+    private boolean containsPoint(Pawn p, int clickX, int clickY){
+        boolean contains = false;
+        int pawnY = (int)(grid_y + p.getCoords()[0] * cellH + cellH);
+        int pawnX = (int)(grid_x + p.getCoords()[1] * cellW + cellW);
+
+        //System.out.println("Scaled pawn position: (" + pawnX + ", " + pawnY + ")");
+        //System.out.println("Click position: (" + clickX + ", " + clickY + ")");
+        //System.out.println("Pawn size: " + PAWN_SIZE);
+        //System.out.println();
+        
+        if(clickX >= pawnX && clickX <=  pawnX + PAWN_SIZE && clickY >= pawnY && clickY <= pawnY + PAWN_SIZE){
+            contains = true;
+            System.out.println("\nThis pawn was clicked\n");
+        }
+
+        return contains;
+    }
+
     private void loadOverlayImage(String path) {
         try {
             File overlayImgFile = new File(path);
@@ -233,6 +278,30 @@ private class GameBoardPanel extends JPanel {
 
             g.drawImage(gameBoardImage, x, y, newImgWidth, newImgHeight, this);
 
+            PAWN_SIZE = newImgHeight / 23;
+
+            gridH = (int)(newImgHeight*.893);
+            gridW = (int)(newImgWidth*.893);
+            grid_x = (int)(x+(newImgWidth*0.0535));
+            grid_y = (int)(y+newImgWidth*0.0535);
+            cellH = (int)(gridH / 16.0);
+            cellW = (int)(gridW / 16.0);
+
+            //g2d.drawRect(grid_x, grid_y, gridW, gridH);
+
+            for(Pawn pawn : controller.getPawns()){
+                int pawnX = (int)(grid_x + pawn.getCoords()[1] * cellW + cellW/2);
+                int pawnY = (int)(grid_y + pawn.getCoords()[0] * cellH + cellH/2);
+
+                g.setColor(pawn.getColor());
+                g.fillOval(pawnX - PAWN_SIZE/2, pawnY - PAWN_SIZE/2, PAWN_SIZE, PAWN_SIZE);
+                
+                Graphics2D g2d = (Graphics2D)g;
+                g2d.setColor(Color.BLACK);
+                g2d.setStroke(new BasicStroke(PAWN_SIZE/12));
+                g2d.drawOval(pawnX - PAWN_SIZE/2, pawnY - PAWN_SIZE/2, PAWN_SIZE, PAWN_SIZE);
+            }
+            
             if (overlayImage != null) {
                 drawOverlay((Graphics2D) g);
             }
@@ -284,5 +353,5 @@ private class GameBoardPanel extends JPanel {
         g2d.dispose();
         return bufferedImage;
     }
-}
+  }
 }  

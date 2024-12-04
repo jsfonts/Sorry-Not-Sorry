@@ -12,6 +12,7 @@ public class Pawn{
     private int [] startCoords;
     private boolean clicked;
     private static int reds = 0, blues = 0, greens = 0, yellows = 0;
+    private int distanceTraveled;
 
     //START tile offsets
     private static final HashMap<Color, int[][]> startList = new HashMap<Color, int[][]>(){{
@@ -23,6 +24,7 @@ public class Pawn{
 
     public Pawn(Color c){
         color = c;
+        distanceTraveled = 0;
         location = Board.startingTile(color);
         clicked = false;
         
@@ -58,9 +60,15 @@ public class Pawn{
         return location.getCoords();
     }
 
-    public void setLocation(Tile target){
+    public void setLocation(Tile target, int distance){
         location = target;
+        distanceTraveled += distance;
         System.out.println(color + " Pawn is now at a" + location.getType());
+    }
+
+    public void resetToHome(Tile t){
+        location = t;
+        distanceTraveled = 0;
     }
 
     public void setClicked(){

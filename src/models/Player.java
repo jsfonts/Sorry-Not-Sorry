@@ -63,7 +63,7 @@ public abstract class Player{
 
     public boolean hasValidMoves(Card selectedCard){
         boolean valid = true;
-        Tile original;
+     /*    Tile original;
         Card.CardType type = selectedCard.getType();
 
         //all players pawns are in start and they dont draw a one or two
@@ -94,6 +94,7 @@ public abstract class Player{
         if(valid)
             System.out.println("in hasValidMoves function   ");
 
+            */
         return valid;
     }
 }

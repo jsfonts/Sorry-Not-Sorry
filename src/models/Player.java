@@ -7,10 +7,10 @@ import java.util.Arrays;
 import controllers.GameController;
 
 public abstract class Player{
-    private static GameController controller;
+    protected static GameController controller;
     private String name;
     protected ArrayList<Pawn> pawns;
-    private Color color;
+    protected Color color;
     private static final ArrayList<Color> availableColors = new ArrayList<>(Arrays.asList(Color.RED, Color.BLUE, Color.YELLOW, Color.GREEN));
     private static int nextColor = 0;
 

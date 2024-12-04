@@ -11,7 +11,7 @@ public class Tile{
         private Tile next;
         private Tile fork;       //fork at the endzone
         private Color color;        //for the endzone tiles 
-        private Pawn pawn;
+        private Pawn pawnAt;
         private int [] coords;
         public static int count = 0;
 
@@ -39,11 +39,11 @@ public class Tile{
         }
 
         public boolean empty(){
-            return pawn == null;
+            return pawnAt == null;
         }
 
         public Pawn pawnAt(){
-            return pawn;
+            return pawnAt;
         }
 
         public Tile next(){
@@ -72,17 +72,12 @@ public class Tile{
             return coords;
         }
 
-        public boolean placePawn(Pawn p){
-            if(pawn != null)
-                return false;
-            else
-                pawn = p;
-
-            return true;
+        public void setPawnAt(Pawn p){
+            pawnAt = p;
         }
 
         public void removePawn(){
-            pawn = null;
+            pawnAt = null;
         }
 
         public TType getType(){

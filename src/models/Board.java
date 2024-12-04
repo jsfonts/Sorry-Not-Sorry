@@ -77,7 +77,7 @@ public class Board{
                     destination = destination.fork();
                     distance++;
                 }
-                else if(destination.getType() == Tile.TType.SLIDE_START){
+                else if(destination.getType() == Tile.TType.SLIDE_START && destination.getColor() != piece.getColor()){
                     destination = endOfSlide(destination);
                 }
                 else{
@@ -101,7 +101,6 @@ public class Board{
                 pawnFound.resetToHome(startingTiles.get(pawnFound.getColor()));
             }
         }
-
 
         //if move is invalid, pawn stays where it is.
         //otherwise, update location on and do moving animation
@@ -137,10 +136,16 @@ public class Board{
 
         if(!valid)
             System.out.println("It was an invalid move");
-            
+
         piece.setLocation(original, 0);
 
         return valid;
+    }
+
+    public void swapPawns(Pawn p1, Pawn p2){
+        Tile p1Location = p1.getTile();
+        p1.setLocation(p2.getTile(), 0);
+        p2.setLocation(p1Location, 0);
     }
 
     private void setup(){

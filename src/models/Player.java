@@ -61,16 +61,19 @@ public abstract class Player{
 
     public abstract void move(Card c);
 
-    public boolean hasValidMoves(Pawn selectedPawn, Card selectedCard){
+    public boolean hasValidMoves(Card selectedCard){
         boolean valid = true;
-        Tile original = selectedPawn.getTile();
+        Tile original;
         Card.CardType type = selectedCard.getType();
 
         //all players pawns are in start and they dont draw a one or two
 
         for(Pawn p : getPawns()){
+            original = p.getTile();
+
             if(type == Card.CardType.ONE){
-              //  if()
+                if(controller.movePawn(p, 1)){}
+
                 
             }
             else if(type == Card.CardType.TWO){
@@ -80,10 +83,16 @@ public abstract class Player{
 
             }
             else if(type == Card.CardType.FOUR){}
+            else if(type == Card.CardType.FIVE){}
+            else if(type == Card.CardType.EIGHT){}
+            else if(type == Card.CardType.TWELVE){}
+            else if(type == Card.CardType.SORRY){}
                 
             //if pawn can move there
         }
-            
+
+        if(valid)
+            System.out.println("in hasValidMoves function   ");
 
         return valid;
     }

@@ -143,7 +143,7 @@ public class GameView extends JFrame {
         gameBoardPanel.showCard = false;
         gameBoardPanel.repaint();
     }
-    
+
     public void showRules() {
         JEditorPane editorPane = new JEditorPane();
             try{

@@ -27,11 +27,19 @@ public class GameController {
     
     public GameController() {
         board = new Board();
+        instance = this;
         /*view.addRestartListener(e -> restartGame());
         view.addNewGameListener(e -> startNewGame());
         view.addSaveGameListener(e -> saveGame());
         view.addQuitListener(e -> quitGame());
         view.addRulesListener(e -> showRules());*/
+    }
+
+    public static GameController getInstance(){
+        if(instance == null)
+            instance = new GameController();
+        
+        return instance;
     }
 
     public void add(MainMenu mm){
@@ -51,6 +59,20 @@ public class GameController {
         showGameBoard();
 
         nextPlayer();
+    }
+
+    public void movePawn(Pawn selectedPawn, int spaces)
+    {
+        board.movePawn(selectedPawn, spaces);
+    }
+    
+    public boolean isValidMove(Pawn selectedPawn, int spaces)
+    {
+        return board.isValidMove(selectedPawn, spaces);
+    }
+    public void movePawn(Pawn p1, int spaces1, Pawn p2, int spaces2)
+    {
+        board.movePawn(p1, spaces1, p2, spaces2);
     }
 
     private void nextPlayer(){
@@ -122,6 +144,7 @@ public class GameController {
         {
             ErrorMessageColor();
             System.out.println("Wrong color pawn");
+            return;
         }
         else if (selectedCard.getType() == Card.CardType.ONE)
         {
@@ -194,7 +217,7 @@ public class GameController {
         {
             //first they click on their pawn
             String [] options = new String [7];
-            for (int i = 1; i <= 7; i++) {
+            for (int i = 0; i < 7; i++) {
                 options[i] = String.valueOf(i + 1);
             }
         
@@ -206,13 +229,13 @@ public class GameController {
                 JOptionPane.QUESTION_MESSAGE,
                 null,
                 options,
-                options[1]
+                options[0]
             );
 
-            if (selectedOption != 7)
+            if (selectedOption != 6)
             {
                 // allow them to click another pawn and then move that pawn the remainder of the spaces
-                int remainder = 7 - selectedOption;
+                int remainder = (6 - selectedOption) + 1;
                 System.out.println(remainder);
             }
             else
@@ -229,8 +252,8 @@ public class GameController {
         {
             //first they click on one of their own pawns
             String [] options = new String [2];
-            options[1] = String.valueOf(1);
-            options[2] = String.valueOf(10);
+            options[0] = String.valueOf(1);
+            options[1] = String.valueOf(10);
 
             int selectedOption = JOptionPane.showOptionDialog(
                 null,
@@ -240,14 +263,14 @@ public class GameController {
                 JOptionPane.QUESTION_MESSAGE,
                 null,
                 options,
-                options[1]
+                options[0]
             );
             
-            if (selectedOption == 1)
+            if (selectedOption == 0)
             {
                 //move 1 space
             }
-            else if (selectedOption == 2)
+            else if (selectedOption == 1)
             {
                 //move 10 spaces. if not able to move 10 spaces default to one 
             }
@@ -256,8 +279,8 @@ public class GameController {
         {
             //wait for a click
             String [] options = new String [2];
-            options[1] = String.valueOf(11);
-            options[2] = "Switch";
+            options[0] = String.valueOf(11);
+            options[1] = "Switch";
 
             int selectedOption = JOptionPane.showOptionDialog(
                 null,
@@ -267,14 +290,14 @@ public class GameController {
                 JOptionPane.QUESTION_MESSAGE,
                 null,
                 options,
-                options[1]
+                options[0]
             );
 
-            if (selectedOption == 1)
+            if (selectedOption == 0)
             {
                 //move 11 spaces
             } 
-            else if (selectedOption == 2)
+            else if (selectedOption == 1)
             {
                 //switch logic allow them to click on the opponents pawn they want to switch with or vice versa
             }

@@ -44,6 +44,10 @@ public class Pawn{
         reds = 0;
         yellows = 0;
     }
+    public int getDistanceTraveled()
+    {
+        return distanceTraveled;
+    }
 
     public Color getColor(){
         return color;

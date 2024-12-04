@@ -89,6 +89,10 @@ public class Tile{
             return type;
         }
 
+        public TType getSecondType(){
+            return firstFew;
+        }
+
         public boolean isFirstThree(Color c){           //for ComputerPlayer
             if(firstFew != TType.NORMAL && c == color)
                 return true;

@@ -30,7 +30,7 @@ public class GameView extends JFrame {
     private GameController controller;
     private Dimension computerScreenSize;
     private Image gameBoardImage;
-    
+
     //for renderingthe board
     private int PAWN_SIZE;
     private int gridH;
@@ -188,7 +188,11 @@ private class GameBoardPanel extends JPanel {
                 for(Pawn p : controller.getPawns()){
                     if(pawnContainsPoint(p, clickX, clickY)){
                         selectedPawn = p;
+<<<<<<< HEAD
                         controller.pawnClicked(selectedPawn);
+=======
+                        controller.doTurn();
+>>>>>>> origin/main
                         
                         break;
                     }

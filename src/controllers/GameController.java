@@ -247,6 +247,7 @@ public class GameController {
             mainMenu.showPlayerSelection();
         }
         Pawn.reset();
+        cardAlreadyDrawn = false;
     }
 
     public void start(ArrayList<String> humanPlayerNames, int numComputerPlayers) {
@@ -340,6 +341,7 @@ public class GameController {
             showMainMenu();
         }
         Pawn.reset();
+        cardAlreadyDrawn = false;
     }
 
     private void showRules() {

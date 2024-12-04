@@ -19,7 +19,7 @@ public class GameController {
     private Player winner;
     private Deck deck;    //this is the board
     private Card selectedCard;
-    private boolean cardSelected;
+    private boolean cardAlreadyDrawn;
     private Pawn selectedPawn;
     
     public GameController() {
@@ -57,24 +57,29 @@ public class GameController {
     }
 
     private void doTurn(Player player){
+        cardAlreadyDrawn = false;
         view.updateCurrentPlayer(player);
 
-
+        if(selectedCard != null)
+            player.move();
 
         //make sure they have selected a card
 
         //reset selected card
         selectedCard = null;
-        cardSelected = false;
+        cardAlreadyDrawn = false;
     }
 
     public void drawCard(){
-        selectedCard = deck.drawCard();
-        view.updateCard(selectedCard);
+        if (cardAlreadyDrawn == false){
+            cardAlreadyDrawn = true;
+            selectedCard = deck.drawCard();
+            view.updateCard(selectedCard);
+        }
     }
 
     public void cardSelected( ){
-        cardSelected = true;
+
     }
 
     public void updateWinners(Player winner){

@@ -59,7 +59,7 @@ public class GameController {
         //view.updateCurrentPlayer(player);
 
         if(selectedCard != null)
-            player.move();
+            player.move(selectedCard);
         
         if(player instanceof HumanPlayer)
         {

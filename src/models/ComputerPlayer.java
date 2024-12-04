@@ -13,7 +13,7 @@ public class ComputerPlayer extends Player{
         super(name);
     }
 
-    public void move(){
+    public void move(Card c){
         // logic
     }
 }

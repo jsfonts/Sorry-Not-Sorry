@@ -4,8 +4,10 @@ import java.util.ArrayList;
 import java.awt.Color;
 import models.Pawn;
 import java.util.Arrays;
+import controllers.GameController;
 
 public abstract class Player{
+    private static GameController controller;
     private String name;
     protected ArrayList<Pawn> pawns;
     private Color color;
@@ -14,11 +16,13 @@ public abstract class Player{
 
     Player(){}
 
-    Player(String n){
+    Player(String n, GameController c){
         name = n;
-        
+        controller = c;
         color = availableColors.get(nextColor++);
-        if(nextColor == 4) nextColor = 0;
+        
+        if(nextColor == 4) 
+            nextColor = 0;
 
         pawns = new ArrayList<Pawn>();
         for(int i = 0; i < 4; i++){

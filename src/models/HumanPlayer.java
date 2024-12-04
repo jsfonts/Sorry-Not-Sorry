@@ -4,10 +4,12 @@ import models.Player;
 import models.Board;
 import models.Pawn;
 import models.Card;
+import controllers.GameController;
 
 public class HumanPlayer extends Player{
-    public HumanPlayer(String n){
-        super(n);
+
+    public HumanPlayer(String n, GameController c){
+        super(n,c);
     }
 
     public void move(Card card){

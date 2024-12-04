@@ -65,13 +65,18 @@ public class Board{
             for(int i = spaces; i < 0; i++)
                 destination = destination.prev();
         }
-        else{                       //move forwards
-            for(int i = spaces; i > 0; i--){
+        else{         
+            int i = spaces;              //move forwards
+            for(;i > 0; i--){
                 if(isEndZoneEntrance(destination.fork(), piece))
                     destination = destination.fork();
                 else 
                     destination = destination.next();
                 //account for slides
+            }
+            if(destination.getType() == Tile.TType.HOME && i > 0){
+                //travel to HOME must be exact
+                return false;
             }
         }
 

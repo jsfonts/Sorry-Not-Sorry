@@ -10,6 +10,7 @@ public class Pawn{
     private Color color;
     private Tile location;
     private int [] startCoords;
+    private boolean clicked;
     private static int reds = 0, blues = 0, greens = 0, yellows = 0;
 
     //START tile offsets
@@ -23,6 +24,7 @@ public class Pawn{
     public Pawn(Color c){
         color = c;
         location = Board.startingTile(color);
+        clicked = false;
         
         if(color == Color.GREEN)
             startCoords = startList.get(color)[greens++];
@@ -52,5 +54,13 @@ public class Pawn{
     public void setLocation(Tile target){
         location = target;
         System.out.println(color + " Pawn is now at a" + location.getType());
+    }
+
+    public void setClicked(){
+        clicked = true;
+    }
+
+    public boolean isClicked(){
+        return clicked;
     }
 }

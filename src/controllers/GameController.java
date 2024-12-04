@@ -21,6 +21,7 @@ public class GameController {
     private Card selectedCard;
     private boolean cardAlreadyDrawn;
     private Pawn selectedPawn;
+    private Player currentPlayer;
     
     public GameController() {
         board = new Board();
@@ -47,12 +48,11 @@ public class GameController {
         }
         showGameBoard();
 
-        Player nextPlayer;
         while(winner == null)
         {
-            nextPlayer = players.removeFirst();
-            players.addLast(nextPlayer);
-            doTurn(nextPlayer);
+            currentPlayer = players.removeFirst();
+            players.addLast(currentPlayer);
+            doTurn(currentPlayer);
         }
     }
 
@@ -68,6 +68,15 @@ public class GameController {
         //reset selected card
         selectedCard = null;
         cardAlreadyDrawn = false;
+    }
+
+    public void pawnClicked(Pawn p){
+        selectedPawn = p;
+        selectedPawn.setClicked();
+
+        if(selectedPawn.getColor() != currentPlayer.getColor())
+            System.out.println("Player and pawn have the same color");
+            //pawn is not players
     }
 
     public void drawCard(){
@@ -116,11 +125,11 @@ public class GameController {
         System.out.println(numComputerPlayers);
 
         for (String name : humanPlayerNames) {
-            players.add(new HumanPlayer(name));
+            players.add(new HumanPlayer(name, this));
         }
         
         for (int i = 1; i <= numComputerPlayers; i++) {
-            players.add(new ComputerPlayer("Computer " + i));
+            players.add(new ComputerPlayer(this));
         }
 
         // need help here bc unsure

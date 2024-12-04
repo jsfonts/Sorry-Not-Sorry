@@ -77,6 +77,10 @@ public class GameController {
     {
         board.movePawn(p1, spaces1, p2, spaces2);
     }
+    public void swapPawns(Pawn p1, Pawn p2)
+    {
+        board.swapPawns(p1, p2);
+    }
 
     private void nextPlayer(){
         player = players.removeFirst();

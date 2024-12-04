@@ -103,7 +103,7 @@ public class Board{
         }
 
         //if move is invalid, pawn stays where it is.
-        //otherwise, update location on and do moving animation
+        //otherwise, update  on and do moving animation
         if(valid){
             piece.setLocation(destination, distance);
         }

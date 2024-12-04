@@ -77,7 +77,7 @@ public class ComputerPlayer extends Player{
 
             if (moveP != null)
             {
-                controller.movePawn(moveP, 2);
+                controller.movePawn(moveP, 1);
             }
             else
                 return;
@@ -236,15 +236,24 @@ public class ComputerPlayer extends Player{
             }
         
             int oppDistancetraveled = 0;
-            for(Player pla : controller.getPlayers())   
+            for(Player pla : controller.getPlayers())   //have to add check that checks the distance of the opponents pawn from the originial pawns start place instead of the opponents start place.
             {
                 for (Pawn p : pla.getPawns()){
                     if (p.getColor() != color && p.getDistanceTraveled() > oppDistancetraveled && p.getDistanceTraveled() > distancetraveled + 11)
                     {
                         oppDistancetraveled = p.getDistanceTraveled();
                         OppP = p;
+                        swap = true;
                     }
                 }
+            }
+            if (moveP != null && OppP != null && swap == true) 
+            {
+                controller.swapPawns(moveP, OppP);
+            }
+            else if (OppP == null && moveP != null)
+            {
+                controller.movePawn(moveP, 11);
             }
             //if the switch would give more than eleven spaces forward use it else move 11 spaces forward. if cant move 11 spaces
             //and switch is bad skip turn
@@ -285,6 +294,11 @@ public class ComputerPlayer extends Player{
                     break;
                 
                 }
+            }
+
+            if (moveP != null && OppP != null)
+            {
+                controller.swapPawns(moveP, OppP);
             }
           //  add function for swaping
             // controller.movePawn(OppP, moveP);

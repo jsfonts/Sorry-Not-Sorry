@@ -185,8 +185,12 @@ private class GameBoardPanel extends JPanel {
         addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
+                boolean cardSelected = false;
                 if (isClickInsideCard(e.getPoint())) {
                     controller.drawCard();
+                }
+                if (!cardSelected && !showCard) {
+                    controller.turnMessage();
                 }
             }
         });

@@ -190,18 +190,28 @@ private class GameBoardPanel extends JPanel {
                 int clickX = e.getX();
                 int clickY = e.getY();
                 Pawn selectedPawn;
-    
+                boolean pawnSelected = false;
+
                 for(Pawn p : controller.getPawns()){
                     if(containsPoint(p, clickX, clickY)){
                         selectedPawn = p;
                         controller.doTurn();
+                        pawnSelected = true;
                         
                         break;
                     }
                 }
+                if (!pawnSelected) {
+                    if (showCard && !isClickInsideCard(e.getPoint())) {
+                        controller.ErrorMessage();
+                }
             }
-        });
-    }
+        }
+                
+    });
+}
+
+
     
     private boolean containsPoint(Pawn p, int clickX, int clickY){
         boolean contains = false;

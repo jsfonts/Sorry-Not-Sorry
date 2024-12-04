@@ -216,8 +216,8 @@ public class GameController {
         nextPlayer();
     }
 
-    public void ErrorMessage(Player player){
-        String message = "Please click on one of your own pawns. Your color is " + player.getColorString();;
+    public void ErrorMessage(){
+        String message = "Please click on the pawns you would like to move. Your color is " + player.getColorString();;
         JOptionPane.showMessageDialog(null, message, null, JOptionPane.ERROR_MESSAGE);
     }
 

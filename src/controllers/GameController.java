@@ -24,6 +24,9 @@ public class GameController {
     private boolean turnDone;
     private boolean secondTurn; //mainly for drawing twos
     private boolean invalidMoveSelected;
+    private Pawn secondSelectedPawn;
+    private boolean pickSecondPawn;
+
     
     public GameController() {
         board = new Board();
@@ -61,9 +64,9 @@ public class GameController {
         nextPlayer();
     }
 
-    public void movePawn(Pawn selectedPawn, int spaces)
+    public boolean movePawn(Pawn selectedPawn, int spaces)
     {
-        board.movePawn(selectedPawn, spaces);
+        return board.movePawn(selectedPawn, spaces);
     }
     
     public boolean isValidMove(Pawn selectedPawn, int spaces)
@@ -265,14 +268,30 @@ public class GameController {
                 options,
                 options[0]
             );
+
+            boolean cantMove10 = false;
             
-            if (selectedOption == 0)
-            {
-                //move 1 space
-            }
-            else if (selectedOption == 1)
+            if (selectedOption == 1)
             {
                 //move 10 spaces. if not able to move 10 spaces default to one 
+                if(selectedPawn.getTile().getType() != Tile.TType.START && board.isValidMove(selectedPawn, 10)){
+                    board.movePawn(selectedPawn, 10);
+                    turnDone = true;
+                }
+                else{
+                    cantMove10 = true;
+                }
+            }
+            else if (selectedOption == 0 || cantMove10)
+            {
+                //move 1 space
+                if(selectedPawn.getTile().getType() != Tile.TType.START && board.isValidMove(selectedPawn, -1)){
+                    board.movePawn(selectedPawn, -1);
+                    turnDone = true;
+                }
+                else{
+                    invalidMoveSelected = true;
+                }
             }
         }
         else if(selectedCard.getType() == Card.CardType.ELEVEN)
@@ -296,23 +315,71 @@ public class GameController {
             if (selectedOption == 0)
             {
                 //move 11 spaces
+                if(selectedPawn.getTile().getType() != Tile.TType.START && board.isValidMove(selectedPawn, 11)){
+                    board.movePawn(selectedPawn, 11);
+                    turnDone = true;
+                }
+                else{
+                    invalidMoveSelected = true;
+                }
             } 
             else if (selectedOption == 1)
             {
                 //switch logic allow them to click on the opponents pawn they want to switch with or vice versa
+                if(selectedPawn.getTile().getType() == Tile.TType.START)
+                pickSecondPawn = true;
+            else 
+                invalidMoveSelected = true;
+                if(pickSecondPawn == true && secondSelectedPawn != null){ 
+                Tile.TType sP = secondSelectedPawn.getTile().getType();
+                if(sP == Tile.TType.ENDZONE || sP == Tile.TType.ENDZONE || sP == Tile.TType.ENDZONE_FIRST){
+                    invalidMoveSelected = true;
+                }
+                else{   //valid move
+                    Tile temp = selectedPawn.getTile();
+                    selectedPawn.setLocation(secondSelectedPawn.getTile(), 0);
+                    secondSelectedPawn.setLocation(temp, 0);
+                    turnDone = true;
+                }
+            }
             }
             
         }
         else if(selectedCard.getType() == Card.CardType.TWELVE)
         {
             // move 12 spaces forward
+            if(selectedPawn.getTile().getType() != Tile.TType.START && board.isValidMove(selectedPawn, 12)){
+                board.movePawn(selectedPawn, 12);
+                turnDone = true;
+            }
+            else{
+                invalidMoveSelected = true;
+            }
         }
         else if(selectedCard.getType() == Card.CardType.SORRY)
         {
             //switch the pawn with an opponents
+            if(selectedPawn.getTile().getType() == Tile.TType.START)
+            pickSecondPawn = true;
+        else 
+            invalidMoveSelected = true;
+            if(pickSecondPawn == true && secondSelectedPawn != null){ 
+                Tile.TType sP = secondSelectedPawn.getTile().getType();
+                if(sP == Tile.TType.ENDZONE || sP == Tile.TType.ENDZONE || sP == Tile.TType.ENDZONE_FIRST){
+                    invalidMoveSelected = true;
+                }
+                else{   //valid move
+                    Tile temp = selectedPawn.getTile();
+                    selectedPawn.setLocation(secondSelectedPawn.getTile(), 0);
+                    secondSelectedPawn.setLocation(temp, 0);
+                    turnDone = true;
+                }
+            }
         }
 
         //make sure they have selected a card
+        if(invalidMoveSelected)
+            invalidMoveMessage();
 
         if(turnDone){       //if valid move was selected
             //reset selected card
@@ -350,7 +417,7 @@ public class GameController {
             selectedCard = deck.drawCard();
             view.updateCard(selectedCard);
 
-        if(!player.hasValidMoves(selectedPawn, selectedCard)) 
+        if(!player.hasValidMoves(selectedCard)) 
             turnDone = true;
             System.out.println("Player has no valid moves");
         }

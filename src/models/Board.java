@@ -77,7 +77,7 @@ public class Board{
                     destination = destination.fork();
                     distance++;
                 }
-                else if(destination.getType() == Tile.TType.SLIDE_START){
+                else if(destination.getType() == Tile.TType.SLIDE_START && destination.getColor() != piece.getColor()){
                     destination = endOfSlide(destination);
                 }
                 else{
@@ -107,6 +107,7 @@ public class Board{
         //otherwise, update location on and do moving animation
         if(valid){
             piece.setLocation(destination, distance);
+            //destination.setPawnAt(piece);
         }
 
         if(destination.getType() == Tile.TType.HOME){
@@ -142,6 +143,13 @@ public class Board{
 
         return valid;
     }
+
+    public void swapPawns(Pawn p1, Pawn p2){
+        Tile p1Location = p1.getTile();
+        p1.setLocation(p2.getTile(), 0);
+        p2.setLocation(p1Location, 0);
+    }
+
 
     private void setup(){
         Tile greenStart = new Tile(Tile.TType.START, null, null, Color.GREEN);

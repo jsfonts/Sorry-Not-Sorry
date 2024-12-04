@@ -93,6 +93,10 @@ public class Tile{
             return firstFew;
         }
 
+        public void setPawnAt(Pawn pToAdd){
+           // pawn = pToAdd;
+        }
+
         public boolean isFirstThree(Color c){           //for ComputerPlayer
             if(firstFew != TType.NORMAL && c == color)
                 return true;

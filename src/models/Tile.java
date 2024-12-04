@@ -11,7 +11,7 @@ public class Tile{
         private Tile next;
         private Tile fork;       //fork at the endzone
         private Color color;        //for the endzone tiles 
-        private Pawn pawnAt;
+        private Pawn pawn;
         private int [] coords;
         public static int count = 0;
 
@@ -39,11 +39,11 @@ public class Tile{
         }
 
         public boolean empty(){
-            return pawnAt == null;
+            return pawn == null;
         }
 
         public Pawn pawnAt(){
-            return pawnAt;
+            return pawn;
         }
 
         public Tile next(){
@@ -72,12 +72,8 @@ public class Tile{
             return coords;
         }
 
-        public void setPawnAt(Pawn p){
-            pawnAt = p;
-        }
-
         public void removePawn(){
-            pawnAt = null;
+            pawn = null;
         }
 
         public TType getType(){
@@ -86,6 +82,10 @@ public class Tile{
 
         public TType getSecondType(){
             return firstFew;
+        }
+
+        public void setPawnAt(Pawn pToAdd){
+           // pawn = pToAdd;
         }
 
         public boolean isFirstThree(Color c){           //for ComputerPlayer

@@ -44,7 +44,7 @@ public class GameController {
             JOptionPane.showMessageDialog(null, "No game initialized. Please start a new game from the Main Menu.");
             return;
         }
-        
+
         showGameBoard();
 
         nextPlayer();
@@ -55,12 +55,13 @@ public class GameController {
         players.addLast(player);
     }
 
-    private void doTurn(){
+    public void doTurn(){
         cardAlreadyDrawn = false;
         //view.updateCurrentPlayer(player);
 
         if(selectedCard != null)
             player.move(selectedCard);
+        System.out.println(selectedCard);
         
         if(player instanceof HumanPlayer)
         {
@@ -103,7 +104,7 @@ public class GameController {
         {
             //first they click on their pawn
             String [] options = new String [7];
-            for (int i = 1; i <= 7; i++) {
+            for (int i = 0; i < 7; i++) {
                 options[i] = String.valueOf(i + 1);
             }
         
@@ -115,10 +116,10 @@ public class GameController {
                 JOptionPane.QUESTION_MESSAGE,
                 null,
                 options,
-                options[1]
+                options[0]
             );
-
-            if (selectedOption != 7)
+            //selected option is 0 indexed
+            if (selectedOption != 6)
             {
                 // allow them to click another pawn and then move that pawn the remainder of the spaces
                 int remainder = 7 - selectedOption;
@@ -138,8 +139,8 @@ public class GameController {
         {
             //first they click on one of their own pawns
             String [] options = new String [2];
-            options[1] = String.valueOf(1);
-            options[2] = String.valueOf(10);
+            options[0] = String.valueOf(1);
+            options[1] = String.valueOf(10);
 
             int selectedOption = JOptionPane.showOptionDialog(
                 null,
@@ -149,14 +150,14 @@ public class GameController {
                 JOptionPane.QUESTION_MESSAGE,
                 null,
                 options,
-                options[1]
+                options[0]
             );
             
-            if (selectedOption == 1)
+            if (selectedOption == 0)
             {
                 //move 1 space
             }
-            else if (selectedOption == 2)
+            else if (selectedOption == 1)
             {
                 //move 10 spaces. if not able to move 10 spaces default to one 
             }
@@ -165,8 +166,8 @@ public class GameController {
         {
             //wait for a click
             String [] options = new String [2];
-            options[1] = String.valueOf(11);
-            options[2] = "Switch";
+            options[0] = String.valueOf(11);
+            options[1] = "Switch";
 
             int selectedOption = JOptionPane.showOptionDialog(
                 null,
@@ -176,14 +177,14 @@ public class GameController {
                 JOptionPane.QUESTION_MESSAGE,
                 null,
                 options,
-                options[1]
+                options[0]
             );
 
-            if (selectedOption == 1)
+            if (selectedOption == 0)
             {
                 //move 11 spaces
             } 
-            else if (selectedOption == 2)
+            else if (selectedOption == 1)
             {
                 //switch logic allow them to click on the opponents pawn they want to switch with or vice versa
             }
@@ -245,6 +246,7 @@ public class GameController {
             mainMenu = new MainMenu(this); 
             mainMenu.showPlayerSelection();
         }
+        Pawn.reset();
     }
 
     public void start(ArrayList<String> humanPlayerNames, int numComputerPlayers) {
@@ -285,6 +287,7 @@ public class GameController {
     }
 
     public void showGameBoard(){
+        board = new Board();
         view = new GameView(this); 
         view.addRestartListener(e -> restartGame());
         view.addNewGameListener(e -> startNewGame());
@@ -336,6 +339,7 @@ public class GameController {
             mainMenu = new MainMenu(this);      //reset to main menu screen
             showMainMenu();
         }
+        Pawn.reset();
     }
 
     private void showRules() {

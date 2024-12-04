@@ -34,6 +34,13 @@ public class Pawn{
             startCoords = startList.get(color)[yellows++];
     }
 
+    public static void reset(){
+        greens = 0;
+        blues = 0;
+        reds = 0;
+        yellows = 0;
+    }
+
     public Color getColor(){
         return color;
     }

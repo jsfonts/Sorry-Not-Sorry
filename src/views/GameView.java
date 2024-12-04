@@ -158,6 +158,12 @@ public class GameView extends JFrame {
             JOptionPane.showMessageDialog(this, scrollPane, "Sorry! Game Rules", JOptionPane.INFORMATION_MESSAGE);
         }
 
+    @Override
+    public void paint(Graphics g){
+        super.paint(g);
+        gameBoardPanel.repaint();
+    }
+
 private class GameBoardPanel extends JPanel {
     private Image gameBoardImage;
     private Image overlayImage;
@@ -188,11 +194,7 @@ private class GameBoardPanel extends JPanel {
                 for(Pawn p : controller.getPawns()){
                     if(pawnContainsPoint(p, clickX, clickY)){
                         selectedPawn = p;
-<<<<<<< HEAD
-                        controller.pawnClicked(selectedPawn);
-=======
-                        controller.doTurn();
->>>>>>> origin/main
+                        controller.doTurn(selectedPawn);
                         
                         break;
                     }

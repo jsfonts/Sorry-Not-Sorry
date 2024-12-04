@@ -21,6 +21,8 @@ public class GameController {
     private boolean cardAlreadyDrawn;
     private Pawn selectedPawn;
     private Player player;
+    private boolean turnDone;
+    private boolean secondTurn; //mainly for drawing twos
     
     public GameController() {
         board = new Board();
@@ -53,14 +55,16 @@ public class GameController {
     private void nextPlayer(){
         player = players.removeFirst();
         players.addLast(player);
+        turnDone = false;
     }
 
-    private void doTurn(){
-        cardAlreadyDrawn = false;
+    public void doTurn(Pawn p){
+        selectedPawn = p;
+        //cardAlreadyDrawn= false; 
         //view.updateCurrentPlayer(player);
 
-        if(selectedCard != null)
-            player.move(selectedCard);
+        //if(selectedCard != null)
+        //    player.move(selectedCard);
         
         if(player instanceof HumanPlayer)
         {
@@ -82,23 +86,64 @@ public class GameController {
         {
             // if the pawn is not one of their own call: ErrorMessage(player);
             // if the pawn selected is in the Start move it out of start if its not move the pawn one space
+                System.out.println("Card type is one");
+                if(board.isValidMove(selectedPawn, 1)){
+                    board.movePawn(selectedPawn, 1);
+                    turnDone = true;
+                }
+                else
+                    invalidMoveMessage();
+
         }
         else if (selectedCard.getType() == Card.CardType.TWO)
         {
             //if the pawn selected is in start move it once out of start else move it two spaces
+            if(selectedPawn.getTile().getType() == Tile.TType.START && board.isValidMove(selectedPawn, 1)){
+                board.movePawn(selectedPawn, 1);
+                secondTurn = true;
+            }
+            else if(selectedPawn.getTile().getType() != Tile.TType.START && board.isValidMove(selectedPawn, 2)){
+                board.movePawn(selectedPawn, 2);
+                secondTurn = true;
+            }
+            else 
+                invalidMoveMessage();
+
+            //draw one more time
+            if(secondTurn){
+                turnDone = true;
+                secondTurn = false;
+            }
+
         }
         else if (selectedCard.getType() == Card.CardType.THREE)
         {
-            
+            if(selectedPawn.getTile().getType() != Tile.TType.START && board.isValidMove(selectedPawn, 3)){
+                board.movePawn(selectedPawn, 3);
+                turnDone = true;
+            }
+            else 
+                ErrorMessage(player);
             //move three forward
         }
         else if(selectedCard.getType() == Card.CardType.FOUR)
         {
-            //move four backward
+            if(selectedPawn.getTile().getType() != Tile.TType.START && board.isValidMove(selectedPawn, -4)){
+                board.movePawn(selectedPawn, -4);
+                turnDone = true;
+            }
+            else
+                ErrorMessage(player);
         }
         else if(selectedCard.getType() == Card.CardType.FIVE)
         {
             //move 5 spaces forward 
+            if(selectedPawn.getTile().getType() != Tile.TType.START && board.isValidMove(selectedPawn, 5)){
+                board.movePawn(selectedPawn, 5);
+                turnDone = true;
+            }
+            else
+                ErrorMessage(player);
         }
         else if(selectedCard.getType() == Card.CardType.SEVEN)
         {
@@ -202,9 +247,12 @@ public class GameController {
 
         //make sure they have selected a card
 
-        //reset selected card
-        selectedCard = null;
-        cardAlreadyDrawn = false;
+        if(turnDone){       //if valid move was selected
+            //reset selected card
+            selectedCard = null;
+            cardAlreadyDrawn = false;
+            view.repaint();
+        }
     }
 
     public void ErrorMessage(Player player){
@@ -212,13 +260,46 @@ public class GameController {
         JOptionPane.showMessageDialog(null, message, null, JOptionPane.INFORMATION_MESSAGE);
     }
 
+    public void invalidMoveMessage(){
+        String message = "That pawn cannot be moved with the " + selectedCard.toString() + " Card";;
+        JOptionPane.showMessageDialog(null, message, "Invalid Move", JOptionPane.INFORMATION_MESSAGE);
+    }
+
     public void drawCard(){
         if (cardAlreadyDrawn == false){
             cardAlreadyDrawn = true;
             selectedCard = deck.drawCard();
             view.updateCard(selectedCard);
+
+           // if(!hasValidMoves()) 
+            //    turnDone = true;
         }
     }
+/*
+    private boolean hasValidMoves(){
+        boolean valid = false;
+        Tile original = selectedPawn.getTile();
+        Card.CardType type = selectedCard.getType();
+        for(Pawn p : player.getPawns()){
+            if(type == Card.CardType.ONE){
+                if()
+                //if it can move by actually moving it
+                //reset the move
+            }
+            else if(type == Card.CardType.TWO){
+                if()
+            }
+            else if(type == Card.CardType.THREE){
+
+            }
+            else if(type == Card.CardType.FOUR)
+                
+            //if pawn can move there
+        }
+            
+
+        return valid;
+    } */
 
     public void cardSelected( ){
 

@@ -81,7 +81,7 @@ public class GameView extends JFrame {
         setJMenuBar(menuBar);
         setVisible(false);
 
-        addMouseListener(new ClickHandler());
+        //addMouseListener(new ClickHandler());
       
         //this was supposed to see the cards but it removed the game board underneath it.
        /* overlayPanel = new JPanel(null); // Use null layout for absolute positioning

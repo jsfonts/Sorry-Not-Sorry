@@ -20,6 +20,7 @@ public class GameController {
     private boolean cardAlreadyDrawn;
     private Pawn selectedPawn;
     private Player currentPlayer;
+    private boolean waitingForPawnSelection;
     
     public GameController() {
         board = new Board();
@@ -56,6 +57,7 @@ public class GameController {
 
     private void doTurn(Player player){
         cardAlreadyDrawn = false;
+        waitingForPawnSelection = true;
         //view.updateCurrentPlayer(player);
 
         if(selectedCard != null)
@@ -88,6 +90,7 @@ public class GameController {
         }
         else if (selectedCard.getType() == Card.CardType.THREE)
         {
+            
             //move three forward
         }
         else if(selectedCard.getType() == Card.CardType.FOUR)
@@ -205,15 +208,6 @@ public class GameController {
         cardAlreadyDrawn = false;
     }
 
-    public void pawnClicked(Pawn p){
-        selectedPawn = p;
-        selectedPawn.setClicked();
-
-        if(selectedPawn.getColor() != currentPlayer.getColor())
-            System.out.println("Player and pawn have the same color");
-            //pawn is not players
-    }
-    
     public void ErrorMessage(Player player){
         String message = "Please click on one of your own pawns. Your color is " + player.getColorString();;
         JOptionPane.showMessageDialog(null, message, null, JOptionPane.INFORMATION_MESSAGE);

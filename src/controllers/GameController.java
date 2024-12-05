@@ -103,7 +103,7 @@ public class GameController {
             JLabel label = new JLabel(message);
             label.setOpaque(true);
             label.setBackground(player.getColor());
-            if (player.getColor() != Color.YELLOW) {
+            if (player.getColor() != Color.YELLOW && player.getColor() != Color.GREEN) {
                 label.setForeground(Color.WHITE);
             } else {
                 label.setForeground(Color.BLACK);
@@ -116,7 +116,7 @@ public class GameController {
             JLabel label = new JLabel(message);
             label.setOpaque(true);
             label.setBackground(player.getColor());
-            if (player.getColor() != Color.YELLOW) {
+            if (player.getColor() != Color.YELLOW && player.getColor() != Color.GREEN) {
                 label.setForeground(Color.WHITE);
             } else {
                 label.setForeground(Color.BLACK);
@@ -253,7 +253,7 @@ public class GameController {
                 options[0]
             );
 
-            if (selectedOption != 6)
+            if (selectedOption != 6) // add check to see if the split is valid
             {
                 // allow them to click another pawn and then move that pawn the remainder of the spaces
                 int remainder = (6 - selectedOption) + 1;
@@ -385,6 +385,7 @@ public class GameController {
         }
         else if(selectedCard.getType() == Card.CardType.SORRY)
         {
+            //can only use it to switch if you have a pawn in the start zone
             //switch the pawn with an opponents
             if(selectedPawn.getTile().getType() == Tile.TType.START)
                 pickSecondPawn = true;

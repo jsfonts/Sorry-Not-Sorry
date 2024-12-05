@@ -22,11 +22,6 @@ public class Deck{
         
         reshuffle();
 
-        cards.addFirst(new Card(Card.CardType.SEVEN));
-        cards.addFirst(new Card(Card.CardType.ELEVEN));
-        //cards.addFirst(new Card(Card.CardType.TWO));
-        cards.addFirst(new Card(Card.CardType.ONE));
-        cards.addFirst(new Card(Card.CardType.ONE));
     }
 
     public Card drawCard(){

@@ -68,7 +68,6 @@ public class Pawn{
         location = target;
         location.setPawnAt(this);
         distanceTraveled += distance;
-        location.setPawnAt(this);
         System.out.println(color + " Pawn is now at a" + location.getType());
     }
 

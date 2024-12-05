@@ -74,9 +74,19 @@ public class GameController {
     {
         return board.isValidMove(selectedPawn, spaces);
     }
-    public void movePawn(Pawn p1, int spaces1, Pawn p2, int spaces2)
-    {
-        board.movePawn(p1, spaces1, p2, spaces2);
+
+    public void pawnReachedHome(Pawn done){
+        for(Player p : players){
+            if(p.getColor() == done.getColor()){
+                p.removePawn(done);
+                if(p.pawnsLeft() == 0)
+                    playerWon(p);
+            }
+        }
+    }
+
+    public void playerWon(Player p){
+        //this player won. do something
     }
 
     private void nextPlayer(){

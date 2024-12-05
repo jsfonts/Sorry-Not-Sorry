@@ -65,11 +65,15 @@ public class Tile{
         public void setCoords(int height, int width){
             coords[0] = height;
             coords[1] = width;
-
+            System.out.println("\th: " + coords[0] + ", w: " + coords[1]);
         }
 
         public int [] getCoords(){
             return coords;
+        }
+
+        public void printCoords(){
+            System.out.println("\th: " + coords[0] + ", w: " + coords[1]);
         }
 
         public void removePawn(){
@@ -85,7 +89,7 @@ public class Tile{
         }
 
         public void setPawnAt(Pawn pToAdd){
-           // pawn = pToAdd;
+            pawn = pToAdd;
         }
 
         public boolean isFirstThree(Color c){           //for ComputerPlayer
@@ -100,7 +104,6 @@ public class Tile{
 
         public static void makefork(Tile prev, Color c){
             Tile current = prev;
-            int height = prev.coords[0];
             System.out.println("Making HOME stretch for " + c);
 
             if(c == Color.YELLOW){   //yellow 
@@ -122,7 +125,7 @@ public class Tile{
             if(c == Color.GREEN){    //green
                 current.fork = new Tile(TType.ENDZONE_FIRST, current, null, c);
                 current = current.fork;
-                current.setCoords(13, 2);
+                current.setCoords(13, 1);
                 //make the endzone
                 for(int i = 2; i <= 5; i++){
                     current.next = new Tile(TType.ENDZONE, current, null, c);
@@ -135,10 +138,10 @@ public class Tile{
                 current.setCoords(13,6);
             }
 
-            if(height == 0){    //red
+            if(c == Color.RED){    //red
                 current.fork = new Tile(TType.ENDZONE_FIRST, current, null, c);
                 current = current.fork;
-                current.setCoords(2, 2);
+                current.setCoords(1, 2);
                 //make the endzone
                 for(int i = 2; i <= 5; i++){
                     current.next = new Tile(TType.ENDZONE, current, null, c);
@@ -151,20 +154,20 @@ public class Tile{
                 current.setCoords(6, 2);
             }
 
-            if(height == 2){    //blue
+            if(c == Color.BLUE){    //blue
                 current.fork = new Tile(TType.ENDZONE_FIRST, current, null, c);
                 current = current.fork;
-                current.setCoords(5, 14);
+                current.setCoords(2, 14);
                 //make the endzone
                 for(int i = 13; i >= 10; i--){
                     current.next = new Tile(TType.ENDZONE, current, null, c);
                     current = current.next;
-                    current.setCoords(3, i);
+                    current.setCoords(2, i);
                 }
                 
                 //add the HOME tile
                 current.next = new Tile(TType.HOME, current, null, c);
-                current.setCoords(3, 9);
+                current.setCoords(2, 9);
             }
         }
     }

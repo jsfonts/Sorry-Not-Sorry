@@ -95,4 +95,8 @@ public abstract class Player{
             */
         return valid;
     }
+
+    public void removePawn(Pawn p){
+        pawns.remove(p);
+    }
 }

@@ -95,37 +95,22 @@ public class Board{
 
         if(destination.pawnAt() != null){    //if another pawn is already there 
             Pawn pawnFound = destination.pawnAt();
-            if(pC == pawnFound.getColor())         //if its their own pawn
-                valid = false;
-            else{                   //if its opponents pawn, bump it back
-                pawnFound.resetToHome(startingTiles.get(pawnFound.getColor()));
-            }
+            //if its opponents pawn, bump it 
+            pawnFound.resetToHome(startingTiles.get(pawnFound.getColor()));
         }
 
         //if move is invalid, pawn stays where it is.
-        //otherwise, update location on and do moving animation
         if(valid){
             piece.setLocation(destination, distance);
-            //destination.setPawnAt(piece);
+            destination.setPawnAt(piece);
         }
 
         if(destination.getType() == Tile.TType.HOME){
-           //remove pawn from player's inventory
-
+           controller.pawnReachedHome(piece);   //removes it from the players inventory
         }
         //check if all their pawns are gone
 
         return valid;
-    }
-
-    public boolean movePawn(Pawn p1, int spaces1, Pawn p2, int spaces2){
-        if(!movePawn(p1, spaces1))
-            return false;
-        
-        if(!movePawn(p2, spaces2))
-            return false;
-
-        return true;
     }
 
     public boolean isValidMove(Pawn piece, int spaces){
@@ -139,6 +124,7 @@ public class Board{
             System.out.println("It was an invalid move");
 
         piece.setLocation(original, 0);
+        original.setPawnAt(piece);
 
         return valid;
     }
@@ -182,14 +168,14 @@ public class Board{
         current.setNext(new Tile(Tile.TType.SLIDE_END, current, null, Color.YELLOW));
         current = current.next();
         current.setCoords(15, 11);
-        startingTiles.get(Color.YELLOW).setNext(current);
+        startingTiles.get(Color.YELLOW).setNext(current); current.setSecondType(Tile.TType.FIRST);
 
         //4 normal tiles
         current.setNext(new Tile(Tile.TType.NORMAL, current, null));
-        current = current.next();
+        current = current.next(); current.setSecondType(Tile.TType.SECOND);
         current.setCoords(15, 10);
         current.setNext(new Tile(Tile.TType.NORMAL, current, null));
-        current = current.next();
+        current = current.next(); current.setSecondType(Tile.TType.THIRD);
         current.setCoords(15, 9);
         current.setNext(new Tile(Tile.TType.NORMAL, current, null));
         current = current.next();
@@ -240,13 +226,13 @@ public class Board{
         current.setNext(new Tile(Tile.TType.SLIDE_END, current, null, Color.GREEN));
         current = current.next();
         current.setCoords(11, 0);
-        startingTiles.get(Color.GREEN).setNext(current);
+        startingTiles.get(Color.GREEN).setNext(current); current.setSecondType(Tile.TType.FIRST);
 
         //4 normal tiles
-        current.setNext(new Tile(Tile.TType.NORMAL, current, null));
+        current.setNext(new Tile(Tile.TType.NORMAL, current, null)); current.setSecondType(Tile.TType.SECOND);
         current = current.next();
         current.setCoords(10, 0);
-        current.setNext(new Tile(Tile.TType.NORMAL, current, null));
+        current.setNext(new Tile(Tile.TType.NORMAL, current, null)); current.setSecondType(Tile.TType.THIRD);
         current = current.next();
         current.setCoords(9, 0);
         current.setNext(new Tile(Tile.TType.NORMAL, current, null));
@@ -270,6 +256,7 @@ public class Board{
         current = current.next();
         current.setCoords(3, 0);
         current.setNext(new Tile(Tile.TType.SLIDE_END, current, null, Color.GREEN));
+        current = current.next();
         current.setCoords(2,0);
 
         current.setNext(new Tile(Tile.TType.NORMAL, current, null));
@@ -297,13 +284,13 @@ public class Board{
         current.setNext(new Tile(Tile.TType.SLIDE_END, current, null, Color.RED));
         current = current.next();
         current.setCoords(0, 4);
-        startingTiles.get(Color.RED).setNext(current);
+        startingTiles.get(Color.RED).setNext(current); current.setSecondType(Tile.TType.FIRST);
 
         //4 normal tiles
-        current.setNext(new Tile(Tile.TType.NORMAL, current, null));
+        current.setNext(new Tile(Tile.TType.NORMAL, current, null)); current.setSecondType(Tile.TType.SECOND);
         current = current.next();
         current.setCoords(0, 5);
-        current.setNext(new Tile(Tile.TType.NORMAL, current, null));
+        current.setNext(new Tile(Tile.TType.NORMAL, current, null)); current.setSecondType(Tile.TType.THIRD);
         current = current.next();
         current.setCoords(0, 6);
         current.setNext(new Tile(Tile.TType.NORMAL, current, null));
@@ -327,6 +314,7 @@ public class Board{
         current = current.next();
         current.setCoords(0, 12);
         current.setNext(new Tile(Tile.TType.SLIDE_END, current, null, Color.RED));
+        current = current.next();
         current.setCoords(0,13);
 
         current.setNext(new Tile(Tile.TType.NORMAL, current, null));
@@ -354,13 +342,13 @@ public class Board{
         current.setNext(new Tile(Tile.TType.SLIDE_END, current, null, Color.BLUE));
         current = current.next();
         current.setCoords(4, 15);
-        startingTiles.get(Color.BLUE).setNext(current);
+        startingTiles.get(Color.BLUE).setNext(current); current.setSecondType(Tile.TType.FIRST);
 
         //4 normal tiles
-        current.setNext(new Tile(Tile.TType.NORMAL, current, null));
+        current.setNext(new Tile(Tile.TType.NORMAL, current, null)); current.setSecondType(Tile.TType.SECOND);
         current = current.next();
         current.setCoords(5, 15);
-        current.setNext(new Tile(Tile.TType.NORMAL, current, null));
+        current.setNext(new Tile(Tile.TType.NORMAL, current, null)); current.setSecondType(Tile.TType.THIRD);
         current = current.next();
         current.setCoords(6, 15);
         current.setNext(new Tile(Tile.TType.NORMAL, current, null));
@@ -384,6 +372,7 @@ public class Board{
         current = current.next();
         current.setCoords(12, 15);
         current.setNext(new Tile(Tile.TType.SLIDE_END, current, null, Color.BLUE));
+        current = current.next();
         current.setCoords(13,15);
 
         current.setNext(new Tile(Tile.TType.NORMAL, current, null));
@@ -421,21 +410,25 @@ public class Board{
         while(current.getType() != Tile.TType.SLIDE_END){
             current = current.next();
             distance++;
-            if(current.pawnAt() != null)
+            if(current.pawnAt() != null){
                 current.pawnAt().setLocation(startingTiles.get(current.pawnAt().getColor()), distance);
+                current.setPawnAt(null);
+            }
         }
 
         return current;
     }
 
     public void print(){
+        startingTiles.get(Color.YELLOW).printCoords();
         Tile original = startingTiles.get(Color.YELLOW).next();
+        original.printCoords();
         Tile current = original.next();
         int i = 1;
 
         while(current != original && i < 100){
+            current.printCoords();
             current = current.next();
-
             System.out.println(i++);
         }
         System.out.println(i);

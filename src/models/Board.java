@@ -84,8 +84,9 @@ public class Board{
                     destination = destination.fork();
                     distance++;
                 }
-                else if(destination.getType() == Tile.TType.SLIDE_START && destination.getColor() != piece.getColor()){
-                    destination = endOfSlide(destination, change);
+                else if(destination.getType() == Tile.TType.HOME){
+                    valid = false;
+                    break;
                 }
                 else{
                     destination = destination.next();
@@ -97,6 +98,9 @@ public class Board{
             if(destination.getType() == Tile.TType.HOME && i > 0){
                 //travel to HOME must be exact
                 valid = false;
+            }
+            else if(destination.getType() == Tile.TType.SLIDE_START && destination.getColor() != piece.getColor()){
+                destination = endOfSlide(destination, change);
             }
         }
 

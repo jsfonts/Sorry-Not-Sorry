@@ -62,38 +62,71 @@ public abstract class Player{
     public abstract void move(Card c);
 
     public boolean hasValidMoves(Card selectedCard){
-        boolean valid = true;
-        Tile original;
+        Tile tile;
         Card.CardType type = selectedCard.getType();
-/*
-        //all players pawns are in start and they dont draw a one or two
-
-        for(Pawn p : getPawns()){
-            original = p.getTile();
-            if(type == Card.CardType.ONE){
-              //  if()
-                if(controller.movePawn(p, 1)){}
-            }
-            else if(type == Card.CardType.TWO){
-               // if()
-            }
-            else if(type == Card.CardType.THREE){
-
-            }
-            else if(type == Card.CardType.FOUR){}
-            else if(type == Card.CardType.FIVE){}
-            else if(type == Card.CardType.EIGHT){}
-            else if(type == Card.CardType.TWELVE){}
-            else if(type == Card.CardType.SORRY){}
-                
-            //if pawn can move there
+        ArrayList<Pawn> pawnsThatCanMove = new ArrayList<Pawn>();
+        ArrayList<Pawn> opponentPawns = new ArrayList<Pawn>();
+        for(Pawn p : controller.getPawns()){
+            if(p.getColor() != color)
+                opponentPawns.add(p);
         }
 
-        if(valid)
-            System.out.println("in hasValidMoves function   ");
+        for(Pawn p : getPawns()){
+            tile = p.getTile();
+            if(type == Card.CardType.ONE){
+                if(controller.isValidMove(p, 1))
+                    pawnsThatCanMove.add(p);
+            }
+            else if(type == Card.CardType.TWO){
+                if(tile.getType() != Tile.TType.START && controller.isValidMove(p, 2))
+                    pawnsThatCanMove.add(p);
+                if(tile.getType() == Tile.TType.START)
+                    pawnsThatCanMove.add(p);
+            }
+            else if(type == Card.CardType.THREE){
+                if(tile.getType() != Tile.TType.START && controller.isValidMove(p, 3))
+                    pawnsThatCanMove.add(p);
+            }
+            else if(type == Card.CardType.FOUR){
+                if(tile.getType() != Tile.TType.START && controller.isValidMove(p, -4))
+                    pawnsThatCanMove.add(p);
+            }
+            else if(type == Card.CardType.FIVE){
+                if(tile.getType() != Tile.TType.START && controller.isValidMove(p, 5))
+                    pawnsThatCanMove.add(p);
+            }
+            else if(type == Card.CardType.EIGHT){
+                if(tile.getType() != Tile.TType.START && controller.isValidMove(p, 8))
+                    pawnsThatCanMove.add(p);
+            }
+            else if(type == Card.CardType.TEN){
+                if(tile.getType() != Tile.TType.START && controller.isValidMove(p, 10))
+                    pawnsThatCanMove.add(p);
+                if(controller.isValidMove(p, -1))
+                    pawnsThatCanMove.add(p);
+            }
+            else if(type == Card.CardType.ELEVEN){
 
-            */
-        return valid;
+            }
+            else if(type == Card.CardType.TWELVE){
+                if(tile.getType() != Tile.TType.START && controller.isValidMove(p, 12))
+                    pawnsThatCanMove.add(p);
+            }
+            else if(type == Card.CardType.SORRY){
+                boolean validOp = false;
+                for(Pawn op : opponentPawns){
+                    if(op.getTile().getType() != Tile.TType.HOME && op.getTile().getType() != Tile.TType.START && op.getTile().getType() != Tile.TType.ENDZONE)
+                        validOp = true;
+                }
+
+                if(tile.getType() == Tile.TType.START && validOp)
+                    pawnsThatCanMove.add(p);
+            }
+        }
+        
+        controller.setValidPawns(pawnsThatCanMove);
+ 
+        return pawnsThatCanMove.size() > 0;
     }
 
     public void removePawn(Pawn p){

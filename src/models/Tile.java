@@ -13,7 +13,6 @@ public class Tile{
         private Color color;        //for the endzone tiles 
         private Pawn pawn;
         private int [] coords;
-        public static int count = 0;
 
         public enum TType{
             START, HOME, NORMAL, ENDZONE, ENDZONE_FIRST, SLIDE_START, SLIDE_END, FIRST, SECOND, THIRD;
@@ -26,7 +25,6 @@ public class Tile{
             this.next = next;
             color = c;
             fork = null;
-            count++;
             coords = new int[2];
         }
 
@@ -65,15 +63,10 @@ public class Tile{
         public void setCoords(int height, int width){
             coords[0] = height;
             coords[1] = width;
-            System.out.println("\th: " + coords[0] + ", w: " + coords[1]);
         }
 
         public int [] getCoords(){
             return coords;
-        }
-
-        public void printCoords(){
-            System.out.println("\th: " + coords[0] + ", w: " + coords[1]);
         }
 
         public void removePawn(){
@@ -104,7 +97,6 @@ public class Tile{
 
         public static void makefork(Tile prev, Color c){
             Tile current = prev;
-            System.out.println("Making HOME stretch for " + c);
 
             if(c == Color.YELLOW){   //yellow 
                 current.fork = new Tile(TType.ENDZONE_FIRST, current, null, c);

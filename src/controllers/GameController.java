@@ -75,7 +75,13 @@ public class GameController {
         return board.isValidMove(selectedPawn, spaces);
     }
 
+    public void setValidPawns(ArrayList<Pawn> pawnsThatCanMove){
+        if(!pawnsThatCanMove.isEmpty())
+            view.highlightavailablePawns(pawnsThatCanMove);
+    }
+
     public void pawnReachedHome(Pawn done){
+        done.getTile().setPawnAt(null);
         for(Player p : players){
             if(p.getColor() == done.getColor()){
                 p.removePawn(done);
@@ -148,6 +154,7 @@ public class GameController {
         }
     }
     public void doTurn(Pawn p){
+
         if(pickSecondPawn){
             secondSelectedPawn = p;
         }
@@ -420,9 +427,6 @@ public class GameController {
         if(invalidMoveSelected)
             invalidMoveMessage();
 
-        if(invalidMoveSelected)
-            invalidMoveMessage();
-
         if(turnDone){       //if valid move was selected
             //reset selected card
             System.out.println("turn is over, view should be updated    ");
@@ -460,11 +464,14 @@ public class GameController {
             cardAlreadyDrawn = true;
             selectedCard = deck.drawCard();
             view.updateCard(selectedCard);
-
         if(!player.hasValidMoves(selectedCard)) 
-            turnDone = true;
-            System.out.println("Player has no valid moves");
+        {
+            JOptionPane.showMessageDialog(null, "No available moves for this card", null, JOptionPane.INFORMATION_MESSAGE);
+            view.newTurnCard();
+            nextPlayer();
         }
+        }
+        
     }
 
     public void cardSelected( ){

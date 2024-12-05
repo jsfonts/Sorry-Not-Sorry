@@ -21,7 +21,7 @@ public class Board{
         startingTiles = new HashMap<Color, Tile>();
         players = new ArrayList<Player>();
         setup();
-        print();
+        //print();
     }
 
     public Board(ArrayList<Player> players) {
@@ -56,13 +56,20 @@ public class Board{
  
     }
 
-    public boolean movePawn(Pawn piece, int spaces){     //returns false if its an invalid move
+    public boolean movePawn(Pawn pawn, int spaces){
+        return movePawn(pawn, spaces, true);
+    }
+
+    public boolean movePawn(Pawn piece, int spaces, boolean change){     //returns false if its an invalid move
 
         System.out.println("Pawn has been move attempted");
         boolean valid = true;
         Tile destination = piece.getTile();
         Color pC = piece.getColor();
         int distance = 0;
+
+        if(spaces < 0 && destination.getType() == Tile.TType.START)
+            valid = false;
 
         if(spaces < 0){             //move backwards
             for(int i = spaces; i < 0; i++){
@@ -78,7 +85,7 @@ public class Board{
                     distance++;
                 }
                 else if(destination.getType() == Tile.TType.SLIDE_START && destination.getColor() != piece.getColor()){
-                    destination = endOfSlide(destination);
+                    destination = endOfSlide(destination, change);
                 }
                 else{
                     destination = destination.next();
@@ -89,27 +96,31 @@ public class Board{
 
             if(destination.getType() == Tile.TType.HOME && i > 0){
                 //travel to HOME must be exact
-                return false;
+                valid = false;
             }
         }
 
-        if(destination.pawnAt() != null){    //if another pawn is already there 
-            Pawn pawnFound = destination.pawnAt();
-            //if its opponents pawn, bump it 
-            pawnFound.resetToHome(startingTiles.get(pawnFound.getColor()));
-        }
-
         //if move is invalid, pawn stays where it is.
-        //otherwise, update  on and do moving animation
-        if(valid){
-            piece.setLocation(destination, distance);
-            destination.setPawnAt(piece);
-        }
+        if(change && valid){
+            
+            if(destination.pawnAt() != null){    //if another pawn is already there 
+                if(destination.pawnAt().getColor() == pC)
+                    valid = false;
+                else{                           //if its opponents pawn, bump it 
+                    Pawn pawnFound = destination.pawnAt();
+                    pawnFound.resetToHome(startingTiles.get(pawnFound.getColor()));
+                }
+            }
 
-        if(destination.getType() == Tile.TType.HOME){
-           controller.pawnReachedHome(piece);   //removes it from the players inventory
+            if(valid){      //in case a pawn was on the destination square
+                piece.setLocation(destination, distance);
+                destination.setPawnAt(piece);
+
+                if(destination.getType() == Tile.TType.HOME){
+                    controller.pawnReachedHome(piece);   //removes it from the players inventory
+                }
+            }
         }
-        //check if all their pawns are gone
 
         return valid;
     }
@@ -117,15 +128,10 @@ public class Board{
     public boolean isValidMove(Pawn piece, int spaces){
         boolean valid = true;
 
-        Tile original = piece.getTile();
-
-        valid = movePawn(piece, spaces);
+        valid = movePawn(piece, spaces, false);
 
         if(!valid)
             System.out.println("It was an invalid move");
-
-        piece.setLocation(original, 0);
-        original.setPawnAt(piece);
 
         return valid;
     }
@@ -385,7 +391,6 @@ public class Board{
 
         //connect
         current.setNext(original);
-        System.out.println("There have been " + Tile.count + " tiles made.");
 
     }
 
@@ -402,7 +407,7 @@ public class Board{
         return valid;
     }
 
-    public Tile endOfSlide(Tile current){
+    public Tile endOfSlide(Tile current, boolean change){
         if(current.getType() != Tile.TType.SLIDE_START)
             return current;
         
@@ -411,7 +416,7 @@ public class Board{
         while(current.getType() != Tile.TType.SLIDE_END){
             current = current.next();
             distance++;
-            if(current.pawnAt() != null){
+            if(current.pawnAt() != null && change){
                 current.pawnAt().setLocation(startingTiles.get(current.pawnAt().getColor()), distance);
                 current.setPawnAt(null);
             }
@@ -421,14 +426,11 @@ public class Board{
     }
 
     public void print(){
-        startingTiles.get(Color.YELLOW).printCoords();
         Tile original = startingTiles.get(Color.YELLOW).next();
-        original.printCoords();
         Tile current = original.next();
         int i = 1;
 
         while(current != original && i < 100){
-            current.printCoords();
             current = current.next();
             System.out.println(i++);
         }

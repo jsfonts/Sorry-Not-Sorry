@@ -7,8 +7,6 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
-import java.security.Key;
 import java.awt.event.*;
 import models.Card;
 import models.Player;
@@ -19,6 +17,7 @@ import models.Board;
 import java.awt.image.BufferedImage;
 import models.HumanPlayer;
 import models.ComputerPlayer;
+import java.util.ArrayList;
 
 public class GameView extends JFrame {
     private GameBoardPanel gameBoardPanel;
@@ -144,6 +143,10 @@ public class GameView extends JFrame {
         gameBoardPanel.repaint();
     }
 
+    public void highlightavailablePawns(ArrayList<Pawn> pawnList){
+        gameBoardPanel.setAvailablePawns(pawnList);
+    }
+
     public void showRules() {
         JEditorPane editorPane = new JEditorPane();
             try{
@@ -176,10 +179,12 @@ private class GameBoardPanel extends JPanel {
     private Image cardImage;
     private double scale;
     private RoundRectangle2D roundedRectCard;
+    private ArrayList<Pawn> availablePawns;
     public boolean showCard = false; // Track if card should be displayed 
     public boolean isHumanPlayer = false; //track if its a human players turn
 
     public GameBoardPanel(Image gameBoardImage) {
+        availablePawns = null;
         this.gameBoardImage = gameBoardImage;
         loadOverlayImage("../resources/CardBack.png");
         addMouseListener(new MouseAdapter() {
@@ -214,14 +219,12 @@ private class GameBoardPanel extends JPanel {
                 if (!pawnSelected) {
                     if (showCard && !isClickInsideCard(e.getPoint())) {
                         controller.ErrorMessage();
+                    }
                 }
             }
-        }
                 
-    });
-}
-
-
+        });
+    }
     
     private boolean pawnContainsPoint(Pawn p, int clickX, int clickY){
         boolean contains = false;
@@ -270,6 +273,13 @@ private class GameBoardPanel extends JPanel {
         repaint();
     }
 
+    public void setAvailablePawns(ArrayList<Pawn> pawnList){
+        availablePawns = pawnList;
+        System.out.println("Doing the pawn highlighting");
+        repaint();
+        availablePawns = null;
+    }
+
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
@@ -308,8 +318,12 @@ private class GameBoardPanel extends JPanel {
                 g.fillOval(pawnX - PAWN_SIZE/2, pawnY - PAWN_SIZE/2, PAWN_SIZE, PAWN_SIZE);
                 
                 Graphics2D g2d = (Graphics2D)g;
-                g2d.setColor(Color.BLACK);
-                g2d.setStroke(new BasicStroke(PAWN_SIZE/12));
+                if(availablePawns != null)
+                    g2d.setColor(Color.MAGENTA);
+                else
+                    g2d.setColor(Color.BLACK);
+                
+                    g2d.setStroke(new BasicStroke(PAWN_SIZE/12));
                 g2d.drawOval(pawnX - PAWN_SIZE/2, pawnY - PAWN_SIZE/2, PAWN_SIZE, PAWN_SIZE);
             }
             

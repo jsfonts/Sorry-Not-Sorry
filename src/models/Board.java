@@ -57,21 +57,22 @@ public class Board{
     }
 
     public boolean movePawn(Pawn pawn, int spaces){
+        System.out.println("Pawn move has just been called");
         return movePawn(pawn, spaces, true);
     }
 
     public boolean movePawn(Pawn piece, int spaces, boolean change){     //returns false if its an invalid move
 
-        System.out.println("Pawn has been move attempted");
         boolean valid = true;
         Tile destination = piece.getTile();
+        Tile original = destination;
         Color pC = piece.getColor();
         int distance = 0;
 
-        if(spaces < 0 && destination.getType() == Tile.TType.START)
+        if(spaces < 0 && destination.getType() == Tile.TType.START){
             valid = false;
-
-        if(spaces < 0){             //move backwards
+        }
+        else if(spaces < 0){             //move backwards
             for(int i = spaces; i < 0; i++){
                 destination = destination.prev();
                 distance--;
@@ -113,10 +114,13 @@ public class Board{
                 else{                           //if its opponents pawn, bump it 
                     Pawn pawnFound = destination.pawnAt();
                     pawnFound.resetToHome(startingTiles.get(pawnFound.getColor()));
+                    int [] coord = startingTiles.get(pawnFound.getColor()).getCoords();
+                    System.out.println("Home of pawn is " + startingTiles.get(pawnFound.getColor()) + " at " + coord[0] + ", " + coord[1]);
                 }
             }
 
             if(valid){      //in case a pawn was on the destination square
+                System.out.println("Move was valid. Moving pawn there now");
                 piece.setLocation(destination, distance);
                 destination.setPawnAt(piece);
 
@@ -124,6 +128,8 @@ public class Board{
                     controller.pawnReachedHome(piece);   //removes it from the players inventory
                 }
             }
+
+            original.setPawnAt(null);
         }
 
         return valid;

@@ -27,6 +27,7 @@ public class GameController {
     private int remainder;      //for the 7 Card
     private Pawn secondSelectedPawn;
     private boolean pickSecondPawn;
+    private boolean seven11;
 
     
     public GameController() {
@@ -217,6 +218,7 @@ public class GameController {
             }
             else
                 secondTurn = true;
+
             view.text((player.getName() + " draw again. You are the color " + player.getColorString()) , player.getColor());
 
         }
@@ -253,6 +255,7 @@ public class GameController {
         }
         else if(cardType == Card.CardType.SEVEN)
         {
+            seven11 = true;
             if(pawnsOutOfStart() == 1 && selectedPawn.getTile().getType() != Tile.TType.START){
                 board.movePawn(selectedPawn, 7);
                 turnDone = true;
@@ -362,7 +365,7 @@ public class GameController {
         }
         else if(cardType == Card.CardType.ELEVEN)
         {
-            
+            seven11 = true;
             if(pickSecondPawn == true && secondSelectedPawn != null){ 
                 System.out.println("Second pawn was picked");
                 Tile.TType sP = selectedPawn.getTile().getType();
@@ -459,10 +462,11 @@ public class GameController {
             selectedPawn = null;
             secondSelectedPawn = null;
             secondTurn = false;
+            seven11 = false;
             view.newTurnCard();
             nextPlayer();
         }
-        else if(secondTurn == true){
+        else if(secondTurn && !seven11){
             selectedCard = null;
             cardAlreadyDrawn = false;
             view.newTurnCard();

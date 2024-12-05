@@ -23,7 +23,7 @@ public class ComputerPlayer extends Player{
             Pawn moveP = null;
             boolean pawnStart = false;
             for(Pawn p : getPawns()){
-                if(p.getTile().getType() == Tile.TType.START)
+                if(p.getTile().getType() == Tile.TType.START && controller.isValidMove(p,1))
                 {
                     moveP = p;
                     pawnStart = true;
@@ -56,7 +56,7 @@ public class ComputerPlayer extends Player{
             int distancetraveled = 0;
             boolean pawnStart = false;
             for(Pawn p : getPawns()){
-                if(p.getTile().getType() == Tile.TType.START)
+                if(p.getTile().getType() == Tile.TType.START && controller.isValidMove(p,1))
                 {
                     moveP = p;
                     pawnStart = true;
@@ -209,7 +209,7 @@ public class ComputerPlayer extends Player{
                 distancetraveled = 0;
                 for(Pawn p : getPawns())
                 {
-                    if (p.getDistanceTraveled() > distancetraveled && controller.isValidMove(p,1))
+                    if (p.getDistanceTraveled() > distancetraveled && controller.isValidMove(p,-1))
                     {
                         distancetraveled = p.getDistanceTraveled();
                         moveP = p;
@@ -217,7 +217,7 @@ public class ComputerPlayer extends Player{
                 }
                 if (moveP != null)
                 {
-                    controller.movePawn(moveP, 1);
+                    controller.movePawn(moveP, -1);
                 }
             }
         }

@@ -466,7 +466,7 @@ public class GameController {
             cardAlreadyDrawn = true;
             selectedCard = deck.drawCard();
             view.updateCard(selectedCard);
-            if(!player.hasValidMoves(selectedCard)) 
+            if(!player.hasValidMoves(selectedCard) && !(player instanceof ComputerPlayer)) 
             {
                 JOptionPane.showMessageDialog(null, "No available moves for this card", null, JOptionPane.INFORMATION_MESSAGE);
                 view.newTurnCard();
@@ -475,6 +475,13 @@ public class GameController {
             }
         }
         
+    }
+
+    public boolean getComputer()
+    {
+        if(player instanceof ComputerPlayer)
+            return true;
+        return false;
     }
 
     public void cardSelected( ){

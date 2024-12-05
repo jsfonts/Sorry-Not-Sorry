@@ -193,10 +193,11 @@ private class GameBoardPanel extends JPanel {
                 boolean cardSelected = false;
                 if (isClickInsideCard(e.getPoint())) {
                     controller.drawCard();
+                    cardSelected = true;
                 }
-                /*if (!cardSelected && !showCard) {
+                if (!cardSelected && !showCard && !controller.getComputer()) {
                     controller.turnMessage();
-                }*/
+                }
             }
         });
         
@@ -216,7 +217,7 @@ private class GameBoardPanel extends JPanel {
                         break;
                     }
                 }
-                if (!pawnSelected) {
+                if (!pawnSelected && !controller.getComputer()) {
                     if (showCard && !isClickInsideCard(e.getPoint())) {
                         controller.ErrorMessage();
                     }
@@ -277,7 +278,6 @@ private class GameBoardPanel extends JPanel {
         availablePawns = pawnList;
         System.out.println("Doing the pawn highlighting");
         repaint();
-        availablePawns = null;
     }
 
     @Override
@@ -318,15 +318,15 @@ private class GameBoardPanel extends JPanel {
                 Graphics2D g2d = (Graphics2D)g;
                 g2d.setColor(Color.BLACK);
                 g2d.setStroke(new BasicStroke(PAWN_SIZE/12));
-
-                if(availablePawns != null && availablePawns.contains(pawn)){
-                        g2d.setColor(Color.MAGENTA);
-                        g2d.setStroke(new BasicStroke(PAWN_SIZE/10));
-                }
                 
+                if(availablePawns != null && availablePawns.contains(pawn)){
+                    g2d.setColor(Color.MAGENTA);
+                    g2d.setStroke(new BasicStroke(PAWN_SIZE/10));
+                }
                 g2d.drawOval(pawnX - PAWN_SIZE/2, pawnY - PAWN_SIZE/2, PAWN_SIZE, PAWN_SIZE);
             }
-            
+        
+            availablePawns = null;
             if (overlayImage != null) {
                 drawOverlay((Graphics2D) g);
             }

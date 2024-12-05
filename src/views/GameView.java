@@ -308,8 +308,6 @@ private class GameBoardPanel extends JPanel {
             cellH = (int)(gridH / 16.0);
             cellW = (int)(gridW / 16.0);
 
-            //g2d.drawRect(grid_x, grid_y, gridW, gridH);
-
             for(Pawn pawn : controller.getPawns()){
                 int pawnX = (int)(grid_x + pawn.getCoords()[1] * cellW + cellW/2);
                 int pawnY = (int)(grid_y + pawn.getCoords()[0] * cellH + cellH/2);
@@ -318,12 +316,14 @@ private class GameBoardPanel extends JPanel {
                 g.fillOval(pawnX - PAWN_SIZE/2, pawnY - PAWN_SIZE/2, PAWN_SIZE, PAWN_SIZE);
                 
                 Graphics2D g2d = (Graphics2D)g;
-                if(availablePawns != null)
-                    g2d.setColor(Color.MAGENTA);
-                else
-                    g2d.setColor(Color.BLACK);
+                g2d.setColor(Color.BLACK);
+                g2d.setStroke(new BasicStroke(PAWN_SIZE/12));
+
+                if(availablePawns != null && availablePawns.contains(pawn)){
+                        g2d.setColor(Color.MAGENTA);
+                        g2d.setStroke(new BasicStroke(PAWN_SIZE/10));
+                }
                 
-                    g2d.setStroke(new BasicStroke(PAWN_SIZE/12));
                 g2d.drawOval(pawnX - PAWN_SIZE/2, pawnY - PAWN_SIZE/2, PAWN_SIZE, PAWN_SIZE);
             }
             

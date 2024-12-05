@@ -11,6 +11,7 @@ public class ComputerPlayer extends Player{
     public ComputerPlayer(GameController controller){
         super("ComputerPlayer " + cpCount++, controller);
     }
+    
     public ComputerPlayer(String name, GameController controller) {
         super(name, controller);
     }

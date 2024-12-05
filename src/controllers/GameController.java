@@ -173,6 +173,8 @@ public class GameController {
         {
             return;
         }
+        
+
         else if (selectedPawn.getColor() != player.getColor() && (selectedCard.getType() != Card.CardType.ELEVEN || selectedCard.getType() != Card.CardType.SORRY))
         {
             ErrorMessageColor();
@@ -387,7 +389,7 @@ public class GameController {
                 }
             }
             }
-            
+
         }
         else if(selectedCard.getType() == Card.CardType.TWELVE)
         {
@@ -464,12 +466,13 @@ public class GameController {
             cardAlreadyDrawn = true;
             selectedCard = deck.drawCard();
             view.updateCard(selectedCard);
-        if(!player.hasValidMoves(selectedCard)) 
-        {
-            JOptionPane.showMessageDialog(null, "No available moves for this card", null, JOptionPane.INFORMATION_MESSAGE);
-            view.newTurnCard();
-            nextPlayer();
-        }
+            if(!player.hasValidMoves(selectedCard)) 
+            {
+                JOptionPane.showMessageDialog(null, "No available moves for this card", null, JOptionPane.INFORMATION_MESSAGE);
+                view.newTurnCard();
+                nextPlayer();
+                return;
+            }
         }
         
     }

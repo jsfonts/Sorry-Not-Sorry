@@ -194,9 +194,9 @@ private class GameBoardPanel extends JPanel {
                 if (isClickInsideCard(e.getPoint())) {
                     controller.drawCard();
                 }
-                if (!cardSelected && !showCard) {
+                /*if (!cardSelected && !showCard) {
                     controller.turnMessage();
-                }
+                }*/
             }
         });
         

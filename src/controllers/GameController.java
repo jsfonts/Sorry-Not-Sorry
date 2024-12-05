@@ -5,14 +5,21 @@ import views.MainMenu;
 import models.*;
 import javax.swing.*;
 import java.awt.Color;
-
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
-public class GameController {
-    private static Board board;                //model
-    private static GameView view;       
-    private static MainMenu mainMenu;
+public class GameController implements Serializable{
+    private static Board board;  
+    private transient GameView view;
+    private transient MainMenu mainMenu;             
     private static GameController instance;
     private ArrayDeque<Player> players;
     private Player winner;
@@ -528,11 +535,71 @@ public class GameController {
         JOptionPane.showMessageDialog(view, "Game Restarted!");
     }
 
-    public void saveGame()
-    {
-
+    private Map<String, Object> collectGameData() {
+        Map<String, Object> gameData = new HashMap<>();
+        gameData.put("players", players);
+        gameData.put("deck", deck);
+        gameData.put("board", board);
+        gameData.put("currentPlayer", player);
+        gameData.put("selectedCard", selectedCard);
+        return gameData;
     }
-    //not working for some reason?
+
+    public void saveGame() {
+        Map<String, Object> gameData = collectGameData();
+        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream("savegame.dat"))) {
+            oos.writeObject(gameData);
+            JOptionPane.showMessageDialog(view, "Game saved successfully!");
+            System.out.println("Saved Game Data: " + gameData);
+        } catch (IOException e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(view, "Failed to save the game.", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+
+    public Map<String, Object> loadSavedGame() {
+        try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream("savegame.dat"))) {
+            return (Map<String, Object>) ois.readObject();
+        } catch (IOException | ClassNotFoundException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public void loadGame() {
+        Map<String, Object> gameData = loadSavedGame();
+        if (gameData != null) {
+
+            Object playersObj = gameData.get("players");
+            if (playersObj instanceof ArrayDeque<?>) {
+                players = (ArrayDeque<Player>) playersObj;
+            } else {
+                JOptionPane.showMessageDialog(view, "Error loading players.", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+            board = (Board) gameData.get("board");
+            deck = (Deck) gameData.get("deck");
+            player = (Player) gameData.get("currentPlayer");
+            selectedCard = (Card) gameData.get("selectedCard");
+
+            if (players == null || board == null || deck == null || player == null) {
+                JOptionPane.showMessageDialog(view, "Error loading game data.", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+            if (instance == null) {
+                instance = new GameController(); 
+            }
+    
+            JOptionPane.showMessageDialog(view, "Game loaded successfully!");
+            run();
+        } else {
+            JOptionPane.showMessageDialog(view, "No saved game found.", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+    
     public void startNewGame() {
         int result = JOptionPane.showConfirmDialog(view, "Are you sure you want to start a new game?",
                 "New Game", JOptionPane.YES_NO_OPTION);
@@ -570,10 +637,6 @@ public class GameController {
         run();
     }
 
-    public void loadSavedGame()
-    {
-
-    }
 
     public void showMainMenu(){
         view.setVisible(false);

@@ -2,8 +2,9 @@ package models;
 
 import java.awt.Color;
 import models.Pawn;
+import java.io.Serializable;
 
-public class Tile{
+public class Tile implements Serializable{
 
         private TType type;
         private TType firstFew; //to help ComputerPlayer

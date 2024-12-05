@@ -14,6 +14,7 @@ public class Tile implements Serializable{
         private Color color;        //for the endzone tiles 
         private Pawn pawn;
         private int [] coords;
+        private static int count = 0;
 
         public enum TType{
             START, HOME, NORMAL, ENDZONE, ENDZONE_FIRST, SLIDE_START, SLIDE_END, FIRST, SECOND, THIRD;
@@ -27,6 +28,8 @@ public class Tile implements Serializable{
             color = c;
             fork = null;
             coords = new int[2];
+            count++;
+            System.out.println(count);
         }
 
         Tile(TType t, Tile prev, Tile next){

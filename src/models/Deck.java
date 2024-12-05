@@ -22,7 +22,6 @@ public class Deck implements Serializable{
         cards.add(cardsUsed++, new Card(Card.CardType.ONE));
         
         reshuffle();
-
     }
 
     public Card drawCard(){

@@ -47,8 +47,8 @@ public class GameController implements Serializable{
         view.addRulesListener(e -> showRules());*/
     }
 
-    public static GameController getInstance(){
-        if(instance == null)
+    public static GameController getInstance(){     //was going to implement singleton pattern with this but ended up doing it by 
+        if(instance == null)                        //manually passing controllers into everything
             instance = new GameController();
         
         return instance;
@@ -93,6 +93,7 @@ public class GameController implements Serializable{
         for(Player p : players){
             if(p.getColor() == done.getColor()){
                 p.removePawn(done);
+                System.out.println("A \nPawn has reached HOME\n");
                 if(p.pawnsLeft() == 0)
                     playerWon(p);
             }
@@ -175,6 +176,7 @@ public class GameController implements Serializable{
     
     public void doTurn(Pawn p){
         Card.CardType cardType = selectedCard.getType();
+        System.out.println(cardType);
 
         if(pickSecondPawn){
             secondSelectedPawn = p;
@@ -212,6 +214,7 @@ public class GameController implements Serializable{
                 }
                 else{
                     System.out.println("Cant move with one card bc something is there");
+                    invalidMoveSelected = true;
                 }
 
         }
@@ -229,13 +232,12 @@ public class GameController implements Serializable{
             }
 
             //draw one more time
-            if(secondTurn){
+            if(secondTurn)
                 turnDone = true;
-            }
-            else
+            else{
                 secondTurn = true;
-
-            view.text((player.getName() + " draw again. You are the color " + player.getColorString()) , player.getColor());
+                view.text((player.getName() + ", draw again") , player.getColor());
+            }
 
         }
         else if (cardType == Card.CardType.THREE)
@@ -326,7 +328,7 @@ public class GameController implements Serializable{
                     }
                     else{
                         remainder = 6 - selectedOption;
-                        view.text("Select another pawn of your own color to move " + remainder + " spaces", player.getColor());
+                        JOptionPane.showMessageDialog(null, "Select another pawn of your own color to move " + remainder + " spaces");
                         pickSecondPawn = true;
                     }
                 }
@@ -391,7 +393,11 @@ public class GameController implements Serializable{
         else if(cardType == Card.CardType.ELEVEN)
         {
             seven11 = true;
-            if(pickSecondPawn == true && secondSelectedPawn != null){ 
+            if(pawnsOutOfStart() == 1 && selectedPawn.getTile().getType() != Tile.TType.START){
+                board.movePawn(selectedPawn, 11);
+                turnDone = true;
+            }
+            else if(pickSecondPawn == true && secondSelectedPawn != null){ 
                 System.out.println("Second pawn was picked");
                 Tile.TType sP = secondSelectedPawn.getTile().getType();
                 
@@ -444,7 +450,7 @@ public class GameController implements Serializable{
                         invalidMoveSelected = true;
                     else {
                         pickSecondPawn = true;
-                        view.text((player.getName() + ", choose opponent's pawn to swap with"), player.getColor());
+                        JOptionPane.showMessageDialog(null, player.getName() + ", choose opponent's pawn to swap with");
                     }
                 }
             }
@@ -464,16 +470,17 @@ public class GameController implements Serializable{
         {
             //can only use it to switch if you have a pawn in the start zone
             //switch the pawn with an opponents
-            if(selectedPawn.getTile().getType() == Tile.TType.START){
-                pickSecondPawn = true;
-                JOptionPane.showMessageDialog(null, "Pick opponent to swap with", null, JOptionPane.INFORMATION_MESSAGE);
-            }   
-            else 
-                invalidMoveSelected = true;
-            
-                if(pickSecondPawn == true && secondSelectedPawn != null){ 
+            if(!pickSecondPawn){
+                if(selectedPawn.getTile().getType() == Tile.TType.START){
+                    pickSecondPawn = true;
+                    JOptionPane.showMessageDialog(null, "Pick opponent to swap with", null, JOptionPane.INFORMATION_MESSAGE);
+                }   
+                else 
+                    invalidMoveSelected = true;
+            }
+            else{ 
                 Tile.TType sP = secondSelectedPawn.getTile().getType();
-                if(sP == Tile.TType.ENDZONE || sP == Tile.TType.ENDZONE || sP == Tile.TType.ENDZONE_FIRST){
+                if(sP == Tile.TType.ENDZONE || sP == Tile.TType.HOME || sP == Tile.TType.ENDZONE_FIRST){
                     invalidMoveSelected = true;
                 }
                 else{   //valid move
@@ -590,7 +597,7 @@ public class GameController implements Serializable{
 
     public Map<String, Object> loadSavedGame() {
         try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream("savegame.dat"))) {
-            return (Map<String, Object>) ois.readObject();
+            return (Map<String, Object>) ois.readObject();  
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
             return null;

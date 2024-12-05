@@ -100,7 +100,7 @@ public abstract class Player implements Serializable{
             }
             else if(type == Card.CardType.SEVEN){
                 if(p.getTile().getType() != Tile.TType.START){
-                    if(tile.getType() != Tile.TType.START && controller.isValidMove(p, 5))
+                    if(controller.isValidMove(p, 7))
                         pawnsThatCanMove.add(p);
                     else{   //can split the 7
                         int [] combos = {1, 6, 2, 5, 3, 4};

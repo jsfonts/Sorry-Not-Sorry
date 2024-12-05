@@ -31,11 +31,11 @@ public class Pawn implements Serializable{
         
         if(color == Color.GREEN)
             startCoords = startList.get(color)[greens++];
-        if(color == Color.BLUE)
+        else if(color == Color.BLUE)
             startCoords = startList.get(color)[blues++];
-        if(color == Color.RED)
+        else if(color == Color.RED)
             startCoords = startList.get(color)[reds++];
-        if(color == Color.YELLOW)
+        else if(color == Color.YELLOW)
             startCoords = startList.get(color)[yellows++];
     }
 
@@ -68,11 +68,11 @@ public class Pawn implements Serializable{
 
     public void setLocation(Tile target, int distance){
         location.setPawnAt(null);
-        
+
         location = target;
         location.setPawnAt(this);
         distanceTraveled += distance;
-        System.out.println(color + " Pawn is now at " + location.getType());
+        System.out.println(color + " Pawn is now at " + location.getType() + "\t" + location.getCoords()[0] + " " + location.getCoords()[1]);
     }
 
     public void resetToHome(Tile t){

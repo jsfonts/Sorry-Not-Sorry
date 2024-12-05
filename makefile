@@ -10,7 +10,7 @@ VIEWS = $(VIEWS_SRC:src/views/%.java=views/%.class)
 
 #all: models views controllers
 all:
-	javac -d bin -cp bin src/models/*.java src/controllers/*.java src/views/*.java
+	javac -Xlint:unchecked -d bin -cp bin src/models/*.java src/controllers/*.java src/views/*.java
 	javac -d bin -cp bin src/Main.java
 
 controllers: $(CONTROLLERS)

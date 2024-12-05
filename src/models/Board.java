@@ -21,6 +21,7 @@ public class Board implements Serializable{
         controller = c;
         startingTiles = new HashMap<Color, Tile>();
         setup();
+        print();
     }
 
     public static Tile startingTile(Color c){
@@ -97,6 +98,7 @@ public class Board implements Serializable{
         //if move is invalid, pawn stays where it is.
         
         if(destination.pawnAt() != null){    //if another pawn is already there 
+            System.out.println("Another pawn is already at that tile");
             if(destination.pawnAt().getColor() == pC){
                 valid = false;
                 System.out.println("your own pawn is already there");
@@ -109,8 +111,11 @@ public class Board implements Serializable{
             }
         }
 
-        if(valid && change){      //in case a pawn was on the destination square
-            System.out.println("Move was valid. Moving pawn there now");
+        if(valid)
+            System.out.println("Move was valid");
+        
+            if(change){      //in case a pawn was on the destination square
+            System.out.println("Moving pawn there now");
             piece.setLocation(destination, distance);
             destination.setPawnAt(piece);
 
@@ -423,5 +428,17 @@ public class Board implements Serializable{
         }
 
         return current;
+    }
+
+    public void print(){
+        Tile original = startingTiles.get(Color.YELLOW).next();
+        Tile current = original.next();
+        int i = 1;
+
+        while(current != original && i < 100){
+            current = current.next();
+            System.out.println(i++);
+        }
+        System.out.println(i);
     }
 }   //end of Board class

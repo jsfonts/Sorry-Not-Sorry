@@ -115,7 +115,8 @@ public class GameController {
     {
         if(player instanceof HumanPlayer)
         {
-            String message = player.getName() + "'s turn. Click on the cards to draw a card. You are the color " + player.getColorString();
+            view.text((player.getName() + "'s turn. Click on the cards to draw a card. You are the color " + player.getColorString()), player.getColor());
+          /* String message = player.getName() + "'s turn. Click on the cards to draw a card. You are the color " + player.getColorString();
             JLabel label = new JLabel(message);
             label.setOpaque(true);
             label.setBackground(player.getColor());
@@ -124,20 +125,21 @@ public class GameController {
             } else {
                 label.setForeground(Color.BLACK);
             }
-            JOptionPane.showMessageDialog(null, label, null, JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(null, label, null, JOptionPane.INFORMATION_MESSAGE); */
         }
         else
         {
-            String message = player.getName() + "'s turn. They are the color "+ player.getColorString();
-            JLabel label = new JLabel(message);
-            label.setOpaque(true);
-            label.setBackground(player.getColor());
-            if (player.getColor() != Color.YELLOW && player.getColor() != Color.GREEN) {
+            view.text((player.getName() + "'s turn. They are the color "+ player.getColorString()), player.getColor());
+            //String message = player.getName() + "'s turn. They are the color "+ player.getColorString();
+            //JLabel label = new JLabel(message);
+            //label.setOpaque(true);
+            //label.setBackground(player.getColor());
+           /*  if (player.getColor() != Color.YELLOW && player.getColor() != Color.GREEN) {
                 label.setForeground(Color.WHITE);
             } else {
                 label.setForeground(Color.BLACK);
             }
-            JOptionPane.showMessageDialog(null, label, null, JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(null, label, null, JOptionPane.INFORMATION_MESSAGE); */
             drawCard();
             Timer timer = new Timer(2000, e -> { 
                 player.move(selectedCard);
@@ -215,6 +217,7 @@ public class GameController {
             }
             else
                 secondTurn = true;
+            view.text((player.getName() + " draw again. You are the color " + player.getColorString()) , player.getColor());
 
         }
         else if (cardType == Card.CardType.THREE)

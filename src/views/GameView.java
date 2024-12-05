@@ -147,6 +147,11 @@ public class GameView extends JFrame {
         gameBoardPanel.setAvailablePawns(pawnList);
     }
 
+    public void text(String text, Color color)
+    {
+        gameBoardPanel.setText(text, color);
+    }
+
     public void showRules() {
         JEditorPane editorPane = new JEditorPane();
             try{
@@ -182,6 +187,10 @@ private class GameBoardPanel extends JPanel {
     private ArrayList<Pawn> availablePawns;
     public boolean showCard = false; // Track if card should be displayed 
     public boolean isHumanPlayer = false; //track if its a human players turn
+    public boolean showText = true; //Track if the text is shown
+    public String textOnScreen; 
+    Color color = Color.BLACK;
+
 
     public GameBoardPanel(Image gameBoardImage) {
         availablePawns = null;
@@ -274,6 +283,14 @@ private class GameBoardPanel extends JPanel {
         repaint();
     }
 
+    public void setText(String text, Color colorx)
+    {
+        textOnScreen = text;
+        showText = true;
+        color = colorx;
+        repaint();
+    }
+
     public void setAvailablePawns(ArrayList<Pawn> pawnList){
         availablePawns = pawnList;
         repaint();
@@ -333,8 +350,34 @@ private class GameBoardPanel extends JPanel {
             if (showCard && cardImage != null) {
                 drawCardImage((Graphics2D) g);
             }
+            
+            if(showText != false)
+            {
+                drawText((Graphics2D) g);
+            }
         }
     }
+
+    private void drawText(Graphics2D g2d) {
+            g2d.setClip(null);
+            Font font = new Font("Arial", Font.BOLD, 20);
+            g2d.setFont(font);
+        
+            Color var = color;
+            if (var == Color.YELLOW) {
+                var = new Color(255, 206, 27);
+            }
+        
+            String text = textOnScreen;
+        
+            int X = 20;
+            int Y = (int)(getHeight() / 2.5);
+            int maxWidth = (int) (grid_x * scale * 1.5); 
+
+            drawWrappedText(g2d, text, X, Y, maxWidth, var);
+        }
+        
+    
 
     private void drawOverlay(Graphics2D g2d) {
         BufferedImage overlayBufferedImage = convertToBufferedImage(overlayImage);
@@ -349,7 +392,6 @@ private class GameBoardPanel extends JPanel {
         roundedRectCard = new RoundRectangle2D.Double(xcoord, ycoord, newOverlayWidth, newOverlayHeight, 30, 30);
         g2d.setClip(roundedRectCard);
         g2d.drawImage(overlayBufferedImage, (int) xcoord, (int) ycoord, newOverlayWidth, newOverlayHeight, null);
-        //g2d.setClip(null);
     }
 
     private void drawCardImage(Graphics2D g2d) {
@@ -377,5 +419,58 @@ private class GameBoardPanel extends JPanel {
         g2d.dispose();
         return bufferedImage;
     }
-  }
-}  
+
+    private void drawWrappedText(Graphics2D g2d, String text, int x, int y, int maxWidth, Color var) {
+        FontMetrics fm = g2d.getFontMetrics();
+        int lineHeight = fm.getHeight();
+    
+        String[] words = text.split(" ");
+        StringBuilder line = new StringBuilder();
+        int maxLineWidth = 0;
+        int totalHeight = 0;
+    
+        int currentY = y;
+    
+        for (String word : words) {
+            String testLine = line + (line.length() == 0 ? "" : " ") + word;
+            int lineWidth = fm.stringWidth(testLine);
+    
+            if (lineWidth > maxWidth) {
+                maxLineWidth = Math.max(maxLineWidth, fm.stringWidth(line.toString()));
+                totalHeight += lineHeight;
+                line = new StringBuilder(word);
+                currentY += lineHeight;
+            } else {
+                line = new StringBuilder(testLine);
+            }
+        }
+
+        maxLineWidth = Math.max(maxLineWidth, fm.stringWidth(line.toString()));
+        totalHeight += lineHeight;
+
+        int padding = 10;
+        g2d.setColor(Color.WHITE);
+        g2d.fill(new RoundRectangle2D.Double(x - padding, y - lineHeight - padding, maxLineWidth + padding * 2, totalHeight + padding * 2, 20, 20));
+        g2d.draw(new RoundRectangle2D.Double(x - padding, y - lineHeight - padding, maxLineWidth + padding * 2, totalHeight + padding * 2, 20, 20));
+
+        currentY = y;
+
+        g2d.setColor(var);
+        line = new StringBuilder();
+        for (String word : words) {
+            String testLine = line + (line.length() == 0 ? "" : " ") + word;
+            int lineWidth = fm.stringWidth(testLine);
+    
+            if (lineWidth > maxWidth) {
+                g2d.drawString(line.toString(), x, currentY);
+                line = new StringBuilder(word);
+                currentY += lineHeight;
+            } else {
+                line = new StringBuilder(testLine);
+            }
+        }
+
+        g2d.drawString(line.toString(), x, currentY);
+    }
+}
+}    

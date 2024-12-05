@@ -31,7 +31,7 @@ public class GameController {
 
     
     public GameController() {
-        board = new Board();
+        board = new Board(this);
         instance = this;
         /*view.addRestartListener(e -> restartGame());
         view.addNewGameListener(e -> startNewGame());
@@ -93,8 +93,17 @@ public class GameController {
     }
 
     public void playerWon(Player p){
-        //this player won. do something
+        if(p instanceof HumanPlayer)
+            JOptionPane.showMessageDialog(null, " Congrats, " + p.getName() + ". you have won!", null, JOptionPane.INFORMATION_MESSAGE); 
+        else
+            JOptionPane.showMessageDialog(null, p.getName() + " has won! Better luck next time!", null, JOptionPane.INFORMATION_MESSAGE);  
+
+       // board.restartGame();
+        view.dispose();
+        mainMenu = new MainMenu(this);
+        showMainMenu();
     }
+
     public void swapPawns(Pawn p1, Pawn p2)
     {
         board.swapPawns(p1, p2);
@@ -255,23 +264,30 @@ public class GameController {
         }
         else if(cardType == Card.CardType.SEVEN)
         {
+            Tile original = selectedPawn.getTile(); //to use if they pick an invalid split 
+            Pawn pawnAtOriginal;
             seven11 = true;
+
             if(pawnsOutOfStart() == 1 && selectedPawn.getTile().getType() != Tile.TType.START){
                 board.movePawn(selectedPawn, 7);
                 turnDone = true;
             }
-            else{
-
-                if(pickSecondPawn){ //they already selected the second pawn to move
-                    if(board.isValidMove(p, remainder)){
-                        board.movePawn(secondSelectedPawn, remainder);
-                        turnDone = true;
-                    }
-                    else
-                        JOptionPane.showMessageDialog(null, "Second selected pawn cannot move " + remainder + "spaces", null, JOptionPane.INFORMATION_MESSAGE);
-
-                    pickSecondPawn = false;
+            else if(pickSecondPawn){    //they already selected the second pawn to move
+                board.movePawn(selectedPawn, 7 - remainder);
+                view.repaint();
+                if(board.isValidMove(secondSelectedPawn, remainder)){
+                    board.movePawn(secondSelectedPawn, remainder);
+                    turnDone = true;
+                    view.repaint();
                 }
+                else{
+                    JOptionPane.showMessageDialog(null, "Second selected pawn cannot move " + remainder + "spaces", null, JOptionPane.INFORMATION_MESSAGE);
+                    selectedPawn.setLocation(original, remainder);
+                    pickSecondPawn = false;
+                    view.repaint();
+                }
+            }
+            else{
 
                 //first they click on their pawn
                 String [] options = new String [7];
@@ -290,7 +306,7 @@ public class GameController {
                     options[0]
                 );
 
-                if(selectedOption == 7)
+                if(selectedOption == 6)
                 {
                     board.movePawn(selectedPawn, 7);
                     turnDone = true;
@@ -298,12 +314,14 @@ public class GameController {
                 else // add check to see if the split is valid
                 {
                     // allow them to click another pawn and then move that pawn the remainder of the spaces
-                    if(!board.isValidMove(p, selectedOption)){
-                        JOptionPane.showMessageDialog(null, "That pawn cannot move " + selectedOption + " spaces", null, JOptionPane.INFORMATION_MESSAGE);
+                    if(!board.isValidMove(p, selectedOption+1)){
+                        JOptionPane.showMessageDialog(null, "That pawn cannot move " + (selectedOption+1) + " spaces", null, JOptionPane.INFORMATION_MESSAGE);
                     }
-
-                    remainder = 7 - selectedOption;
-                    System.out.println("remainder = " + remainder);
+                    else{
+                        remainder = 6 - selectedOption;
+                        view.text("Select another pawn of your own color to move " + remainder + " spaces", player.getColor());
+                        pickSecondPawn = true;
+                    }
                 }
             }
 
@@ -368,9 +386,15 @@ public class GameController {
             seven11 = true;
             if(pickSecondPawn == true && secondSelectedPawn != null){ 
                 System.out.println("Second pawn was picked");
-                Tile.TType sP = selectedPawn.getTile().getType();
-                if(sP == Tile.TType.ENDZONE || sP == Tile.TType.ENDZONE || sP == Tile.TType.ENDZONE_FIRST){
+                Tile.TType sP = secondSelectedPawn.getTile().getType();
+                
+                if(secondSelectedPawn.getColor() == selectedPawn.getColor()){
                     invalidMoveSelected = true;
+                    JOptionPane.showMessageDialog(null, "Cannot swap with your own pawn", "Invalid Pawn for Swap", JOptionPane.INFORMATION_MESSAGE);
+                }
+                else if(sP == Tile.TType.ENDZONE || sP == Tile.TType.START || sP == Tile.TType.ENDZONE_FIRST){
+                    invalidMoveSelected = true;
+                    JOptionPane.showMessageDialog(null, "That pawn is in a safezone", "Invalid Pawn for Swap", JOptionPane.INFORMATION_MESSAGE);
                 }
                 else{   //valid move
                     board.swapPawns(selectedPawn, secondSelectedPawn);
@@ -413,7 +437,7 @@ public class GameController {
                         invalidMoveSelected = true;
                     else {
                         pickSecondPawn = true;
-                        JOptionPane.showMessageDialog(null, "Choose opponent's pawn to swap with", null, JOptionPane.INFORMATION_MESSAGE);
+                        view.text((player.getName() + ", choose opponent's pawn to swap with"), player.getColor());
                     }
                 }
             }
@@ -433,8 +457,10 @@ public class GameController {
         {
             //can only use it to switch if you have a pawn in the start zone
             //switch the pawn with an opponents
-            if(selectedPawn.getTile().getType() == Tile.TType.START)
+            if(selectedPawn.getTile().getType() == Tile.TType.START){
                 pickSecondPawn = true;
+                JOptionPane.showMessageDialog(null, "Pick opponent to swap with", null, JOptionPane.INFORMATION_MESSAGE);
+            }   
             else 
                 invalidMoveSelected = true;
             
@@ -453,7 +479,7 @@ public class GameController {
         }
 
         //make sure they have selected a card
-        if(invalidMoveSelected)
+        if(invalidMoveSelected && !seven11)
             invalidMoveMessage();
 
         if(turnDone){       //if valid move was selected
@@ -549,9 +575,11 @@ public class GameController {
 
     public void start(ArrayList<String> humanPlayerNames, int numComputerPlayers) {
         players = new ArrayDeque<Player>();
+        board = new Board(this);
         deck = new Deck();
         winner = null;
         selectedCard = null;
+        Pawn.reset();
 
         System.out.println(numComputerPlayers);
 

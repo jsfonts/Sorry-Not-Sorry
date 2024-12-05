@@ -44,6 +44,7 @@ public class Pawn{
         reds = 0;
         yellows = 0;
     }
+
     public int getDistanceTraveled()
     {
         return distanceTraveled;
@@ -65,6 +66,8 @@ public class Pawn{
     }
 
     public void setLocation(Tile target, int distance){
+        location.setPawnAt(null);
+        
         location = target;
         location.setPawnAt(this);
         distanceTraveled += distance;

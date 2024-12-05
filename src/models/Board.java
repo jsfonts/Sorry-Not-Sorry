@@ -84,6 +84,10 @@ public class Board{
                     destination = destination.fork();
                     distance++;
                 }
+                else if(destination.getType() == Tile.TType.HOME){
+                    valid = false;
+                    break;
+                }
                 else{
                     destination = destination.next();
                     distance++;

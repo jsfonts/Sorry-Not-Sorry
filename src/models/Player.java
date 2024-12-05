@@ -95,6 +95,28 @@ public abstract class Player{
                 if(tile.getType() != Tile.TType.START && controller.isValidMove(p, 5))
                     pawnsThatCanMove.add(p);
             }
+            else if(type == Card.CardType.SEVEN){
+                if(p.getTile().getType() != Tile.TType.START){
+                    if(tile.getType() != Tile.TType.START && controller.isValidMove(p, 5))
+                        pawnsThatCanMove.add(p);
+                    else{   //can split the 7
+                        int [] combos = {1, 6, 2, 5, 3, 4};
+
+                        for(Pawn pawn : pawns){
+                            for(int i = 0; i < 6; i += 2){
+                                for(Pawn pawn2 : pawns){
+                                    if(pawn == pawn2)   
+                                        continue;
+
+                                    if((controller.isValidMove(pawn, combos[i]) && controller.isValidMove(pawn2, i+1)) || (controller.isValidMove(pawn, combos[i+1]) && controller.isValidMove(pawn2, combos[i]))){                                    pawnsThatCanMove.add(pawn2);
+                                        pawnsThatCanMove.add(pawn);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
             else if(type == Card.CardType.EIGHT){
                 if(tile.getType() != Tile.TType.START && controller.isValidMove(p, 8))
                     pawnsThatCanMove.add(p);
@@ -106,7 +128,20 @@ public abstract class Player{
                     pawnsThatCanMove.add(p);
             }
             else if(type == Card.CardType.ELEVEN){
+                if(tile.getType() != Tile.TType.START && controller.isValidMove(p, 11))
+                    pawnsThatCanMove.add(p);
+                
+                boolean validOp = false;
+                for(Pawn op : opponentPawns){
+                    if(op.getTile().getType() != Tile.TType.HOME && op.getTile().getType() != Tile.TType.START && op.getTile().getType() != Tile.TType.ENDZONE)
+                        validOp = true;
+                }
 
+                if(validOp){
+                    if(p.getTile().getType() != Tile.TType.HOME && p.getTile().getType() != Tile.TType.START && p.getTile().getType() != Tile.TType.ENDZONE)
+                        pawnsThatCanMove.add(p);
+                }
+                
             }
             else if(type == Card.CardType.TWELVE){
                 if(tile.getType() != Tile.TType.START && controller.isValidMove(p, 12))

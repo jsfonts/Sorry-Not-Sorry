@@ -80,7 +80,7 @@ public abstract class Player{
             else if(type == Card.CardType.TWO){
                 if(tile.getType() != Tile.TType.START && controller.isValidMove(p, 2))
                     pawnsThatCanMove.add(p);
-                if(tile.getType() == Tile.TType.START)
+                else if(tile.getType() == Tile.TType.START && controller.isValidMove(p, 1))
                     pawnsThatCanMove.add(p);
             }
             else if(type == Card.CardType.THREE){

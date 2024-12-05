@@ -276,7 +276,6 @@ private class GameBoardPanel extends JPanel {
 
     public void setAvailablePawns(ArrayList<Pawn> pawnList){
         availablePawns = pawnList;
-        System.out.println("Doing the pawn highlighting");
         repaint();
     }
 

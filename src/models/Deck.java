@@ -17,11 +17,16 @@ public class Deck{
             for(int i = 0; i < 4; i++)
                 cards.add(cardsUsed++, new Card(type));
         }
-
+        
         cards.add(cardsUsed++, new Card(Card.CardType.ONE));
+        
+        reshuffle();
+
         cards.addFirst(new Card(Card.CardType.SEVEN));
         cards.addFirst(new Card(Card.CardType.ELEVEN));
-        reshuffle();
+        //cards.addFirst(new Card(Card.CardType.TWO));
+        cards.addFirst(new Card(Card.CardType.ONE));
+        cards.addFirst(new Card(Card.CardType.ONE));
     }
 
     public Card drawCard(){

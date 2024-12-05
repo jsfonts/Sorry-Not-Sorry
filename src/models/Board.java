@@ -95,42 +95,45 @@ public class Board{
                 }
             
             }
-
+            
             if(destination.getType() == Tile.TType.HOME && i > 0){
                 //travel to HOME must be exact
                 valid = false;
             }
-            else if(destination.getType() == Tile.TType.SLIDE_START && destination.getColor() != piece.getColor()){
-                destination = endOfSlide(destination, change);
-            }
+
+        }
+        
+        if(destination.getType() == Tile.TType.SLIDE_START && destination.getColor() != piece.getColor()){
+            destination = endOfSlide(destination, change);
         }
 
         //if move is invalid, pawn stays where it is.
-        if(change && valid){
-            
-            if(destination.pawnAt() != null){    //if another pawn is already there 
-                if(destination.pawnAt().getColor() == pC)
-                    valid = false;
-                else{                           //if its opponents pawn, bump it 
-                    Pawn pawnFound = destination.pawnAt();
-                    pawnFound.resetToHome(startingTiles.get(pawnFound.getColor()));
-                    int [] coord = startingTiles.get(pawnFound.getColor()).getCoords();
-                    System.out.println("Home of pawn is " + startingTiles.get(pawnFound.getColor()) + " at " + coord[0] + ", " + coord[1]);
-                }
+        
+        if(destination.pawnAt() != null){    //if another pawn is already there 
+            if(destination.pawnAt().getColor() == pC){
+                valid = false;
+                System.out.println("your own pawn is already there");
             }
+            else if(change && valid){                           //if its opponents pawn, bump it 
+                Pawn pawnFound = destination.pawnAt();
+                pawnFound.resetToHome(startingTiles.get(pawnFound.getColor()));
+                int [] coord = startingTiles.get(pawnFound.getColor()).getCoords();
+                System.out.println("Home of pawn is " + startingTiles.get(pawnFound.getColor()) + " at " + coord[0] + ", " + coord[1]);
+            }
+        }
 
-            if(valid){      //in case a pawn was on the destination square
-                System.out.println("Move was valid. Moving pawn there now");
-                piece.setLocation(destination, distance);
-                destination.setPawnAt(piece);
+        if(valid && change){      //in case a pawn was on the destination square
+            System.out.println("Move was valid. Moving pawn there now");
+            piece.setLocation(destination, distance);
+            destination.setPawnAt(piece);
 
-                if(destination.getType() == Tile.TType.HOME){
-                    controller.pawnReachedHome(piece);   //removes it from the players inventory
-                }
+            if(destination.getType() == Tile.TType.HOME){
+                controller.pawnReachedHome(piece);   //removes it from the players inventory
             }
 
             original.setPawnAt(null);
         }
+            
 
         return valid;
     }

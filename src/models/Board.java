@@ -13,28 +13,14 @@ import java.io.Serializable;
 
 public class Board implements Serializable{
     private boolean isPaused = false;
-    private ArrayList<Player> players;
     private static HashMap<Color, Tile> startingTiles;
     private final Color [] colors = {Color.YELLOW, Color.GREEN, Color.RED, Color.BLUE};
     private GameController controller; 
 
-    public Board(){
+    public Board(GameController c){
+        controller = c;
         startingTiles = new HashMap<Color, Tile>();
-        players = new ArrayList<Player>();
         setup();
-        //print();
-    }
-
-    public Board(ArrayList<Player> players) {
-        this.players = players;
-        startingTiles = new HashMap<Color, Tile>();
-
-        setup();
-        //print();
-    }
-
-    public void setPlayerNames(ArrayList<Player> players) {
-        this.players = players;
     }
 
     public static Tile startingTile(Color c){
@@ -438,16 +424,4 @@ public class Board implements Serializable{
 
         return current;
     }
-
-    public void print(){
-        Tile original = startingTiles.get(Color.YELLOW).next();
-        Tile current = original.next();
-        int i = 1;
-
-        while(current != original && i < 100){
-            current = current.next();
-            System.out.println(i++);
-        }
-        System.out.println(i);
-    }
-}
+}   //end of Board class

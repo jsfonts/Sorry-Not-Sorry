@@ -29,8 +29,6 @@ public class ComputerPlayer extends Player{
                     moveP = p;
                     pawnStart = true;
                     break;
-                    //pick pawn then break. move that pawn out of start. Set a bool to true
-                
                 }
             }
             if (!pawnStart)

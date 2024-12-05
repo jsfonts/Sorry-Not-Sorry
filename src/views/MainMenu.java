@@ -47,7 +47,7 @@ public class MainMenu extends JFrame {
 
         // Button actions
         newGameButton.addActionListener(e -> showPlayerSelection());
-        continueGameButton.addActionListener(e -> controller.loadSavedGame());
+        continueGameButton.addActionListener(e -> controller.loadGame());
 
     }
 

@@ -4,6 +4,7 @@ import controllers.GameController;
 import models.Player;
 import models.Card.CardType;
 
+
 public class ComputerPlayer extends Player{
 
     private static int cpCount;

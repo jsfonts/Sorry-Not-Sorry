@@ -449,7 +449,12 @@ private class GameBoardPanel extends JPanel {
         totalHeight += lineHeight;
 
         int padding = 10;
-        g2d.setColor(Color.WHITE);
+        if (var == Color.YELLOW)
+        {
+            g2d.setColor(Color.BLACK);
+        } 
+        else
+            g2d.setColor(Color.WHITE);
         g2d.fill(new RoundRectangle2D.Double(x - padding, y - lineHeight - padding, maxLineWidth + padding * 2, totalHeight + padding * 2, 20, 20));
         g2d.draw(new RoundRectangle2D.Double(x - padding, y - lineHeight - padding, maxLineWidth + padding * 2, totalHeight + padding * 2, 20, 20));
 

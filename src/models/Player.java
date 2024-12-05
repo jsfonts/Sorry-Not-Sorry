@@ -3,11 +3,12 @@ package models;
 import java.util.ArrayList;
 import java.awt.Color;
 import models.Pawn;
+import java.io.Serializable;
 import java.util.Arrays;
 import controllers.GameController;
 
-public abstract class Player{
-    protected static GameController controller;
+public abstract class Player implements Serializable{
+    private static GameController controller;
     private String name;
     protected ArrayList<Pawn> pawns;
     protected Color color;
@@ -47,8 +48,10 @@ public abstract class Player{
             return "Blue";
         if(color == Color.GREEN)
             return "Green";
-        else 
+        if (color == Color.YELLOW)
             return "Yellow";
+        else 
+            return "Color not found";
     }
 
     public String getName(){

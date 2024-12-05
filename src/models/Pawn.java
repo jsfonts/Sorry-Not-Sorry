@@ -4,8 +4,9 @@ import java.awt.Color;
 import models.Tile;
 import models.Board;
 import java.util.HashMap;
+import java.io.Serializable;
 
-public class Pawn{
+public class Pawn implements Serializable{
     //store the board space it is currently on 
     private Color color;
     private Tile location;

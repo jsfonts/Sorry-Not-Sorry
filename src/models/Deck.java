@@ -3,8 +3,9 @@ package models;
 import models.Card;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.io.Serializable;
 
-public class Deck{
+public class Deck implements Serializable{
     private ArrayList<Card> cards;
     private int cardsUsed;
 

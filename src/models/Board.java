@@ -9,8 +9,9 @@ import java.awt.Color;
 import models.Tile;
 import models.Player;
 import models.Pawn;
+import java.io.Serializable;
 
-public class Board{
+public class Board implements Serializable{
     private boolean isPaused = false;
     private static HashMap<Color, Tile> startingTiles;
     private final Color [] colors = {Color.YELLOW, Color.GREEN, Color.RED, Color.BLUE};

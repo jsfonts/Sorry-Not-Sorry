@@ -1,6 +1,7 @@
 package models;
+import java.io.Serializable;
 
-public class Card{
+public class Card implements Serializable{
     public enum CardType{
         ONE, TWO, THREE, FOUR, FIVE, SEVEN, EIGHT, TEN, ELEVEN, TWELVE, SORRY;
     }

@@ -154,7 +154,7 @@ public class Board implements Serializable{
             //System.out.println("Move was valid");
         
             if(change){      //in case a pawn was on the destination square
-                //System.out.println("Move was valid and change is true");
+                //out.println("Move was valid and change is true");
                 piece.setLocation(destination, distance);
                 destination.setPawnAt(piece);
 

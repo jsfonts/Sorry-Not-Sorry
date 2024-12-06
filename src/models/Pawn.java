@@ -77,7 +77,7 @@ public class Pawn implements Serializable{
         location = target;
         location.setPawnAt(this);
         distanceTraveled += distance;
-        System.out.println(color + " Pawn is now at " + location.getType() + "\t" + location.getCoords()[0] + " " + location.getCoords()[1]);
+        //System.out.println(color + " Pawn is now at " + location.getType() + "\t" + location.getCoords()[0] + " " + location.getCoords()[1]);
     }
 
     public void resetToHome(Tile t){

@@ -13,15 +13,17 @@ import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.CompletableFuture;
 
 public class GameController implements Serializable{
     private static Board board;  
     private transient GameView view;
     private transient MainMenu mainMenu;             
     private static GameController instance;
-    private ArrayDeque<Player> players;
+    public ArrayDeque<Player> players;
     private Player winner;
     private Deck deck;    //this is the board
     private Card selectedCard;
@@ -35,6 +37,7 @@ public class GameController implements Serializable{
     private Pawn secondSelectedPawn;
     private boolean pickSecondPawn;
     private boolean seven11;
+    private boolean justloaded = false;
 
     
     public GameController() {
@@ -70,7 +73,17 @@ public class GameController implements Serializable{
         
         showGameBoard();
 
-        nextPlayer();
+        if(justloaded)
+        {
+            turnDone = false;
+            cardAlreadyDrawn = false;
+            pickSecondPawn = false;
+            secondSelectedPawn = null;
+            turnMessage();
+        }
+        else
+            nextPlayer();
+        justloaded = false;
     }
 
     public boolean movePawn(Pawn selectedPawn, int spaces)
@@ -563,6 +576,13 @@ public class GameController implements Serializable{
     private void restartGame() {
         board.restartGame();
         JOptionPane.showMessageDialog(view, "Game Restarted!");
+        view.repaint();
+        player = players.getFirst(); 
+        turnDone = false;
+        cardAlreadyDrawn = false;
+        pickSecondPawn = false;
+        secondSelectedPawn = null;
+        turnMessage();
     }
 
     private Map<String, Object> collectGameData() {
@@ -600,7 +620,7 @@ public class GameController implements Serializable{
     public void loadGame() {
         Map<String, Object> gameData = loadSavedGame();
         if (gameData != null) {
-
+    
             Object playersObj = gameData.get("players");
             if (playersObj instanceof ArrayDeque<?>) {
                 players = (ArrayDeque<Player>) playersObj;
@@ -608,28 +628,50 @@ public class GameController implements Serializable{
                 JOptionPane.showMessageDialog(view, "Error loading players.", "Error", JOptionPane.ERROR_MESSAGE);
                 return;
             }
-
+    
             board = (Board) gameData.get("board");
             deck = (Deck) gameData.get("deck");
             player = (Player) gameData.get("currentPlayer");
             selectedCard = (Card) gameData.get("selectedCard");
-
+    
             if (players == null || board == null || deck == null || player == null) {
                 JOptionPane.showMessageDialog(view, "Error loading game data.", "Error", JOptionPane.ERROR_MESSAGE);
                 return;
             }
-
+    
             if (instance == null) {
                 instance = new GameController(); 
             }
+            
+            Player.setController(instance);
+    
+            // Reset player colors
+            resetPlayerColors(Player.getOriginalPlayers());
     
             JOptionPane.showMessageDialog(view, "Game loaded successfully!");
+            System.out.print(player.getColor());
+            justloaded = true;
             run();
+
         } else {
             JOptionPane.showMessageDialog(view, "No saved game found.", "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
-    
+
+    private void resetPlayerColors(ArrayList<Player> playersList) {
+        ArrayList<Color> fixedColors = new ArrayList<>(Arrays.asList(Color.RED, Color.BLUE, Color.YELLOW, Color.GREEN));
+        
+        for (int i = 0; i < playersList.size(); i++) {
+            Player player = playersList.get(i);
+            Color newColor = fixedColors.get(i % fixedColors.size());
+            for(Player p : players){
+                if(p.getName().equals(player.getName()))
+                    p.setColor(newColor);
+            }
+        }
+    }
+
+
     public void startNewGame() {
         int result = JOptionPane.showConfirmDialog(view, "Are you sure you want to start a new game?",
                 "New Game", JOptionPane.YES_NO_OPTION);
@@ -651,11 +693,15 @@ public class GameController implements Serializable{
         System.out.println(numComputerPlayers);
 
         for (String name : humanPlayerNames) {
-            players.add(new HumanPlayer(name, this));
+            Player in = new HumanPlayer(name, this);
+            players.add(in);
+            Player.setPlayers(in);
         }
         
         for (int i = 1; i <= numComputerPlayers; i++) {
-            players.add(new ComputerPlayer(this));
+            Player in = new ComputerPlayer(this);
+            players.add(in);
+            Player.setPlayers(in);
         }
 
         // need help here bc unsure

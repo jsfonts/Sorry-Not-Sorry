@@ -1,5 +1,6 @@
 package models;
 
+import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -36,12 +37,46 @@ public class Board implements Serializable{
     }
 
     public void restartGame() {
-       
+        ArrayList<Player> OriginalplayersList = new ArrayList<Player>();
+        OriginalplayersList = Player.getOriginalPlayers();
+        ArrayDeque<Player> playerCopy = new ArrayDeque<Player>();
+        playerCopy = controller.players;
+        controller.players = new ArrayDeque<Player>();
+        for (int i = 0; i < OriginalplayersList.size(); i++) {
+            Player player = OriginalplayersList.get(i);
+            for(Player p : playerCopy){
+                if(p.getName().equals(player.getName()))
+                    controller.players.addLast(p);
+            }
+        }
+        for (Player p : controller.players)  
+        {
+            for (Pawn pawn : p.getPawns())
+            {
+                if (p.getColor() == Color.YELLOW)
+                {
+                    Tile start = startingTile(Color.YELLOW);
+                    pawn.resetToHome(start);
+                }
+                else if(p.getColor() == Color.GREEN)
+                {
+                    Tile start = startingTile(Color.GREEN);
+                    pawn.resetToHome(start);
+                }
+                else if(p.getColor() == Color.BLUE)
+                {
+                    Tile start = startingTile(Color.BLUE);
+                    pawn.resetToHome(start);
+                }
+                else if (p.getColor() == Color.RED)
+                {
+                    Tile start = startingTile(Color.RED);
+                    pawn.resetToHome(start);
+                }
+            }
+        } 
     }
 
-    public void startNewGame() {
- 
-    }
 
     public boolean movePawn(Pawn pawn, int spaces){
         System.out.println("Pawn move has just been called");
@@ -66,14 +101,13 @@ public class Board implements Serializable{
             }
         }
         else{         
-            int i = spaces;              //move forwards
-            for(;i > 0; i--){
+            int i;              //move forwards
+            for(i = spaces; i > 0; i--){
                 if(isEndZoneEntrance(destination.fork(), piece)){
                     destination = destination.fork();
                     distance++;
                 }
                 else if(destination.getType() == Tile.TType.HOME){
-                    valid = false;
                     break;
                 }
                 else{

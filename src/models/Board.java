@@ -187,6 +187,12 @@ public class Board implements Serializable{
         Tile p1Location = p1.getTile();
         p1.setLocation(p2.getTile(), 0);
         p2.setLocation(p1Location, 0);
+
+        if(p1.getTile().getType() == Tile.TType.SLIDE_START && p1.getTile().getColor() != p1.getColor())
+            p1.setLocation(endOfSlide(p1.getTile(), true), 0);
+        
+        if(p2.getTile().getType() == Tile.TType.SLIDE_START && p2.getTile().getColor() != p2.getColor())
+            p2.setLocation(endOfSlide(p2.getTile(), true), 0);
     }
 
     private void setup(){

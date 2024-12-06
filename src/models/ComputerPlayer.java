@@ -19,6 +19,8 @@ public class ComputerPlayer extends Player{
 
     public void move(Card c){
         GameController controller = GameController.getInstance();
+        System.out.println("Computer Player Moving. " + c.getType());
+
         if (c.getType() == Card.CardType.ONE)
         {
             int distancetraveled = 0;
@@ -87,7 +89,7 @@ public class ComputerPlayer extends Player{
             Pawn moveP = null;
             int distancetraveled = 0;
             for(Pawn p : getPawns()){
-                if (p.getDistanceTraveled() > distancetraveled && controller.isValidMove(p,3))
+                if (p.getDistanceTraveled() > distancetraveled && p.getTile().getType() != Tile.TType.START && controller.isValidMove(p,3))
                 {
                      distancetraveled = p.getDistanceTraveled();
                      moveP = p;
@@ -122,7 +124,7 @@ public class ComputerPlayer extends Player{
             {
                 int distancetraveled = 0;
                 for(Pawn p : getPawns()){
-                    if (p.getDistanceTraveled() > distancetraveled && controller.isValidMove(p,-4))
+                    if (p.getDistanceTraveled() > distancetraveled && p.getTile().getType() != Tile.TType.START && controller.isValidMove(p,-4))
                     {
                          distancetraveled = p.getDistanceTraveled();
                          moveP = p;
@@ -140,7 +142,7 @@ public class ComputerPlayer extends Player{
             Pawn moveP = null;
             int distancetraveled = 0;
             for(Pawn p : getPawns()){
-                if (p.getDistanceTraveled() > distancetraveled && controller.isValidMove(p,5))
+                if (p.getDistanceTraveled() > distancetraveled && controller.isValidMove(p,5) && p.getTile().getType() != Tile.TType.START)
                 {
                      distancetraveled = p.getDistanceTraveled();
                      moveP = p;
@@ -158,7 +160,7 @@ public class ComputerPlayer extends Player{
             Pawn moveP = null;     
             int distancetraveled = 0;
             for(Pawn p : getPawns()){
-                if (p.getDistanceTraveled() > distancetraveled && controller.isValidMove(p, 7))
+                if (p.getDistanceTraveled() > distancetraveled && p.getTile().getType() != Tile.TType.START && controller.isValidMove(p, 7))
                 {
                      distancetraveled = p.getDistanceTraveled();
                      moveP = p;
@@ -176,7 +178,7 @@ public class ComputerPlayer extends Player{
             Pawn moveP = null;
             int distancetraveled = 0;
             for(Pawn p : getPawns()){
-                if (p.getDistanceTraveled() > distancetraveled && controller.isValidMove(p,8))
+                if (p.getDistanceTraveled() > distancetraveled && p.getTile().getType() != Tile.TType.START && controller.isValidMove(p,8))
                 {
                      distancetraveled = p.getDistanceTraveled();
                      moveP = p;
@@ -194,7 +196,7 @@ public class ComputerPlayer extends Player{
             int distancetraveled = 0;
             Pawn moveP = null;
             for(Pawn p : getPawns()){
-                if (p.getDistanceTraveled() > distancetraveled && controller.isValidMove(p,10))
+                if (p.getDistanceTraveled() > distancetraveled && p.getTile().getType() != Tile.TType.START && controller.isValidMove(p,10))
                 {
                     distancetraveled = p.getDistanceTraveled();
                     moveP = p;
@@ -228,7 +230,7 @@ public class ComputerPlayer extends Player{
             boolean swap = false;
             int distancetraveled = 0;
             for(Pawn p : getPawns()){
-                if (p.getDistanceTraveled() > distancetraveled && controller.isValidMove(p,11))
+                if (p.getDistanceTraveled() > distancetraveled && p.getTile().getType() != Tile.TType.START && controller.isValidMove(p,11))
                 {
                     distancetraveled = p.getDistanceTraveled();
                     moveP = p;
@@ -239,7 +241,7 @@ public class ComputerPlayer extends Player{
             for(Player pla : controller.getPlayers())   //have to add check that checks the distance of the opponents pawn from the originial pawns start place instead of the opponents start place.
             {
                 for (Pawn p : pla.getPawns()){
-                    if (p.getColor() != color && p.getDistanceTraveled() > oppDistancetraveled && p.getDistanceTraveled() > distancetraveled + 11)
+                    if (p.getTile().getType() != Tile.TType.START && p.getColor() != color && p.getDistanceTraveled() > oppDistancetraveled && p.getDistanceTraveled() > distancetraveled + 11)
                     {
                         oppDistancetraveled = p.getDistanceTraveled();
                         OppP = p;
@@ -263,7 +265,7 @@ public class ComputerPlayer extends Player{
             Pawn moveP  = null;
             int distancetraveled = 0;
             for(Pawn p : getPawns()){
-                if (p.getDistanceTraveled() > distancetraveled && controller.isValidMove(p,12))
+                if (p.getTile().getType() != Tile.TType.START && p.getDistanceTraveled() > distancetraveled && controller.isValidMove(p,12))
                 {
                     distancetraveled = p.getDistanceTraveled();
                     moveP = p;

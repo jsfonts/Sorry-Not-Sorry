@@ -22,31 +22,7 @@ public class Deck implements Serializable{
         cards.add(cardsUsed++, new Card(Card.CardType.ONE));
         
         reshuffle();
-        /*
-        cards.addFirst(new Card(Card.CardType.ONE));
-        cards.addFirst(new Card(Card.CardType.EIGHT));
-        cards.addFirst(new Card(Card.CardType.ONE));
-        cards.addFirst(new Card(Card.CardType.FOUR));
-        cards.addFirst(new Card(Card.CardType.ONE));
-        cards.addFirst(new Card(Card.CardType.ONE));
-        cards.addFirst(new Card(Card.CardType.ONE));
-        cards.addFirst(new Card(Card.CardType.EIGHT));
-        cards.addFirst(new Card(Card.CardType.ONE));
-        cards.addFirst(new Card(Card.CardType.FOUR));
-        cards.addFirst(new Card(Card.CardType.ONE));
-        cards.addFirst(new Card(Card.CardType.ONE));
-        cards.addFirst(new Card(Card.CardType.ONE));
-        cards.addFirst(new Card(Card.CardType.EIGHT));
-        cards.addFirst(new Card(Card.CardType.ONE));
-        cards.addFirst(new Card(Card.CardType.FOUR));
-        cards.addFirst(new Card(Card.CardType.ONE));
-        cards.addFirst(new Card(Card.CardType.ONE));
-        cards.addFirst(new Card(Card.CardType.ONE));
-        cards.addFirst(new Card(Card.CardType.EIGHT));
-        cards.addFirst(new Card(Card.CardType.ONE));
-        cards.addFirst(new Card(Card.CardType.ONE));
-        cards.addFirst(new Card(Card.CardType.ONE));
-         */
+         
     }
 
     public Card drawCard(){

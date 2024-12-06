@@ -86,7 +86,18 @@ public class Tile implements Serializable{
         }
 
         public void setPawnAt(Pawn pToAdd){
+            System.out.println("setPawnAt() function");
+            if(pawn == null)
+                System.out.println("Pawn that was at tile " + type + " is null.");
+            else
+            System.out.println("Pawn that was at tile " + type + " is " + pawn);
+
             pawn = pToAdd;
+
+            if(pawn == null)
+                System.out.println("Pawn that is now at tile " + type + " is null.");
+            else
+                System.out.println("Pawn is now at tile " + type + " is " + pawn);
         }
 
         public boolean isFirstThree(Color c){           //for ComputerPlayer
@@ -115,10 +126,10 @@ public class Tile implements Serializable{
                 
                 //add the HOME tile
                 current.next = new Tile(TType.HOME, current, null, c);
+                current = current.next();
                 current.setCoords(9, 13);
             }
-
-            if(c == Color.GREEN){    //green
+            else if(c == Color.GREEN){    //green
                 current.fork = new Tile(TType.ENDZONE_FIRST, current, null, c);
                 current = current.fork;
                 current.setCoords(13, 1);
@@ -131,6 +142,7 @@ public class Tile implements Serializable{
                 
                 //add the HOME tile
                 current.next = new Tile(TType.HOME, current, null, c);
+                current = current.next();
                 current.setCoords(13,6);
             }
 
@@ -147,6 +159,7 @@ public class Tile implements Serializable{
                 
                 //add the HOME tile
                 current.next = new Tile(TType.HOME, current, null, c);
+                current = current.next();
                 current.setCoords(6, 2);
             }
 
@@ -163,6 +176,7 @@ public class Tile implements Serializable{
                 
                 //add the HOME tile
                 current.next = new Tile(TType.HOME, current, null, c);
+                current = current.next();
                 current.setCoords(2, 9);
             }
         }

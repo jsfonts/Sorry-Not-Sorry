@@ -393,7 +393,7 @@ public class GameController implements Serializable{
         else if(cardType == Card.CardType.ELEVEN)
         {
             seven11 = true;
-            if(pawnsOutOfStart() == 1 && selectedPawn.getTile().getType() != Tile.TType.START){
+            if(pawnsOutOfStart() == 1 && selectedPawn.getTile().getType() != Tile.TType.START && board.isValidMove(selectedPawn, 11)){
                 board.movePawn(selectedPawn, 11);
                 turnDone = true;
             }
@@ -480,7 +480,7 @@ public class GameController implements Serializable{
             }
             else{ 
                 Tile.TType sP = secondSelectedPawn.getTile().getType();
-                if(sP == Tile.TType.ENDZONE || sP == Tile.TType.HOME || sP == Tile.TType.ENDZONE_FIRST){
+                if(sP == Tile.TType.ENDZONE || sP == Tile.TType.HOME || sP == Tile.TType.ENDZONE_FIRST || secondSelectedPawn.getColor() == selectedPawn.getColor()){
                     invalidMoveSelected = true;
                 }
                 else{   //valid move

@@ -73,19 +73,20 @@ public class Board implements Serializable{
                     destination = destination.fork();
                     distance++;
                 }
-                else if(destination.getType() == Tile.TType.HOME){
-                    valid = false;
-                    break;
-                }
-                else{
+                else if(destination.getType() != Tile.TType.HOME){
                     destination = destination.next();
                     distance++;
+                }
+                
+                if(destination.getType() == Tile.TType.HOME){
+                    break;
                 }
             
             }
             
             if(destination.getType() == Tile.TType.HOME && i > 0){
                 //travel to HOME must be exact
+                System.out.println("Traveled past home");
                 valid = false;
             }
 
@@ -111,19 +112,19 @@ public class Board implements Serializable{
             }
         }
 
-        if(valid)
+        if(valid){
             System.out.println("Move was valid");
         
             if(change){      //in case a pawn was on the destination square
-            System.out.println("Moving pawn there now");
-            piece.setLocation(destination, distance);
-            destination.setPawnAt(piece);
+                System.out.println("Moving pawn there now");
+                piece.setLocation(destination, distance);
+                destination.setPawnAt(piece);
 
-            if(destination.getType() == Tile.TType.HOME){
-                controller.pawnReachedHome(piece);   //removes it from the players inventory
+                if(destination.getType() == Tile.TType.HOME){
+                    controller.pawnReachedHome(piece);   //removes it from the players inventory
+                }
+                original.setPawnAt(null);
             }
-
-            original.setPawnAt(null);
         }
             
 

@@ -251,7 +251,7 @@ public class ComputerPlayer extends Player{
             {
                 controller.swapPawns(moveP, OppP);
             }
-            else if (OppP == null && moveP != null)
+            else if (moveP != null)
             {
                 controller.movePawn(moveP, 11);
             }
@@ -300,9 +300,6 @@ public class ComputerPlayer extends Player{
             {
                 controller.swapPawns(moveP, OppP);
             }
-          //  add function for swaping
-            // controller.movePawn(OppP, moveP);
-
 
         }
     }

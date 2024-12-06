@@ -131,6 +131,7 @@ public class GameController implements Serializable{
     }
 
     private void nextPlayer(){
+        selectedCard = null;
         player = players.removeFirst();
         players.addLast(player);
         turnDone = false;

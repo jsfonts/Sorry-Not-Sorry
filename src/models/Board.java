@@ -102,8 +102,8 @@ public class Board implements Serializable{
             }
         }
         else{         
-            int i;              //move forwards
-            for(i = spaces; i > 0; i--){
+            int i = spaces;              //move forwards
+            for(; i > 0; i--){
                 if(isEndZoneEntrance(destination.fork(), piece)){
                     destination = destination.fork();
                     distance++;

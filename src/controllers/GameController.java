@@ -361,7 +361,7 @@ public class GameController implements Serializable{
         }
         else if(cardType == Card.CardType.TEN)
         {
-            if(selectedPawn.getTile().getType() != Tile.TType.START && isValidMove(selectedPawn, 10)){
+            if(selectedPawn.getTile().getType() != Tile.TType.START && !isValidMove(selectedPawn, 10)){
                 board.movePawn(selectedPawn, -1);
                 turnDone = true;
             }
@@ -439,46 +439,63 @@ public class GameController implements Serializable{
                 options[0] = "11";
                 options[1] = "Switch";
                 String msg = "Would you like to switch with another players pawn or move your pawn 11 spaces?";
+                boolean opPawnAvailable = false;
+                boolean canMove11 = board.isValidMove(selectedPawn, 11);
 
-                if(!board.isValidMove(selectedPawn, 11)){
+                for(Player opPlayers : players){
+                    if(opPlayers.getColor() != player.getColor()){
+                        for(Pawn opPawn : opPlayers.getPawns()){
+                            if(opPawn.getTile().getType() != Tile.TType.START && opPawn.getTile().getType() != Tile.TType.ENDZONE_FIRST && opPawn.getTile().getType() != Tile.TType.ENDZONE)
+                                opPawnAvailable = true;
+                        }
+                    }
+                }
+
+                if(!canMove11 && opPawnAvailable){
                     options[0] = "Skip";
                     msg = "You cannot move forward 11 spaces. Would you like to switch with another player or skip?";
                 }
+                else if(!opPawnAvailable && canMove11){
+                    board.movePawn(selectedPawn, 11);
+                    turnDone = true;
+                }
 
-                int selectedOption = JOptionPane.showOptionDialog(
-                    null,
-                    msg,
-                    "11 card pawn selection",
-                    JOptionPane.DEFAULT_OPTION,
-                    JOptionPane.QUESTION_MESSAGE,
-                    null,
-                    options,
-                    options[0]
-                );
+                if(!turnDone){
+                    int selectedOption = JOptionPane.showOptionDialog(
+                        null,
+                        msg,
+                        "11 card pawn selection",
+                        JOptionPane.DEFAULT_OPTION,
+                        JOptionPane.QUESTION_MESSAGE,
+                        null,
+                        options,
+                        options[0]
+                    );
 
-                if (selectedOption == 0)
-                {
-                    if(options[0] == "Skip"){       //if they clicked skip
-                        turnDone = true;
-                    }else{
-                        //move forward 11 spaces
-                        if(selectedPawn.getTile().getType() != Tile.TType.START && board.isValidMove(selectedPawn, 11)){
-                            board.movePawn(selectedPawn, 11);
+                    if (selectedOption == 0)
+                    {
+                        if(options[0] == "Skip"){       //if they clicked skip
                             turnDone = true;
+                        }else{
+                            //move forward 11 spaces
+                            if(selectedPawn.getTile().getType() != Tile.TType.START && board.isValidMove(selectedPawn, 11)){
+                                board.movePawn(selectedPawn, 11);
+                                turnDone = true;
+                            }
+                            else{
+                                invalidMoveSelected = true;
+                            }
                         }
-                        else{
+                    } 
+                    else if (selectedOption == 1)
+                    {
+                        //switch logic allow them to click on the opponents pawn they want to switch with or vice versa
+                        if(selectedPawn.getTile().getType() == Tile.TType.START || selectedPawn.getTile().getType() == Tile.TType.ENDZONE || selectedPawn.getTile().getType() == Tile.TType.ENDZONE_FIRST)
                             invalidMoveSelected = true;
+                        else {
+                            pickSecondPawn = true;
+                            JOptionPane.showMessageDialog(null, player.getName() + ", choose opponent's pawn to swap with");
                         }
-                    }
-                } 
-                else if (selectedOption == 1)
-                {
-                    //switch logic allow them to click on the opponents pawn they want to switch with or vice versa
-                    if(selectedPawn.getTile().getType() == Tile.TType.START || selectedPawn.getTile().getType() == Tile.TType.ENDZONE || selectedPawn.getTile().getType() == Tile.TType.ENDZONE_FIRST)
-                        invalidMoveSelected = true;
-                    else {
-                        pickSecondPawn = true;
-                        JOptionPane.showMessageDialog(null, player.getName() + ", choose opponent's pawn to swap with");
                     }
                 }
             }

@@ -19,7 +19,7 @@ public class ComputerPlayer extends Player{
 
     public void move(Card c){
         GameController controller = GameController.getInstance();
-        System.out.println("Computer Player Moving. " + c.getType());
+        //System.out.println("Computer Player Moving. " + c.getType());
 
         if (c.getType() == Card.CardType.ONE)
         {
@@ -160,7 +160,7 @@ public class ComputerPlayer extends Player{
             Pawn moveP = null;     
             int distancetraveled = 0;
             for(Pawn p : getPawns()){
-                System.out.println(p + " Original loc: " + p.getCoords()[0] + ' ' + p.getCoords()[1]);
+                //System.out.println(p + " Original loc: " + p.getCoords()[0] + ' ' + p.getCoords()[1]);
                 if (p.getDistanceTraveled() > distancetraveled && p.getTile().getType() != Tile.TType.START && controller.isValidMove(p, 7))
                 {
                      distancetraveled = p.getDistanceTraveled();

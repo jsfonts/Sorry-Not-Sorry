@@ -106,7 +106,6 @@ public class GameController implements Serializable{
         for(Player p : players){
             if(p.getColor() == done.getColor()){
                 p.removePawn(done);
-                System.out.println("A \nPawn has reached HOME\n");
                 if(p.pawnsLeft() == 0)
                     playerWon(p);
             }
@@ -190,7 +189,6 @@ public class GameController implements Serializable{
     
     public void doTurn(Pawn p){
         Card.CardType cardType = selectedCard.getType();
-        System.out.println(cardType);
 
         if(pickSecondPawn){
             secondSelectedPawn = p;
@@ -214,20 +212,17 @@ public class GameController implements Serializable{
         else if (selectedPawn.getColor() != player.getColor() && (cardType != Card.CardType.ELEVEN || cardType != Card.CardType.SORRY))
         {
             ErrorMessageColor();
-            System.out.println("Wrong color pawn");
             return;
         }
         else if (cardType == Card.CardType.ONE)
         {
             // if the pawn is not one of their own call: ErrorMessage(player);
             // if the pawn selected is in the Start move it out of start if its not move the pawn one space
-                System.out.println("Card type is one");
                 if(board.isValidMove(selectedPawn, 1)){
                     board.movePawn(selectedPawn, 1);
                     turnDone = true;
                 }
                 else{
-                    System.out.println("Cant move with one card bc something is there");
                     invalidMoveSelected = true;
                 }
 
@@ -417,7 +412,6 @@ public class GameController implements Serializable{
                 turnDone = true;
             }
             else if(pickSecondPawn == true && secondSelectedPawn != null){ 
-                System.out.println("Second pawn was picked");
                 Tile.TType sP = secondSelectedPawn.getTile().getType();
                 
                 if(secondSelectedPawn.getColor() == selectedPawn.getColor()){
@@ -604,7 +598,6 @@ public class GameController implements Serializable{
                 ++i;
         }
 
-        System.out.println(i + " pawns were out of start");
 
         return i;
     }
@@ -640,7 +633,6 @@ public class GameController implements Serializable{
         try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream("savegame.dat"))) {
             oos.writeObject(gameData);
             JOptionPane.showMessageDialog(view, "Game saved successfully!");
-            System.out.println("Saved Game Data: " + gameData);
         } catch (IOException e) {
             e.printStackTrace();
             JOptionPane.showMessageDialog(view, "Failed to save the game.", "Error", JOptionPane.ERROR_MESSAGE);
@@ -689,7 +681,6 @@ public class GameController implements Serializable{
             resetPlayerColors(Player.getOriginalPlayers());
     
             JOptionPane.showMessageDialog(view, "Game loaded successfully!");
-            System.out.print(player.getColor());
             justloaded = true;
             run();
 
@@ -730,7 +721,6 @@ public class GameController implements Serializable{
         selectedCard = null;
         Pawn.reset();
 
-        System.out.println(numComputerPlayers);
 
         for (String name : humanPlayerNames) {
             Player in = new HumanPlayer(name, this);

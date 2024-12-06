@@ -21,9 +21,6 @@ public class BackgroundMusicPlayer {
 
                     DataLine.Info info = new DataLine.Info(SourceDataLine.class, baseFormat);
 
-                    if (!AudioSystem.isLineSupported(info)) {
-                        System.out.println("Line for the original format is not supported.");
-                    }
 
                     try (SourceDataLine line = (SourceDataLine) AudioSystem.getLine(info)) {
                         line.open(baseFormat);  

@@ -29,7 +29,7 @@ public class Tile implements Serializable{
             fork = null;
             coords = new int[2];
             count++;
-            System.out.println(count);
+            //System.out.println(count);
         }
 
         Tile(TType t, Tile prev, Tile next){
@@ -86,18 +86,18 @@ public class Tile implements Serializable{
         }
 
         public void setPawnAt(Pawn pToAdd){
-            System.out.println("setPawnAt() function");
-            if(pawn == null)
-                System.out.println("Pawn that was at tile " + type + " is null.");
-            else
-            System.out.println("Pawn that was at tile " + type + " is " + pawn);
+            //System.out.println("setPawnAt() function");
+            //if(pawn == null)
+                //System.out.println("Pawn that was at tile " + type + " is null.");
+           // else
+            //System.out.println("Pawn that was at tile " + type + " is " + pawn);
 
             pawn = pToAdd;
 
-            if(pawn == null)
-                System.out.println("Pawn that is now at tile " + type + " is null.");
-            else
-                System.out.println("Pawn is now at tile " + type + " is " + pawn);
+            //if(pawn == null)
+             //   System.out.println("Pawn that is now at tile " + type + " is null.");
+           // else
+              //  System.out.println("Pawn is now at tile " + type + " is " + pawn);
         }
 
         public boolean isFirstThree(Color c){           //for ComputerPlayer

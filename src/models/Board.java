@@ -80,7 +80,6 @@ public class Board implements Serializable{
 
 
     public boolean movePawn(Pawn pawn, int spaces){
-        System.out.println("\nmovePawn Function");
         return movePawn(pawn, spaces, true);
     }
 
@@ -125,7 +124,6 @@ public class Board implements Serializable{
             
             if(destination.getType() == Tile.TType.HOME && i > 0){
                 //travel to HOME must be exact
-                System.out.println("Traveled past home");
                 valid = false;
             }
 
@@ -139,24 +137,24 @@ public class Board implements Serializable{
         //if move is invalid, pawn stays where it is.
         
         if(destination.pawnAt() != null){    //if another pawn is already there 
-            System.out.println("Another pawn is already at that tile");
+            //System.out.println("Another pawn is already at that tile");
             if(destination.pawnAt().getColor() == pC){
                 valid = false;
-                System.out.println("your own pawn is already there");
+                //System.out.println("your own pawn is already there");
             }
             else if(change && valid){                           //if its opponents pawn, bump it 
                 Pawn pawnFound = destination.pawnAt();
                 pawnFound.resetToHome(startingTiles.get(pawnFound.getColor()));
                 int [] coord = startingTiles.get(pawnFound.getColor()).getCoords();
-                System.out.println("Home of pawn is " + startingTiles.get(pawnFound.getColor()) + " at " + coord[0] + ", " + coord[1]);
+                //System.out.println("Home of pawn is " + startingTiles.get(pawnFound.getColor()) + " at " + coord[0] + ", " + coord[1]);
             }
         }
 
         if(valid){
-            System.out.println("Move was valid");
+            //System.out.println("Move was valid");
         
             if(change){      //in case a pawn was on the destination square
-                System.out.println("Move was valid and change is true");
+                //System.out.println("Move was valid and change is true");
                 piece.setLocation(destination, distance);
                 destination.setPawnAt(piece);
 
@@ -173,12 +171,12 @@ public class Board implements Serializable{
 
     public boolean isValidMove(Pawn piece, int spaces){
         boolean valid = true;
-        System.out.println("\nisValidMove Function");
+        //System.out.println("\nisValidMove Function");
 
         valid = movePawn(piece, spaces, false);
 
-        if(!valid)
-            System.out.println("It was an invalid move");
+        //if(!valid)
+            //System.out.println("It was an invalid move");
 
         return valid;
     }
@@ -479,9 +477,9 @@ public class Board implements Serializable{
 
         while(current != original && i < 100){
             current = current.next();
-            System.out.println(i++);
+            //System.out.println(i++);
         }
-        System.out.println(i);
+        //System.out.println(i);
     }
 
     private void moveOutOfStart(Pawn piece){

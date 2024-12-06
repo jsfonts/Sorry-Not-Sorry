@@ -439,10 +439,16 @@ public class GameController implements Serializable{
                 String [] options = new String [2];
                 options[0] = "11";
                 options[1] = "Switch";
+                String msg = "Would you like to switch with another players pawn or move your pawn 11 spaces?";
+
+                if(!board.isValidMove(selectedPawn, 11)){
+                    options[0] = "Skip";
+                    msg = "You cannot move forward 11 spaces. Would you like to switch with another player or skip?";
+                }
 
                 int selectedOption = JOptionPane.showOptionDialog(
                     null,
-                    "Would you like to switch with another players pawn or move your pawn 11 spaces?",
+                    msg,
                     "11 card pawn selection",
                     JOptionPane.DEFAULT_OPTION,
                     JOptionPane.QUESTION_MESSAGE,
@@ -453,13 +459,17 @@ public class GameController implements Serializable{
 
                 if (selectedOption == 0)
                 {
-                    //move forward 11 spaces
-                    if(selectedPawn.getTile().getType() != Tile.TType.START && board.isValidMove(selectedPawn, 11)){
-                        board.movePawn(selectedPawn, 11);
+                    if(options[0] == "Skip"){       //if they clicked skip
                         turnDone = true;
-                    }
-                    else{
-                        invalidMoveSelected = true;
+                    }else{
+                        //move forward 11 spaces
+                        if(selectedPawn.getTile().getType() != Tile.TType.START && board.isValidMove(selectedPawn, 11)){
+                            board.movePawn(selectedPawn, 11);
+                            turnDone = true;
+                        }
+                        else{
+                            invalidMoveSelected = true;
+                        }
                     }
                 } 
                 else if (selectedOption == 1)

@@ -92,6 +92,11 @@ public class Board implements Serializable{
         Color pC = piece.getColor();
         int distance = 0;
 
+        if(spaces == 1 && piece.getTile().getType() == Tile.TType.START && change){
+            moveOutOfStart(piece);
+            return true;
+        }
+
         if(spaces < 0 && destination.getType() == Tile.TType.START){
             valid = false;
         }
@@ -128,6 +133,7 @@ public class Board implements Serializable{
         
         if(valid && destination.getType() == Tile.TType.SLIDE_START && destination.getColor() != piece.getColor()){
             destination = endOfSlide(destination, change);
+            //System.out.println("Tested slide ends at " + destination.getCoords()[]);
         }
 
         //if move is invalid, pawn stays where it is.
@@ -476,5 +482,13 @@ public class Board implements Serializable{
             System.out.println(i++);
         }
         System.out.println(i);
+    }
+
+    private void moveOutOfStart(Pawn piece){
+        Tile destination = piece.getTile();
+        destination = destination.next();
+
+        if(piece.getColor() == destination.getColor() && destination.getType() == Tile.TType.SLIDE_END)
+            piece.setLocation(destination, 1);
     }
 }   //end of Board class

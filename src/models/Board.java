@@ -490,5 +490,6 @@ public class Board implements Serializable{
 
         if(piece.getColor() == destination.getColor() && destination.getType() == Tile.TType.SLIDE_END)
             piece.setLocation(destination, 1);
+
     }
 }   //end of Board class

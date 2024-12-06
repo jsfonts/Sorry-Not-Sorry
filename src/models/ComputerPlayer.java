@@ -46,7 +46,7 @@ public class ComputerPlayer extends Player{
             }
             if (moveP != null)
             {
-            controller.movePawn(moveP, 1);
+                controller.movePawn(moveP, 1);
             }
             else
                 return;
@@ -160,6 +160,7 @@ public class ComputerPlayer extends Player{
             Pawn moveP = null;     
             int distancetraveled = 0;
             for(Pawn p : getPawns()){
+                System.out.println(p + " Original loc: " + p.getCoords()[0] + ' ' + p.getCoords()[1]);
                 if (p.getDistanceTraveled() > distancetraveled && p.getTile().getType() != Tile.TType.START && controller.isValidMove(p, 7))
                 {
                      distancetraveled = p.getDistanceTraveled();

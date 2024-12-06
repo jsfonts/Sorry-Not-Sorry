@@ -31,7 +31,7 @@ public abstract class Player implements Serializable{
             pawns.add(new Pawn(color));
         }
 
-        System.out.println("Player has been made & assigned " + color);
+        //System.out.println("Player has been made & assigned " + color);
     }
 
     public static void setPlayers(Player player)

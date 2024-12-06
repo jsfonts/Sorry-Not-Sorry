@@ -37,8 +37,8 @@ public class Deck implements Serializable{
         cardsUsed = 0;
     }
 
-    public void printAll(){
+    /*public void printAll(){
         for(Card card : cards)
             System.out.println(card);
-    }
+    }*/
 }

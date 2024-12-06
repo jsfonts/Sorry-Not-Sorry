@@ -201,7 +201,7 @@ public class MainMenu extends JFrame {
             );
         
             if (selectedOption == -1) {
-                System.out.println("Selection canceled.");
+                //System.out.println("Selection canceled.");
         
                 if (numPlayers == 1) {
                     JOptionPane.showMessageDialog(
@@ -216,7 +216,7 @@ public class MainMenu extends JFrame {
                 }
             } else {
                 int numComputerPlayers = selectedOption + 1;
-                System.out.println("You selected " + numComputerPlayers + " computer players.");
+                //System.out.println("You selected " + numComputerPlayers + " computer players.");
                 controller.start(playerNames, numComputerPlayers);
             }
         }

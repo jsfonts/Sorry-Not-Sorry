@@ -156,11 +156,11 @@ public class GameView extends JFrame {
     public void showRules() {
         JEditorPane editorPane = new JEditorPane();
             try{
-                System.out.println("Current Working Directory: " + System.getProperty("user.dir"));
+                //System.out.println("Current Working Directory: " + System.getProperty("user.dir"));
                 File rulesHTML = new File("../resources/rules.html");
                 editorPane.setPage(rulesHTML.toURI().toURL());
             }catch(Exception e){
-                System.out.println("\nCould not find the file or could not convert it to a URL. Exception thrown:\n" + e);
+                //System.out.println("\nCould not find the file or could not convert it to a URL. Exception thrown:\n" + e);
             }
             
             editorPane.setContentType("text/html");
@@ -249,7 +249,7 @@ private class GameBoardPanel extends JPanel {
         
         if(clickX >= pawnX && clickX <=  pawnX + PAWN_SIZE && clickY >= pawnY && clickY <= pawnY + PAWN_SIZE){
             contains = true;
-            System.out.println("\nThis pawn was clicked\n");
+            //System.out.println("\nThis pawn was clicked\n");
         }
 
         return contains;

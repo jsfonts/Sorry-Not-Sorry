@@ -348,47 +348,52 @@ public class GameController implements Serializable{
         }
         else if(cardType == Card.CardType.TEN)
         {
-            //first they click on one of their own pawns
-            String [] options = new String [2];
-            options[0] = String.valueOf(1);
-            options[1] = String.valueOf(10);
+            if(selectedPawn.getTile().getType() != Tile.TType.START && isValidMove(selectedPawn, 10)){
+                board.movePawn(selectedPawn, -1);
+                turnDone = true;
+            }
+            else{
+                //first they click on one of their own pawns
+                String [] options = new String [2];
+                options[0] = String.valueOf(1);
+                options[1] = String.valueOf(10);
 
-            int selectedOption = JOptionPane.showOptionDialog(
-                null,
-                "Would you like to move the Pawn 1 space or 10 spaces?",
-                "10 card pawn selection",
-                JOptionPane.DEFAULT_OPTION,
-                JOptionPane.QUESTION_MESSAGE,
-                null,
-                options,
-                options[0]
-            );
+                int selectedOption = JOptionPane.showOptionDialog(
+                    null,
+                    "Would you like to move the Pawn 1 space or 10 spaces?",
+                    "10 card pawn selection",
+                    JOptionPane.DEFAULT_OPTION,
+                    JOptionPane.QUESTION_MESSAGE,
+                    null,
+                    options,
+                    options[0]
+                );
 
-            boolean cantMove10 = false;
-            
-            if (selectedOption == 1)
-            {
-                //move 10 spaces. if not able to move 10 spaces default to one 
-                if(selectedPawn.getTile().getType() != Tile.TType.START && board.isValidMove(selectedPawn, 10)){
-                    board.movePawn(selectedPawn, 10);
-                    turnDone = true;
+                boolean cantMove10 = false;
+                
+                if (selectedOption == 1)
+                {
+                    //move 10 spaces. if not able to move 10 spaces default to one 
+                    if(selectedPawn.getTile().getType() != Tile.TType.START && board.isValidMove(selectedPawn, 10)){
+                        board.movePawn(selectedPawn, 10);
+                        turnDone = true;
+                    }
+                    else{
+                        cantMove10 = true;
+                    }
                 }
-                else{
-                    cantMove10 = true;
+                else if (selectedOption == 0 || cantMove10)
+                {
+                    //move 1 space
+                    if(selectedPawn.getTile().getType() != Tile.TType.START && board.isValidMove(selectedPawn, -1)){
+                        board.movePawn(selectedPawn, -1);
+                        turnDone = true;
+                    }
+                    else{
+                        invalidMoveSelected = true;
+                    }
                 }
             }
-            else if (selectedOption == 0 || cantMove10)
-            {
-                //move 1 space
-                if(selectedPawn.getTile().getType() != Tile.TType.START && board.isValidMove(selectedPawn, -1)){
-                    board.movePawn(selectedPawn, -1);
-                    turnDone = true;
-                }
-                else{
-                    invalidMoveSelected = true;
-                }
-            }
-            
         }
         else if(cardType == Card.CardType.ELEVEN)
         {

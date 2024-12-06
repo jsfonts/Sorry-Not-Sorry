@@ -45,7 +45,7 @@ public class Board implements Serializable{
     }
 
     public boolean movePawn(Pawn pawn, int spaces){
-        System.out.println("Pawn move has just been called");
+        System.out.println("\nmovePawn Function");
         return movePawn(pawn, spaces, true);
     }
 
@@ -77,7 +77,6 @@ public class Board implements Serializable{
                     destination = destination.next();
                     distance++;
                 }
-                
                 if(destination.getType() == Tile.TType.HOME){
                     break;
                 }
@@ -92,7 +91,7 @@ public class Board implements Serializable{
 
         }
         
-        if(destination.getType() == Tile.TType.SLIDE_START && destination.getColor() != piece.getColor()){
+        if(valid && destination.getType() == Tile.TType.SLIDE_START && destination.getColor() != piece.getColor()){
             destination = endOfSlide(destination, change);
         }
 
@@ -116,7 +115,7 @@ public class Board implements Serializable{
             System.out.println("Move was valid");
         
             if(change){      //in case a pawn was on the destination square
-                System.out.println("Moving pawn there now");
+                System.out.println("Move was valid and change is true");
                 piece.setLocation(destination, distance);
                 destination.setPawnAt(piece);
 
@@ -133,6 +132,7 @@ public class Board implements Serializable{
 
     public boolean isValidMove(Pawn piece, int spaces){
         boolean valid = true;
+        System.out.println("\nisValidMove Function");
 
         valid = movePawn(piece, spaces, false);
 

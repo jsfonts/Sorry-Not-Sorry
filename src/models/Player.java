@@ -11,6 +11,7 @@ public abstract class Player implements Serializable{
     private static GameController controller;
     private String name;
     protected ArrayList<Pawn> pawns;
+    protected static ArrayList<Player> OriginalPlayers = new ArrayList<Player>();
     protected Color color;
     private static final ArrayList<Color> availableColors = new ArrayList<>(Arrays.asList(Color.RED, Color.BLUE, Color.YELLOW, Color.GREEN));
     private static int nextColor = 0;
@@ -33,6 +34,26 @@ public abstract class Player implements Serializable{
         System.out.println("Player has been made & assigned " + color);
     }
 
+    public static void setPlayers(Player player)
+    {
+        OriginalPlayers.add(player);
+    }
+
+    public static ArrayList<Player> getOriginalPlayers(){
+        return OriginalPlayers;
+    }
+
+    public void setColor(Color newColor) {
+        this.color = newColor;
+        for (Pawn pawn : pawns) {
+            pawn.setColor(newColor);
+        }
+    }    
+
+    public static void setController(GameController gameController) {
+        controller = gameController;
+    }
+    
     public int pawnsLeft(){
         return pawns.size();
     }
@@ -44,11 +65,11 @@ public abstract class Player implements Serializable{
     public String getColorString(){
         if(color == Color.RED)
             return "Red";
-        if(color == Color.BLUE)
+        else if(color == Color.BLUE)
             return "Blue";
-        if(color == Color.GREEN)
+        else if(color == Color.GREEN)
             return "Green";
-        if (color == Color.YELLOW)
+        else if (color == Color.YELLOW)
             return "Yellow";
         else 
             return "Color not found";

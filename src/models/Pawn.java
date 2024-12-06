@@ -51,6 +51,11 @@ public class Pawn implements Serializable{
         return distanceTraveled;
     }
 
+    public void setColor(Color newColor) {
+        this.color = newColor;
+    }
+    
+
     public Color getColor(){
         return color;
     }

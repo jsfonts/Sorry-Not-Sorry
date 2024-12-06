@@ -4,6 +4,7 @@ import models.Player;
 import models.Tile;
 import models.Pawn;
 import javax.imageio.ImageIO;
+import javax.lang.model.util.ElementScanner6;
 import javax.swing.*;
 import java.io.File;
 import java.io.IOException;
@@ -365,7 +366,7 @@ private class GameBoardPanel extends JPanel {
         
             Color var = color;
             if (var == Color.YELLOW) {
-                var = new Color(255, 206, 27);
+                var = new Color(219, 175, 2);
             }
         
             String text = textOnScreen;
@@ -449,12 +450,8 @@ private class GameBoardPanel extends JPanel {
         totalHeight += lineHeight;
 
         int padding = 10;
-        if (var == Color.YELLOW)
-        {
-            g2d.setColor(Color.BLACK);
-        } 
-        else
-            g2d.setColor(Color.WHITE);
+
+        g2d.setColor(Color.WHITE);  
         g2d.fill(new RoundRectangle2D.Double(x - padding, y - lineHeight - padding, maxLineWidth + padding * 2, totalHeight + padding * 2, 20, 20));
         g2d.draw(new RoundRectangle2D.Double(x - padding, y - lineHeight - padding, maxLineWidth + padding * 2, totalHeight + padding * 2, 20, 20));
 

@@ -14,6 +14,7 @@ public class Tile implements Serializable{
         private Color color;        //for the endzone tiles 
         private Pawn pawn;
         private int [] coords;
+        private static int count = 0;
 
         public enum TType{
             START, HOME, NORMAL, ENDZONE, ENDZONE_FIRST, SLIDE_START, SLIDE_END, FIRST, SECOND, THIRD;
@@ -27,6 +28,8 @@ public class Tile implements Serializable{
             color = c;
             fork = null;
             coords = new int[2];
+            count++;
+            System.out.println(count);
         }
 
         Tile(TType t, Tile prev, Tile next){
@@ -83,7 +86,18 @@ public class Tile implements Serializable{
         }
 
         public void setPawnAt(Pawn pToAdd){
+            System.out.println("setPawnAt() function");
+            if(pawn == null)
+                System.out.println("Pawn that was at tile " + type + " is null.");
+            else
+            System.out.println("Pawn that was at tile " + type + " is " + pawn);
+
             pawn = pToAdd;
+
+            if(pawn == null)
+                System.out.println("Pawn that is now at tile " + type + " is null.");
+            else
+                System.out.println("Pawn is now at tile " + type + " is " + pawn);
         }
 
         public boolean isFirstThree(Color c){           //for ComputerPlayer
@@ -112,10 +126,10 @@ public class Tile implements Serializable{
                 
                 //add the HOME tile
                 current.next = new Tile(TType.HOME, current, null, c);
+                current = current.next();
                 current.setCoords(9, 13);
             }
-
-            if(c == Color.GREEN){    //green
+            else if(c == Color.GREEN){    //green
                 current.fork = new Tile(TType.ENDZONE_FIRST, current, null, c);
                 current = current.fork;
                 current.setCoords(13, 1);
@@ -128,6 +142,7 @@ public class Tile implements Serializable{
                 
                 //add the HOME tile
                 current.next = new Tile(TType.HOME, current, null, c);
+                current = current.next();
                 current.setCoords(13,6);
             }
 
@@ -144,6 +159,7 @@ public class Tile implements Serializable{
                 
                 //add the HOME tile
                 current.next = new Tile(TType.HOME, current, null, c);
+                current = current.next();
                 current.setCoords(6, 2);
             }
 
@@ -160,6 +176,7 @@ public class Tile implements Serializable{
                 
                 //add the HOME tile
                 current.next = new Tile(TType.HOME, current, null, c);
+                current = current.next();
                 current.setCoords(2, 9);
             }
         }
